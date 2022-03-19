@@ -10,7 +10,7 @@
 namespace plt = matplotlibcpp;
 
 namespace plotter {
-	void plot(std::vector<Person>& objects, std::uint32_t timeStep) {
+	void plot(std::vector<Drawable>& objects, std::uint32_t timeStep) {
 	  // double xLimHist = xx;
 	  // double yLimHist = yy;
 	  
