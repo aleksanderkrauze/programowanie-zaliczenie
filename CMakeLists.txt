@@ -11,6 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 
 set(TARGET_BIN_NAME simulation)
 set(TARGET_LIB_NAME simulationlib)
+set(TARGET_TESTS_NAME tests)
 set(MATPLOTLIBCPP_LIB_NAME matplotlibcpp)
 set(TARGET_BIN_SRC
 	"src/main.cpp"
@@ -19,6 +20,9 @@ set(TARGET_LIB_SRC
 	"src/city.cpp"
 	"src/person.cpp"
 	"src/plotter.cpp"
+)
+set(TARGET_TEST_SRC
+	"tests/person.cpp"
 )
 set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
@@ -62,3 +66,24 @@ target_include_directories(${TARGET_BIN_NAME} PUBLIC
 target_link_libraries(${TARGET_BIN_NAME} PUBLIC
 	${TARGET_LIB_NAME}
 )
+
+# tests
+enable_testing()
+find_package(GTest)
+if(GTest_FOUND)
+	add_executable(${TARGET_TESTS_NAME}
+		${TARGET_TEST_SRC}
+	)
+	target_include_directories(${TARGET_TESTS_NAME} PUBLIC
+		${TARGET_INCLUDE_DIRS}
+	)
+	target_link_libraries(${TARGET_TESTS_NAME}
+		${TARGET_LIB_NAME}
+		GTest::gtest
+		GTest::gtest_main
+	)
+
+	add_test(UnitTests ${TARGET_TESTS_NAME})
+else()
+	message("Google test was not found. Testing is disabled.")
+endif()
