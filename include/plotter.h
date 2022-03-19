@@ -2,7 +2,7 @@
 #define PLOTTER_H
 
 #include<vector>
-#include "Person.h"
+#include "person.h"
 
 using namespace std;
 
@@ -26,4 +26,4 @@ class Plotter{
 };
 
 
-#endif
+#endif // PLOTTER_H
