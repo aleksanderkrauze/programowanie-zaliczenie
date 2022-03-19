@@ -3,6 +3,7 @@
 Person::Person(double x, double y, double vx, double vy, double r, InfectionStatus status):
 	x {x}, y {y}, vx {vx}, vy {vy}, radius {r}, infection_status {status}, time_of_infection {0.0}
 {
+	// TODO: assert or throw and exeption if r < 0.0;
 }
 
 double Person::member_x() const {
@@ -10,7 +11,7 @@ double Person::member_x() const {
 }
 
 void Person::member_x(double x) {
-	x = x;
+	this->x = x;
 }
 
 double Person::member_y() const {
@@ -18,7 +19,7 @@ double Person::member_y() const {
 }
 
 void Person::member_y(double y) {
-	y = y;
+	this->y = y;
 }
 
 double Person::member_vx() const {
@@ -26,7 +27,7 @@ double Person::member_vx() const {
 }
 
 void Person::member_vx(double vx) {
-	vx = vx;
+	this->vx = vx;
 }
 
 double Person::member_vy() const {
@@ -34,15 +35,11 @@ double Person::member_vy() const {
 }
 
 void Person::member_vy(double vy) {
-	vy = vy;
+	this->vy = vy;
 }
 
 double Person::member_radius() const {
 	return radius;
-}
-
-void Person::member_radius(double r) {
-	radius = r;
 }
 
 double Person::member_time_of_infection() const {
@@ -50,7 +47,7 @@ double Person::member_time_of_infection() const {
 }
 
 void Person::member_time_of_infection(double time) {
-	time_of_infection = time;
+	this->time_of_infection = time;
 }
 
 InfectionStatus Person::member_infection_status() const {
@@ -58,7 +55,7 @@ InfectionStatus Person::member_infection_status() const {
 }
 
 void Person::member_infection_status(InfectionStatus status) {
-	infection_status = status;
+	this->infection_status = status;
 }
 
 void Person::draw() const {

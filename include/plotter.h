@@ -9,7 +9,7 @@
 class Drawable {
 public:
 	virtual void draw() const = 0;
-	virtual ~Drawable() = 0;
+	virtual ~Drawable() {}
 };
 
 namespace plotter {
