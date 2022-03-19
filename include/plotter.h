@@ -7,6 +7,7 @@
 // Abstract class that allows for drawing onto plots.
 // In future should be replaced with a concept.
 class Drawable {
+public:
 	virtual void draw() const = 0;
 	virtual ~Drawable() = 0;
 };
