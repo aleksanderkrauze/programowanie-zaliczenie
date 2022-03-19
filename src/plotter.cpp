@@ -1,20 +1,15 @@
-#include <string>
-#include <sstream>
-#include <iomanip>
+#include <cstdint>
 #include <cstdlib>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 #include "matplotlibcpp.h"
 #include "plotter.h"
 
 namespace plt = matplotlibcpp;
 
-///////////////////////////////////////////////
-// Rysowanie stanu miasta (położenia wszystkich osób) w danym kroku czasowym
-// (timeStep). Zapisywanie rysunku do pliku o nazwie plots/frame_xxxx.png
-// gdzie xxxx oznacza numer klatki (kolejnego kroku czasowego)
-///////////////////////////////////////////////
-void Plotter::plot(vector<Person>  & objects, unsigned int timeStep){
-
+void plot(std::vector<Person>& objects, std::uint32_t timeStep) {
   // double xLimHist = xx;
   // double yLimHist = yy;
   
@@ -28,7 +23,7 @@ void Plotter::plot(vector<Person>  & objects, unsigned int timeStep){
 
   // std::vector<double> x, y;
   // double radiusToPixel = 200;
-	// for(auto it: objects){
+	// for(auto& it: objects){
 		// radius = it.getRadius()*radiusToPixel;
 		// circleArea = M_PI*radius*radius;    
 		// x.push_back(it.getX());
@@ -44,22 +39,14 @@ void Plotter::plot(vector<Person>  & objects, unsigned int timeStep){
   // plt::save(ostr.str());
   // plt::close();
 }
-///////////////////////////////////////////////
-// Tworzenie animowanego pliku w formacie gif ze wszystkich dostępnych
-// stop klatek zapisanych w plikach frame_xxxx.png
-// Użycie polecenia system i programu convert (dostępne na komputerach OKWF).
-///////////////////////////////////////////////
-void Plotter::makeAnimation() const{
 
+void makeAnimation() {
   std::cout<<"Plotter: making animation"<<std::endl;
   std::string command = "cd plots; convert frame_*.png animation.gif";
   system(command.c_str());
   std::cout<<"Done."<<std::endl;
 }
 
-///////////////////////////////////////////////
-// Usuwanie starych rysunków i animacji
-///////////////////////////////////////////////
-void Plotter::clean(){
+void clean() {
   system("cd plots; rm -f animation.gif; rm -f frame*.png");
 } 
