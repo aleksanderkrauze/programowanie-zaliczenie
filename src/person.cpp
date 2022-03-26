@@ -1,61 +1,61 @@
 #include "person.h"
 
 Person::Person(double x, double y, double vx, double vy, double r, InfectionStatus status):
-	x {x}, y {y}, vx {vx}, vy {vy}, radius {r}, infection_status {status}, time_of_infection {0.0}
+	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {r}, _infection_status {status}, _time_of_infection {0.0}
 {
 	// TODO: assert or throw and exeption if r < 0.0;
 }
 
-double Person::member_x() const {
-	return x;
+double Person::x() const {
+	return this->_x;
 }
 
-void Person::member_x(double x) {
-	this->x = x;
+void Person::x(double x) {
+	this->_x = x;
 }
 
-double Person::member_y() const {
-	return y;
+double Person::y() const {
+	return this->_y;
 }
 
-void Person::member_y(double y) {
-	this->y = y;
+void Person::y(double y) {
+	this->_y = y;
 }
 
-double Person::member_vx() const {
-	return vx;
+double Person::vx() const {
+	return this->_vx;
 }
 
-void Person::member_vx(double vx) {
-	this->vx = vx;
+void Person::vx(double vx) {
+	this->_vx = vx;
 }
 
-double Person::member_vy() const {
-	return vy;
+double Person::vy() const {
+	return this->_vy;
 }
 
-void Person::member_vy(double vy) {
-	this->vy = vy;
+void Person::vy(double vy) {
+	this->_vy = vy;
 }
 
-double Person::member_radius() const {
-	return radius;
+double Person::radius() const {
+	return this->_radius;
 }
 
-double Person::member_time_of_infection() const {
-	return time_of_infection;
+double Person::time_of_infection() const {
+	return this->_time_of_infection;
 }
 
-void Person::member_time_of_infection(double time) {
-	this->time_of_infection = time;
+void Person::time_of_infection(double time) {
+	this->_time_of_infection = time;
 }
 
-InfectionStatus Person::member_infection_status() const {
-	return infection_status;
+InfectionStatus Person::infection_status() const {
+	return this->_infection_status;
 }
 
-void Person::member_infection_status(InfectionStatus status) {
-	this->infection_status = status;
+void Person::infection_status(InfectionStatus status) {
+	this->_infection_status = status;
 }
 
 void Person::draw() const {
