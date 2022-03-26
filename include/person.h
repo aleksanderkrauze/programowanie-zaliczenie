@@ -10,7 +10,7 @@ private:
 	double _x, _y, _vx, _vy, _radius, _time_of_infection;
 	InfectionStatus _infection_status;
 public:
-	Person(double x, double y, double vx, double vy, double r, InfectionStatus status);
+	Person(double, double, double, double, double, InfectionStatus);
 	~Person() = default;
 	double x() const;
 	void x(double);
