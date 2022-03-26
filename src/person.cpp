@@ -1,9 +1,20 @@
+#include <stdexcept>
+#include <sstream>
+
 #include "person.h"
 
-Person::Person(double x, double y, double vx, double vy, double r, InfectionStatus status):
-	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {r}, _infection_status {status}, _time_of_infection {0.0}
+/**
+ * # Exeptions
+ * - Throws std::invalid_argument when @radius is less than zero.
+ */
+Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):
+	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {radius}, _infection_status {status}, _time_of_infection {0.0}
 {
-	// TODO: assert or throw and exeption if r < 0.0;
+	if(radius < 0) {
+		std::ostringstream s;
+		s << "radius must be greater than 0 (got " << radius << ")";
+		throw std::invalid_argument(s.str());
+	}
 }
 
 double Person::x() const {
