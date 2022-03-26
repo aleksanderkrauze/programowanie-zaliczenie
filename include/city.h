@@ -14,6 +14,7 @@ private:
 public:
 	City(std::uint32_t, double, double, double);
 	~City() = default;
+	void add_person(Person&&);
 };
 
 #endif // CITY_H
