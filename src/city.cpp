@@ -8,9 +8,9 @@
 
 /**
  * # Exceptions
- * - Throws std::invalid_argument when @dt is less than or equal zero
- * - Throws std::invalid_argument when @city_size is less than or equal zero
- * - Throws std::invalid_argument when @recovery_time is less than or equal zero
+ * - Throws std::invalid_argument when @dt is less than or equal to zero
+ * - Throws std::invalid_argument when @city_size is less than or equal to zero
+ * - Throws std::invalid_argument when @recovery_time is less than or equal to zero
  */
 City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_time):
 	_n_iter {n_iter}, _dt {dt}, _city_size {city_size}, _recovery_time {recovery_time}, _people {}
