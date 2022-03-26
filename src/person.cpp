@@ -1,11 +1,11 @@
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 #include "person.h"
 
 /**
  * # Exeptions
- * - Throws std::invalid_argument when @radius is less than zero.
+ * - Throws std::invalid_argument when @radius is less than zero
  */
 Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):
 	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {radius}, _infection_status {status}, _time_of_infection {0.0}
