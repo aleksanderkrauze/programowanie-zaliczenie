@@ -23,6 +23,7 @@ set(TARGET_LIB_SRC
 )
 set(TARGET_TEST_SRC
 	"tests/person.cpp"
+	"tests/city.cpp"
 )
 set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
