@@ -39,15 +39,16 @@ City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_ti
 void City::add_person(Person&& person) {
 	auto x = person.x();
 	auto y = person.y();
+	auto size = this->_city_size;
 
-	if(!(0 <= x && x <= this->_city_size)) {
+	if(!(0 <= x && x <= size)) {
 		std::ostringstream s;
-		s << "Person's x coordinate (x: " << x << ") is outside City's bounds [0, " << this->_city_size << "]";
+		s << "Person's x coordinate (x: " << x << ") is outside City's bounds [0, " << size << "]";
 		throw std::out_of_range(s.str());
 	}
 	if(!(0 <= y && y <= this->_city_size)) {
 		std::ostringstream s;
-		s << "Person's y coordinate (y: " << y << ") is outside City's bounds [0, " << this->_city_size << "]";
+		s << "Person's y coordinate (y: " << y << ") is outside City's bounds [0, " << size << "]";
 		throw std::out_of_range(s.str());
 	}
 
