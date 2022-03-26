@@ -8,7 +8,7 @@
  * - Throws std::invalid_argument when @radius is less than zero
  */
 Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):
-	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {radius}, _infection_status {status}, _time_of_infection {0.0}
+	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {radius}, _time_of_infection {0.0}, _infection_status {status}
 {
 	if(radius < 0) {
 		std::ostringstream s;

@@ -5,6 +5,8 @@ project(Simulation_of_a_pandemic)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_CXX_FLAGS "-O2 -Wall -Wextra")
+
 find_package(Python3 COMPONENTS Development NumPy REQUIRED)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
