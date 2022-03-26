@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <gtest/gtest.h>
 
 #include "person.h"
@@ -29,4 +31,15 @@ TEST(Person, setters) {
 	EXPECT_EQ(p.time_of_infection(), 120.0);
 	p.infection_status(InfectionStatus::RED);
 	EXPECT_EQ(p.infection_status(), InfectionStatus::RED);
+}
+
+TEST(Person, exceptions) {
+	#define P(x) Person(0, 0, 0, 0, x, InfectionStatus::GREEN)	
+
+	EXPECT_NO_THROW(P(10.0));
+	EXPECT_NO_THROW(P(0));
+
+	EXPECT_THROW(P(-0.001), std::invalid_argument);
+	EXPECT_THROW(P(-0.5), std::invalid_argument);
+	EXPECT_THROW(P(-5), std::invalid_argument);
 }
