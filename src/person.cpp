@@ -4,7 +4,7 @@
 #include "person.h"
 
 /**
- * # Exeptions
+ * # Exceptions
  * - Throws std::invalid_argument when @radius is less than zero
  */
 Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):

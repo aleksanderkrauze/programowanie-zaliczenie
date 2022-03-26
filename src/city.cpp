@@ -7,7 +7,7 @@
 #include "person.h"
 
 /**
- * # Exeptions
+ * # Exceptions
  * - Throws std::invalid_argument when @dt is less than zero
  * - Throws std::invalid_argument when @city_size is less than zero
  * - Throws std::invalid_argument when @recovery_time is less than zero
