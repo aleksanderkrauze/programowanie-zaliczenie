@@ -3,4 +3,4 @@
 [ ! -d build ] && mkdir build
 cd build
 cmake ..
-cmake --build . -j 4
+cmake --build .
