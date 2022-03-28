@@ -31,8 +31,8 @@ public:
 
 	void draw() const;
 private:
-	double _x, _y, _vx, _vy, _radius, _time_of_infection;
-	InfectionStatus _infection_status;
+	double m_x, m_y, m_vx, m_vy, m_radius, m_time_of_infection;
+	InfectionStatus m_infection_status;
 
 	Person(const Person&) = default;
 	Person& operator=(const Person&) = default;

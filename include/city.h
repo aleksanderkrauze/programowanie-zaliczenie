@@ -17,9 +17,9 @@ public:
 	void add_person(Person&&);
 	const std::vector<Person>& people() const;
 private:
-	std::uint32_t _n_iter;
-	double _dt, _city_size, _recovery_time;
-	std::vector<Person> _people;
+	std::uint32_t m_n_iter;
+	double m_dt, m_city_size, m_recovery_time;
+	std::vector<Person> m_people;
 
 	City(const City&) = default;
 	City& operator=(const City&) = default;

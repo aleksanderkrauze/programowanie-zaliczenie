@@ -14,7 +14,11 @@
  * - Throws std::invalid_argument when @recovery_time is less than or equal to zero
  */
 City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_time):
-	_n_iter {n_iter}, _dt {dt}, _city_size {city_size}, _recovery_time {recovery_time}, _people {}
+	m_n_iter {n_iter},
+	m_dt {dt},
+	m_city_size {city_size},
+	m_recovery_time {recovery_time},
+	m_people {}
 {
 	if(dt <= 0) {
 		std::ostringstream s;
@@ -40,22 +44,22 @@ City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_ti
 void City::add_person(Person&& person) {
 	auto x = person.x();
 	auto y = person.y();
-	auto size = this->_city_size;
+	auto size = this->m_city_size;
 
 	if(!(0 <= x && x <= size)) {
 		std::ostringstream s;
 		s << "Person's x coordinate (x: " << x << ") is outside City's bounds [0, " << size << "]";
 		throw std::out_of_range(s.str());
 	}
-	if(!(0 <= y && y <= this->_city_size)) {
+	if(!(0 <= y && y <= size)) {
 		std::ostringstream s;
 		s << "Person's y coordinate (y: " << y << ") is outside City's bounds [0, " << size << "]";
 		throw std::out_of_range(s.str());
 	}
 
-	this->_people.push_back(std::move(person));
+	this->m_people.push_back(std::move(person));
 }
 
 const std::vector<Person>& City::people() const {
-	return this->_people;
+	return this->m_people;
 }

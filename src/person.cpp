@@ -25,7 +25,13 @@ std::string infection_status_to_colour(InfectionStatus status) {
  * - Throws std::invalid_argument when @radius is less than zero
  */
 Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):
-	_x {x}, _y {y}, _vx {vx}, _vy {vy}, _radius {radius}, _time_of_infection {0.0}, _infection_status {status}
+	m_x {x},
+	m_y {y},
+	m_vx {vx},
+	m_vy {vy},
+	m_radius {radius},
+	m_time_of_infection {0.0},
+	m_infection_status {status}
 {
 	if(radius < 0) {
 		std::ostringstream s;
@@ -35,55 +41,55 @@ Person::Person(double x, double y, double vx, double vy, double radius, Infectio
 }
 
 double Person::x() const {
-	return this->_x;
+	return this->m_x;
 }
 
 void Person::x(double x) {
-	this->_x = x;
+	this->m_x = x;
 }
 
 double Person::y() const {
-	return this->_y;
+	return this->m_y;
 }
 
 void Person::y(double y) {
-	this->_y = y;
+	this->m_y = y;
 }
 
 double Person::vx() const {
-	return this->_vx;
+	return this->m_vx;
 }
 
 void Person::vx(double vx) {
-	this->_vx = vx;
+	this->m_vx = vx;
 }
 
 double Person::vy() const {
-	return this->_vy;
+	return this->m_vy;
 }
 
 void Person::vy(double vy) {
-	this->_vy = vy;
+	this->m_vy = vy;
 }
 
 double Person::radius() const {
-	return this->_radius;
+	return this->m_radius;
 }
 
 double Person::time_of_infection() const {
-	return this->_time_of_infection;
+	return this->m_time_of_infection;
 }
 
 void Person::time_of_infection(double time) {
-	this->_time_of_infection = time;
+	this->m_time_of_infection = time;
 }
 
 InfectionStatus Person::infection_status() const {
-	return this->_infection_status;
+	return this->m_infection_status;
 }
 
 void Person::infection_status(InfectionStatus status) {
-	this->_infection_status = status;
+	this->m_infection_status = status;
 }
 
 void Person::draw() const {
