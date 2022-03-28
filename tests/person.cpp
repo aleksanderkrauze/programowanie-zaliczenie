@@ -42,4 +42,12 @@ TEST(Person, exceptions) {
 	EXPECT_THROW(P(-0.001), std::invalid_argument);
 	EXPECT_THROW(P(-0.5), std::invalid_argument);
 	EXPECT_THROW(P(-5), std::invalid_argument);
+
+	#undef P
+}
+
+TEST(InfectionStatus, infection_status_to_colour) {
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(), "green");
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::RED).c_str(), "red");
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::BLUE).c_str(), "blue");
 }

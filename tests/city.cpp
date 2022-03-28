@@ -69,7 +69,7 @@ TEST(City, people) {
 	c.add_person(P(4));
 	c.add_person(P(5));
 
-	auto people = c.people();
+	auto& people = c.people();
 
 	EXPECT_EQ(people.size(), 5);
 

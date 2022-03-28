@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 #include "city.h"
@@ -52,7 +53,7 @@ void City::add_person(Person&& person) {
 		throw std::out_of_range(s.str());
 	}
 
-	this->_people.push_back(person);
+	this->_people.push_back(std::move(person));
 }
 
 const std::vector<Person>& City::people() const {

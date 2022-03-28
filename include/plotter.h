@@ -4,13 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-// Abstract class that allows for drawing onto plots.
-// In future should be replaced with a concept.
-class Drawable {
-public:
-	virtual void draw() const = 0;
-	virtual ~Drawable() {}
-};
+#include "person.h"
 
 namespace plotter {
 	///////////////////////////////////////////////
@@ -18,7 +12,7 @@ namespace plotter {
 	// (timeStep). Zapisywanie rysunku do pliku o nazwie plots/frame_xxxx.png
 	// gdzie xxxx oznacza numer klatki (kolejnego kroku czasowego)
 	///////////////////////////////////////////////
-	void plot(std::vector<Drawable>&, std::uint32_t);
+	void plot(const std::vector<Person>&, std::uint32_t, double);
 
 	///////////////////////////////////////////////
 	// Tworzenie animowanego pliku w formacie gif ze wszystkich dostępnych

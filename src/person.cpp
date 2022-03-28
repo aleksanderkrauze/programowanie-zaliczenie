@@ -1,7 +1,24 @@
+#include <cmath> // M_PI const
 #include <sstream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
+#include "matplotlibcpp.h"
 #include "person.h"
+
+std::string infection_status_to_colour(InfectionStatus status) {
+	switch(status) {
+		case InfectionStatus::GREEN:
+			return "green";
+		case InfectionStatus::RED:
+			return "red";
+		case InfectionStatus::BLUE:
+			return "blue";
+	}
+
+	throw std::runtime_error("Unexpected infection status");
+}
 
 /**
  * # Exceptions
@@ -70,5 +87,15 @@ void Person::infection_status(InfectionStatus status) {
 }
 
 void Person::draw() const {
-	// TODO: write drawing function
+	const double radius_to_pixel = 200;
+
+	const std::vector<double> x = {this->x()};
+	const std::vector<double> y = {this->y()};
+
+	const auto radius = this->radius() * radius_to_pixel;
+	const auto circle_area = M_PI * radius * radius;
+
+	const auto colour = infection_status_to_colour(this->infection_status());
+
+	matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}}); 
 }
