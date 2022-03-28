@@ -54,3 +54,7 @@ void City::add_person(Person&& person) {
 
 	this->_people.push_back(person);
 }
+
+const std::vector<Person>& City::people() const {
+	return this->_people;
+}

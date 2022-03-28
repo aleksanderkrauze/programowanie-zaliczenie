@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <stdexcept>
 
 #include <gtest/gtest.h>
@@ -17,6 +18,8 @@ TEST(City, exceptions) {
 	EXPECT_THROW(C(0, 1, 1), std::invalid_argument);
 	EXPECT_THROW(C(1, 0, 1), std::invalid_argument);
 	EXPECT_THROW(C(1, 1, 0), std::invalid_argument);
+
+	#undef C
 }
 
 TEST(City, add_person) {
@@ -50,4 +53,31 @@ TEST(City, add_person) {
 	EXPECT_THROW(c.add_person(P(SIZE/2, SIZE + EPS)), std::out_of_range);
 	EXPECT_THROW(c.add_person(P(-EPS, SIZE + EPS)), std::out_of_range);
 	EXPECT_THROW(c.add_person(P(-EPS, SIZE/2)), std::out_of_range);
+
+	#undef P
+	#undef SIZE
+	#undef EPS
+}
+
+TEST(City, people) {
+	#define P(r) Person(1, 1, 0, 0, r, InfectionStatus::GREEN)
+	City c = {0, 1, 100, 1};
+
+	c.add_person(P(1));
+	c.add_person(P(2));
+	c.add_person(P(3));
+	c.add_person(P(4));
+	c.add_person(P(5));
+
+	auto people = c.people();
+
+	EXPECT_EQ(people.size(), 5);
+
+	for(std::size_t i = 0; i < people.size(); i++) {
+		auto r = people[i].radius();
+
+		EXPECT_EQ(r, i + 1);
+	}
+
+	#undef P
 }

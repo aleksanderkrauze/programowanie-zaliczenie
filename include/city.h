@@ -15,6 +15,7 @@ public:
 	City(std::uint32_t, double, double, double);
 	~City() = default;
 	void add_person(Person&&);
+	const std::vector<Person>& people() const;
 };
 
 #endif // CITY_H
