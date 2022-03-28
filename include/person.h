@@ -8,12 +8,6 @@ enum class InfectionStatus {GREEN, RED, BLUE};
 std::string infection_status_to_colour(InfectionStatus);
 
 class Person {
-private:
-	double _x, _y, _vx, _vy, _radius, _time_of_infection;
-	InfectionStatus _infection_status;
-
-	Person(const Person&) = default;
-	Person& operator=(const Person&) = default;
 public:
 	Person(double, double, double, double, double, InfectionStatus);
 	Person(Person&&) = default;
@@ -36,6 +30,12 @@ public:
 	void infection_status(InfectionStatus);
 
 	void draw() const;
+private:
+	double _x, _y, _vx, _vy, _radius, _time_of_infection;
+	InfectionStatus _infection_status;
+
+	Person(const Person&) = default;
+	Person& operator=(const Person&) = default;
 };
 
 #endif // PERSON_H
