@@ -5,11 +5,11 @@
 
 enum class InfectionStatus {GREEN, RED, BLUE};
 
-std::string infection_status_to_colour(InfectionStatus);
+std::string infection_status_to_colour(const InfectionStatus);
 
 class Person {
 public:
-	Person(double, double, double, double, double, InfectionStatus);
+	Person(const double, const double, const double, const double, const double, const InfectionStatus);
 	Person(Person&&) = default;
 	~Person() = default;
 

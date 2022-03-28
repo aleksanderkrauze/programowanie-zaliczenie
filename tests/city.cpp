@@ -69,12 +69,12 @@ TEST(City, people) {
 	c.add_person(P(4));
 	c.add_person(P(5));
 
-	auto& people = c.people();
+	const auto& people = c.people();
 
 	EXPECT_EQ(people.size(), 5);
 
 	for(std::size_t i = 0; i < people.size(); i++) {
-		auto r = people[i].radius();
+		const auto r = people[i].radius();
 
 		EXPECT_EQ(r, i + 1);
 	}

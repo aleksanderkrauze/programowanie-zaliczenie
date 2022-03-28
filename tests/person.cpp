@@ -5,7 +5,7 @@
 #include "person.h"
 
 TEST(Person, getters) {
-	Person p {1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
+	const Person p {1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
 
 	EXPECT_EQ(p.x(), 1.0);
 	EXPECT_EQ(p.y(), 2.0);

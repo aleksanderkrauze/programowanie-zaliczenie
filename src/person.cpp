@@ -7,7 +7,7 @@
 #include "matplotlibcpp.h"
 #include "person.h"
 
-std::string infection_status_to_colour(InfectionStatus status) {
+std::string infection_status_to_colour(const InfectionStatus status) {
 	switch(status) {
 		case InfectionStatus::GREEN:
 			return "green";
@@ -24,7 +24,15 @@ std::string infection_status_to_colour(InfectionStatus status) {
  * # Exceptions
  * - Throws std::invalid_argument when @radius is less than zero
  */
-Person::Person(double x, double y, double vx, double vy, double radius, InfectionStatus status):
+Person::Person
+(
+	const double x,
+	const double y,
+	const double vx,
+	const double vy,
+	const double radius,
+	const InfectionStatus status
+):
 	m_x {x},
 	m_y {y},
 	m_vx {vx},

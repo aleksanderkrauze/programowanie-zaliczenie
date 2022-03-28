@@ -11,7 +11,7 @@
 namespace plt = matplotlibcpp;
 
 namespace plotter {
-	void plot(const std::vector<Person>& people, std::uint32_t iteration_number, double plot_size) {
+	void plot(const std::vector<Person>& people, const std::uint32_t iteration_number, const double plot_size) {
 		plt::xlim(0.0, plot_size);
 		plt::ylim(0.0, plot_size);  
 		plt::xlabel("x");
@@ -21,18 +21,18 @@ namespace plotter {
 			p.draw();	
 		}
 	
+		const int frameNumberWidth = 4;
 		std::ostringstream ostr;
-		int frameNumberWidth = 4;
-		ostr << "plots/frame_" << std::setfill('0') << std::setw(frameNumberWidth) << iteration_number <<".png";
+		ostr << "plots/frame_" << std::setfill('0') << std::setw(frameNumberWidth) << iteration_number << ".png";
 		plt::save(ostr.str());
 		plt::close();
 	}
 	
 	void makeAnimation() {
-	  std::cout<<"Plotter: making animation"<<std::endl;
+	  std::cout << "Plotter: making animation" << std::endl;
 	  std::string command = "cd plots; convert frame_*.png animation.gif";
 	  system(command.c_str());
-	  std::cout<<"Done."<<std::endl;
+	  std::cout << "Done." << std::endl;
 	}
 	
 	void clean() {

@@ -8,7 +8,7 @@
 
 class City {
 public:
-	City(std::uint32_t, double, double, double);
+	City(const std::uint32_t, const double, const double, const double);
 	City(City&&) = default;
 	~City() = default;
 

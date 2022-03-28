@@ -12,7 +12,7 @@ namespace plotter {
 	// (timeStep). Zapisywanie rysunku do pliku o nazwie plots/frame_xxxx.png
 	// gdzie xxxx oznacza numer klatki (kolejnego kroku czasowego)
 	///////////////////////////////////////////////
-	void plot(const std::vector<Person>&, std::uint32_t, double);
+	void plot(const std::vector<Person>&, const std::uint32_t, const double);
 
 	///////////////////////////////////////////////
 	// Tworzenie animowanego pliku w formacie gif ze wszystkich dostępnych

@@ -13,7 +13,13 @@
  * - Throws std::invalid_argument when @city_size is less than or equal to zero
  * - Throws std::invalid_argument when @recovery_time is less than or equal to zero
  */
-City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_time):
+City::City
+(
+	const std::uint32_t n_iter,
+	const double dt,
+	const double city_size,
+	const double recovery_time
+):
 	m_n_iter {n_iter},
 	m_dt {dt},
 	m_city_size {city_size},
@@ -42,9 +48,9 @@ City::City(std::uint32_t n_iter, double dt, double city_size, double recovery_ti
  * - Throws std::out_of_range when @person's position is outside City's size bounds
  */
 void City::add_person(Person&& person) {
-	auto x = person.x();
-	auto y = person.y();
-	auto size = this->m_city_size;
+	const auto x = person.x();
+	const auto y = person.y();
+	const auto size = this->m_city_size;
 
 	if(!(0 <= x && x <= size)) {
 		std::ostringstream s;
