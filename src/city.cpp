@@ -66,6 +66,6 @@ void City::add_person(Person&& person) {
 	this->m_people.push_back(std::move(person));
 }
 
-const std::vector<Person>& City::people() const {
+const std::vector<Person>& City::people() const noexcept {
 	return this->m_people;
 }

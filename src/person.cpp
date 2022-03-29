@@ -48,55 +48,55 @@ Person::Person
 	}
 }
 
-double Person::x() const {
+double Person::x() const noexcept {
 	return this->m_x;
 }
 
-void Person::x(double x) {
+void Person::x(double x) noexcept {
 	this->m_x = x;
 }
 
-double Person::y() const {
+double Person::y() const noexcept {
 	return this->m_y;
 }
 
-void Person::y(double y) {
+void Person::y(double y) noexcept {
 	this->m_y = y;
 }
 
-double Person::vx() const {
+double Person::vx() const noexcept {
 	return this->m_vx;
 }
 
-void Person::vx(double vx) {
+void Person::vx(double vx) noexcept {
 	this->m_vx = vx;
 }
 
-double Person::vy() const {
+double Person::vy() const noexcept {
 	return this->m_vy;
 }
 
-void Person::vy(double vy) {
+void Person::vy(double vy) noexcept {
 	this->m_vy = vy;
 }
 
-double Person::radius() const {
+double Person::radius() const noexcept {
 	return this->m_radius;
 }
 
-double Person::time_of_infection() const {
+double Person::time_of_infection() const noexcept {
 	return this->m_time_of_infection;
 }
 
-void Person::time_of_infection(double time) {
+void Person::time_of_infection(double time) noexcept {
 	this->m_time_of_infection = time;
 }
 
-InfectionStatus Person::infection_status() const {
+InfectionStatus Person::infection_status() const noexcept {
 	return this->m_infection_status;
 }
 
-void Person::infection_status(InfectionStatus status) {
+void Person::infection_status(InfectionStatus status) noexcept {
 	this->m_infection_status = status;
 }
 

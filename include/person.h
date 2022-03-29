@@ -15,19 +15,19 @@ public:
 
 	Person& operator=(Person&&) = default;
 
-	double x() const;
-	void x(double);
-	double y() const;
-	void y(double);
-	double vx() const;
-	void vx(double);
-	double vy() const;
-	void vy(double);
-	double radius() const;
-	double time_of_infection() const;
-	void time_of_infection(double);
-	InfectionStatus infection_status() const;
-	void infection_status(InfectionStatus);
+	double x() const noexcept;
+	void x(double) noexcept;
+	double y() const noexcept;
+	void y(double) noexcept;
+	double vx() const noexcept;
+	void vx(double) noexcept;
+	double vy() const noexcept;
+	void vy(double) noexcept;
+	double radius() const noexcept;
+	double time_of_infection() const noexcept;
+	void time_of_infection(double) noexcept;
+	InfectionStatus infection_status() const noexcept;
+	void infection_status(InfectionStatus) noexcept;
 
 	void draw() const;
 private:
