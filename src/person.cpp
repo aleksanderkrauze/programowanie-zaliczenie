@@ -103,13 +103,13 @@ void Person::infection_status(InfectionStatus status) noexcept {
 void Person::draw() const {
 	const double radius_to_pixel = 200;
 
-	const std::vector<double> x = {this->x()};
-	const std::vector<double> y = {this->y()};
+	const std::vector<double> x = {this->m_x};
+	const std::vector<double> y = {this->m_y};
 
-	const auto radius = this->radius() * radius_to_pixel;
+	const auto radius = this->m_radius * radius_to_pixel;
 	const auto circle_area = M_PI * radius * radius;
 
-	const auto colour = infection_status_to_colour(this->infection_status());
+	const auto colour = infection_status_to_colour(this->m_infection_status);
 
 	matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}}); 
 }
