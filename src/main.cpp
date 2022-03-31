@@ -5,8 +5,6 @@
 #include "person.h"
 #include "plotter.h"
 
-#include <vector>
-
 int main(int argc, char* argv[]) {
 	Person p1 = {0.1, 0.2, 0.1, 0.2, 0.02, InfectionStatus::GREEN};
 	Person p2 = {0.1, 0.1, 0.5, 0.3, 0.05, InfectionStatus::GREEN};

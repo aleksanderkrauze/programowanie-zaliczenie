@@ -2,3 +2,6 @@ build/
 target/
 
 plots/
+
+# core dumps
+core*
