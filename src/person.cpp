@@ -1,11 +1,10 @@
 #include <cmath> // M_PI const
-#include <sstream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "matplotlibcpp.h"
 #include "person.h"
+#include "exceptions.h"
 
 std::string infection_status_to_colour(const InfectionStatus status) {
 	switch(status) {
@@ -41,10 +40,8 @@ Person::Person
 	m_time_of_infection {0.0},
 	m_infection_status {status}
 {
-	if(radius < 0) {
-		std::ostringstream s;
-		s << "radius must be greater than 0 (got " << radius << ")";
-		throw std::invalid_argument(s.str());
+	if(radius <= 0) {
+		throw RequiredPositiveDoubleValueException("radius", radius);
 	}
 }
 
