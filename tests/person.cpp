@@ -1,9 +1,9 @@
-#include <stdexcept>
 #include <utility>
 
 #include <gtest/gtest.h>
 
 #include "person.h"
+#include "exceptions.h"
 
 TEST(InfectionStatus, infection_status_to_colour) {
 	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(), "green");
@@ -24,7 +24,7 @@ TEST(Person, getters) {
 }
 
 TEST(Person, setters) {
-	Person p {0, 0, 0, 0, 0, InfectionStatus::GREEN};
+	Person p {0, 0, 0, 0, 1, InfectionStatus::GREEN};
 
 	p.x(3.0);
 	EXPECT_EQ(p.x(), 3.0);
@@ -41,14 +41,14 @@ TEST(Person, setters) {
 }
 
 TEST(Person, exceptions) {
-	#define P(x) Person(0, 0, 0, 0, x, InfectionStatus::GREEN)	
+	#define P(r) Person(0, 0, 0, 0, r, InfectionStatus::GREEN)	
 
 	EXPECT_NO_THROW(P(10.0));
-	EXPECT_NO_THROW(P(0));
 
-	EXPECT_THROW(P(-0.001), std::invalid_argument);
-	EXPECT_THROW(P(-0.5), std::invalid_argument);
-	EXPECT_THROW(P(-5), std::invalid_argument);
+	EXPECT_THROW(P(0), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(P(-0.001), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(P(-0.5), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(P(-5), RequiredPositiveDoubleValueException);
 
 	#undef P
 }

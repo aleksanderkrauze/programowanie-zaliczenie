@@ -4,6 +4,7 @@
 #include "city.h"
 #include "person.h"
 #include "plotter.h"
+#include "exceptions.h"
 
 int main(int argc, char* argv[]) {
 	Person p1 = {0.1, 0.2, 0.1, 0.2, 0.02, InfectionStatus::GREEN};

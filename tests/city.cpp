@@ -1,29 +1,29 @@
 #include <cstddef>
-#include <stdexcept>
 
 #include <gtest/gtest.h>
 
 #include "city.h"
 #include "person.h"
+#include "exceptions.h"
 
 TEST(City, exceptions) {
 	#define C(dt, size, rtime) City(0, dt, size, rtime)	
 
 	EXPECT_NO_THROW(C(1, 1, 1));
 
-	EXPECT_THROW(C(-1, 1, 1), std::invalid_argument);
-	EXPECT_THROW(C(1, -1, 1), std::invalid_argument);
-	EXPECT_THROW(C(1, 1, -1), std::invalid_argument);
+	EXPECT_THROW(C(-1, 1, 1), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(C(1, -1, 1), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(C(1, 1, -1), RequiredPositiveDoubleValueException);
 
-	EXPECT_THROW(C(0, 1, 1), std::invalid_argument);
-	EXPECT_THROW(C(1, 0, 1), std::invalid_argument);
-	EXPECT_THROW(C(1, 1, 0), std::invalid_argument);
+	EXPECT_THROW(C(0, 1, 1), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(C(1, 0, 1), RequiredPositiveDoubleValueException);
+	EXPECT_THROW(C(1, 1, 0), RequiredPositiveDoubleValueException);
 
 	#undef C
 }
 
 TEST(City, add_person) {
-	#define P(x, y) Person {x, y, 0, 0, 0, InfectionStatus::GREEN}
+	#define P(x, y) Person {x, y, 0, 0, 1, InfectionStatus::GREEN}
 	#define SIZE 100.0
 	#define EPS 0.1
 
@@ -45,14 +45,14 @@ TEST(City, add_person) {
 	EXPECT_NO_THROW(c.add_person(P(0.0, SIZE)));
 
 	// outside (bottom left corner going counter-clockwise)
-	EXPECT_THROW(c.add_person(P(-EPS, -EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(SIZE/2, -EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(SIZE + EPS, -EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE/2)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE + EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(SIZE/2, SIZE + EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(-EPS, SIZE + EPS)), std::out_of_range);
-	EXPECT_THROW(c.add_person(P(-EPS, SIZE/2)), std::out_of_range);
+	EXPECT_THROW(c.add_person(P(-EPS, -EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(SIZE/2, -EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(SIZE + EPS, -EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE/2)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE + EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(SIZE/2, SIZE + EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(-EPS, SIZE + EPS)), OutOfCityBoundsException);
+	EXPECT_THROW(c.add_person(P(-EPS, SIZE/2)), OutOfCityBoundsException);
 
 	#undef P
 	#undef SIZE

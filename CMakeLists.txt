@@ -60,6 +60,7 @@ set(TARGET_LIB_SRC
 	"src/city.cpp"
 	"src/person.cpp"
 	"src/plotter.cpp"
+	"src/exceptions.cpp"
 )
 set(TARGET_TEST_SRC
 	"tests/person.cpp"
