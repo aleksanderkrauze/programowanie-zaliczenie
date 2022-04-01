@@ -1,8 +1,15 @@
 #include <stdexcept>
+#include <utility>
 
 #include <gtest/gtest.h>
 
 #include "person.h"
+
+TEST(InfectionStatus, infection_status_to_colour) {
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(), "green");
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::RED).c_str(), "red");
+	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::BLUE).c_str(), "blue");
+}
 
 TEST(Person, getters) {
 	const Person p {1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
@@ -46,8 +53,26 @@ TEST(Person, exceptions) {
 	#undef P
 }
 
-TEST(InfectionStatus, infection_status_to_colour) {
-	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(), "green");
-	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::RED).c_str(), "red");
-	EXPECT_STREQ(infection_status_to_colour(InfectionStatus::BLUE).c_str(), "blue");
+/* **********************************************
+ * Person::move() tests
+ * *********************************************/
+void test_move(double x, double y, double vx, double vy, double xdt, double ydt, double city_size) {
+	Person p {x, y, vx, vy, 1.0, InfectionStatus::GREEN};
+	p.move(city_size);
+
+	EXPECT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
+		<< "Test failed with following values: "
+		<< "x=" << x
+		<< ", y=" << y
+		<< ", vx=" << vx
+		<< ", vy=" << vy
+		<< ", xdt=" << xdt
+		<< ", ydt=" << ydt
+		<< ", city_size=" << city_size;
+}
+
+TEST(Person_move, normal_in_the_middle) {
+	test_move(5, 5, 1, 2, 6, 7, 10.0);
+	test_move(5, 5, -2, 0, 3, 5, 10.0);
+	test_move(5, 5, -1, -2, 4, 3, 10.0);
 }

@@ -30,6 +30,7 @@ public:
 	void infection_status(InfectionStatus) noexcept;
 
 	void draw() const;
+	void move(double);
 private:
 	double m_x, m_y, m_vx, m_vy, m_radius, m_time_of_infection;
 	InfectionStatus m_infection_status;
