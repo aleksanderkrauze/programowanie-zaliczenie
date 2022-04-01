@@ -42,12 +42,8 @@ City::City
  * - Throws OutOfCityBoundsException when @person's position is outside City's size bounds
  */
 void City::add_person(Person&& person) {
-	const auto x = person.x();
-	const auto y = person.y();
-	const auto size = this->m_city_size;
-
-	if(!(0 <= x && x <= size) || !(0 <= y && y <= size)) {
-		throw OutOfCityBoundsException(person, size);
+	if(!this->is_in_bound(person)) {
+		throw OutOfCityBoundsException(person, this->m_city_size);
 	}
 
 	this->m_people.push_back(std::move(person));
@@ -55,4 +51,12 @@ void City::add_person(Person&& person) {
 
 const std::vector<Person>& City::people() const noexcept {
 	return this->m_people;
+}
+
+bool City::is_in_bound(const Person& person) const noexcept {
+	const auto x = person.x();
+	const auto y = person.y();
+	const auto size = this->m_city_size;
+
+	return (0 <= x && x <= size) && (0 <= y && y <= size);
 }

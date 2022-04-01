@@ -16,6 +16,7 @@ public:
 
 	void add_person(Person&&);
 	const std::vector<Person>& people() const noexcept;
+	bool is_in_bound(const Person&) const noexcept;
 private:
 	std::uint32_t m_n_iter;
 	double m_dt, m_city_size, m_recovery_time;
