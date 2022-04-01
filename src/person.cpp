@@ -111,6 +111,6 @@ void Person::draw() const {
 	matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}}); 
 }
 
-void Person::move(double city_size) {
+void Person::move(const double dt, const double city_size) {
 	// TODO: implement this function	
 }

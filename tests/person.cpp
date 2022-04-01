@@ -56,9 +56,9 @@ TEST(Person, exceptions) {
 /* **********************************************
  * Person::move() tests
  * *********************************************/
-void test_move(double x, double y, double vx, double vy, double xdt, double ydt, double city_size) {
+void test_move(double x, double y, double vx, double vy, double xdt, double ydt, double dt, double city_size) {
 	Person p {x, y, vx, vy, 1.0, InfectionStatus::GREEN};
-	p.move(city_size);
+	p.move(dt, city_size);
 
 	EXPECT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
 		<< "Test failed with following values: "
@@ -72,7 +72,13 @@ void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
 }
 
 TEST(Person_move, normal_in_the_middle) {
-	test_move(5, 5, 1, 2, 6, 7, 10.0);
-	test_move(5, 5, -2, 0, 3, 5, 10.0);
-	test_move(5, 5, -1, -2, 4, 3, 10.0);
+	#define dt 1.0
+	#define SIZE 10.0
+
+	test_move(5, 5, 1, 2, 6, 7, dt, SIZE);
+	test_move(5, 5, -2, 0, 3, 5, dt, SIZE);
+	test_move(5, 5, -1, -2, 4, 3, dt, SIZE);
+
+	#undef dt
+	#undef SIZE
 }
