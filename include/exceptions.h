@@ -6,29 +6,32 @@
 
 #include "person.h"
 
-class SimulationBaseException: public std::exception {
+class SimulationBaseException : public std::exception {
 public:
-	SimulationBaseException() = default;
-	explicit SimulationBaseException(const char*) noexcept;
-	explicit SimulationBaseException(const std::string&) noexcept;
-	~SimulationBaseException() = default;
+  SimulationBaseException() = default;
+  explicit SimulationBaseException(const char*) noexcept;
+  explicit SimulationBaseException(const std::string&) noexcept;
+  ~SimulationBaseException() = default;
 
-	virtual const char* what() const noexcept override;
+  virtual const char* what() const noexcept override;
+
 protected:
-	std::string m_msg;
+  std::string m_msg;
 };
 
-class OutOfCityBoundsException: public SimulationBaseException {
+class OutOfCityBoundsException : public SimulationBaseException {
 public:
-	explicit OutOfCityBoundsException(const char*) noexcept;
-	explicit OutOfCityBoundsException(const std::string&) noexcept;
-	OutOfCityBoundsException(const Person&, const double) noexcept;
+  explicit OutOfCityBoundsException(const char*) noexcept;
+  explicit OutOfCityBoundsException(const std::string&) noexcept;
+  OutOfCityBoundsException(const Person&, const double) noexcept;
 };
 
-class RequiredPositiveDoubleValueException: public SimulationBaseException {
+class RequiredPositiveDoubleValueException : public SimulationBaseException {
 public:
-	explicit RequiredPositiveDoubleValueException(const char*, const double) noexcept;
-	explicit RequiredPositiveDoubleValueException(const std::string&, const double) noexcept;
+  explicit RequiredPositiveDoubleValueException(const char*,
+                                                const double) noexcept;
+  explicit RequiredPositiveDoubleValueException(const std::string&,
+                                                const double) noexcept;
 };
 
 #endif // EXCEPTIONS_H

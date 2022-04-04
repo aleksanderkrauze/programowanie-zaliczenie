@@ -2,115 +2,84 @@
 #include <string>
 #include <vector>
 
+#include "exceptions.h"
 #include "matplotlibcpp.h"
 #include "person.h"
-#include "exceptions.h"
 
 std::string infection_status_to_colour(const InfectionStatus status) {
-	switch(status) {
-		case InfectionStatus::GREEN:
-			return "green";
-		case InfectionStatus::RED:
-			return "red";
-		case InfectionStatus::BLUE:
-			return "blue";
-	}
+  switch (status) {
+  case InfectionStatus::GREEN:
+    return "green";
+  case InfectionStatus::RED:
+    return "red";
+  case InfectionStatus::BLUE:
+    return "blue";
+  }
 
-	throw std::runtime_error("Unexpected infection status");
+  throw std::runtime_error("Unexpected infection status");
 }
 
 /**
  * # Exceptions
  * - Throws std::invalid_argument when @radius is less than zero
  */
-Person::Person
-(
-	const double x,
-	const double y,
-	const double vx,
-	const double vy,
-	const double radius,
-	const InfectionStatus status
-):
-	m_x {x},
-	m_y {y},
-	m_vx {vx},
-	m_vy {vy},
-	m_radius {radius},
-	m_time_of_infection {0.0},
-	m_infection_status {status}
-{
-	if(radius <= 0) {
-		throw RequiredPositiveDoubleValueException("radius", radius);
-	}
+Person::Person(const double x, const double y, const double vx, const double vy,
+               const double radius, const InfectionStatus status)
+    : m_x{x}, m_y{y}, m_vx{vx}, m_vy{vy}, m_radius{radius},
+      m_time_of_infection{0.0}, m_infection_status{status} {
+  if (radius <= 0) {
+    throw RequiredPositiveDoubleValueException("radius", radius);
+  }
 }
 
-double Person::x() const noexcept {
-	return this->m_x;
-}
+double Person::x() const noexcept { return this->m_x; }
 
-void Person::x(double x) noexcept {
-	this->m_x = x;
-}
+void Person::x(double x) noexcept { this->m_x = x; }
 
-double Person::y() const noexcept {
-	return this->m_y;
-}
+double Person::y() const noexcept { return this->m_y; }
 
-void Person::y(double y) noexcept {
-	this->m_y = y;
-}
+void Person::y(double y) noexcept { this->m_y = y; }
 
-double Person::vx() const noexcept {
-	return this->m_vx;
-}
+double Person::vx() const noexcept { return this->m_vx; }
 
-void Person::vx(double vx) noexcept {
-	this->m_vx = vx;
-}
+void Person::vx(double vx) noexcept { this->m_vx = vx; }
 
-double Person::vy() const noexcept {
-	return this->m_vy;
-}
+double Person::vy() const noexcept { return this->m_vy; }
 
-void Person::vy(double vy) noexcept {
-	this->m_vy = vy;
-}
+void Person::vy(double vy) noexcept { this->m_vy = vy; }
 
-double Person::radius() const noexcept {
-	return this->m_radius;
-}
+double Person::radius() const noexcept { return this->m_radius; }
 
 double Person::time_of_infection() const noexcept {
-	return this->m_time_of_infection;
+  return this->m_time_of_infection;
 }
 
 void Person::time_of_infection(double time) noexcept {
-	this->m_time_of_infection = time;
+  this->m_time_of_infection = time;
 }
 
 InfectionStatus Person::infection_status() const noexcept {
-	return this->m_infection_status;
+  return this->m_infection_status;
 }
 
 void Person::infection_status(InfectionStatus status) noexcept {
-	this->m_infection_status = status;
+  this->m_infection_status = status;
 }
 
 void Person::draw() const {
-	const double radius_to_pixel = 200;
+  const double radius_to_pixel = 200;
 
-	const std::vector<double> x = {this->m_x};
-	const std::vector<double> y = {this->m_y};
+  const std::vector<double> x = {this->m_x};
+  const std::vector<double> y = {this->m_y};
 
-	const auto radius = this->m_radius * radius_to_pixel;
-	const auto circle_area = M_PI * radius * radius;
+  const auto radius = this->m_radius * radius_to_pixel;
+  const auto circle_area = M_PI * radius * radius;
 
-	const auto colour = infection_status_to_colour(this->m_infection_status);
+  const auto colour = infection_status_to_colour(this->m_infection_status);
 
-	matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}}); 
+  matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}});
 }
 
 void Person::move(const double dt, const double city_size) {
-	// TODO: implement this function	
+  // TODO: implement this function
 }
