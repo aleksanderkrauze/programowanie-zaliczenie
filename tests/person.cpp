@@ -84,3 +84,35 @@ TEST(Person_move, normal_in_the_middle) {
 #undef dt
 #undef SIZE
 }
+
+/* **********************************************
+ * Person::is_in_infection_range() tests
+ * *********************************************/
+#define P(x, y, r)                                                             \
+  Person { x, y, 0, 0, r, InfectionStatus::GREEN }
+
+TEST(Person_is_in_infection_range, apart) {
+  EXPECT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));
+  EXPECT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 8)));
+  EXPECT_FALSE(Person::is_in_infection_range(P(-1, -1, 1), P(1, 1, 1)));
+}
+
+TEST(Person_is_in_infection_range, tangential_outside) {
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 0.5), P(0, 1, 0.5)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 10, 5)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(4, 4, 2), P(4, 1, 1)));
+}
+
+TEST(Person_is_in_infection_range, overlaping) {
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 0, 1)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 1, 2)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 2), P(1, 1, 2)));
+}
+
+TEST(Person_is_in_infection_range, inside) {
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(0, 0, 1)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 0, 1)));
+  EXPECT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(1, 1, 1)));
+}
+
+#undef P

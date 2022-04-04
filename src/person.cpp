@@ -1,10 +1,25 @@
-#include <cmath> // M_PI const
+#include <cmath> // M_PI const, sqrt
 #include <string>
 #include <vector>
 
 #include "exceptions.h"
 #include "matplotlibcpp.h"
 #include "person.h"
+
+/* **********************************************
+ * Private functions of this file, not declared in person.h
+ * **********************************************/
+
+double people_distance(const Person& p1, const Person& p2) {
+  auto delta_x = p1.x() - p2.x();
+  auto delta_y = p1.y() - p2.y();
+
+  return std::sqrt(delta_x * delta_x + delta_y * delta_y);
+}
+
+/* **********************************************
+ * End of private functions
+ * **********************************************/
 
 std::string infection_status_to_colour(const InfectionStatus status) {
   switch (status) {
@@ -82,4 +97,8 @@ void Person::draw() const {
 
 void Person::move(const double dt, const double city_size) {
   // TODO: implement this function
+}
+
+bool Person::is_in_infection_range(const Person& p1, const Person& p2) {
+  return people_distance(p1, p2) <= (p1.radius() + p2.radius());
 }

@@ -33,6 +33,8 @@ public:
   void draw() const;
   void move(const double, const double);
 
+  static bool is_in_infection_range(const Person&, const Person&);
+
 private:
   double m_x, m_y, m_vx, m_vy, m_radius, m_time_of_infection;
   InfectionStatus m_infection_status;
