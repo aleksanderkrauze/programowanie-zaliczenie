@@ -13,6 +13,10 @@ TEST(InfectionStatus, infection_status_to_colour) {
                "blue");
 }
 
+/* **********************************************
+ * Person's getters and setters tests
+ * *********************************************/
+
 TEST(Person, getters) {
   const Person p{1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
 
@@ -41,6 +45,10 @@ TEST(Person, setters) {
   p.infection_status(InfectionStatus::RED);
   EXPECT_EQ(p.infection_status(), InfectionStatus::RED);
 }
+
+/* **********************************************
+ * Person::Person exceptions tests
+ * *********************************************/
 
 TEST(Person, exceptions) {
 #define P(r) Person(0, 0, 0, 0, r, InfectionStatus::GREEN)
@@ -71,18 +79,25 @@ void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
 
 TEST(Person_move, exceptions) {
   Person p{0, 0, 0, 0, 1, InfectionStatus::GREEN};
+
+  // No Exceptions of correct arguments
+  EXPECT_NO_THROW(p.move(1, 100));
+
+  // Throw RequiredPositiveDoubleValueException on negative or 0 arguments
+  EXPECT_THROW(p.move(0, 1), RequiredPositiveDoubleValueException);
+  EXPECT_THROW(p.move(1, 0), RequiredPositiveDoubleValueException);
+  EXPECT_THROW(p.move(-1, 1), RequiredPositiveDoubleValueException);
+  EXPECT_THROW(p.move(1, -1), RequiredPositiveDoubleValueException);
 }
 
 TEST(Person_move, normal_in_the_middle) {
-#define dt 1.0
-#define SIZE 10.0
+  test_move(5, 5, 1, 2, 6, 7, 1, 10);
+  test_move(5, 5, -2, 0, 3, 5, 1, 10);
+  test_move(5, 5, -1, -2, 4, 3, 1, 10);
+}
 
-  test_move(5, 5, 1, 2, 6, 7, dt, SIZE);
-  test_move(5, 5, -2, 0, 3, 5, dt, SIZE);
-  test_move(5, 5, -1, -2, 4, 3, dt, SIZE);
-
-#undef dt
-#undef SIZE
+TEST(Person_move, touch_perimeter_from_outside) {
+  // test_move(0, 0, );
 }
 
 /* **********************************************
