@@ -20,11 +20,13 @@ public:
 
 private:
   std::uint32_t m_n_iter;
-  double m_dt, m_city_size, m_recovery_time;
+  double m_time, m_dt, m_city_size, m_recovery_time;
   std::vector<Person> m_people;
 
   City(const City&) = default;
   City& operator=(const City&) = default;
+
+  void update_recovering() noexcept;
 };
 
 #endif // CITY_H
