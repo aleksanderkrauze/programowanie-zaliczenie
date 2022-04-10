@@ -7,7 +7,7 @@
 #include "matplotlibcpp.h"
 #include "person.h"
 
-std::string infection_status_to_colour(InfectionStatus status) {
+std::string infection_status_to_colour(const InfectionStatus status) {
   switch (status) {
   case InfectionStatus::GREEN:
     return "green";
@@ -24,8 +24,8 @@ std::string infection_status_to_colour(InfectionStatus status) {
  * # Exceptions
  * - Throws std::invalid_argument when @radius is less than or equalt to zero
  */
-Person::Person(Vector2d position, Vector2d velocity, double radius,
-               InfectionStatus status)
+Person::Person(const Vector2d position, const Vector2d velocity,
+               const double radius, const InfectionStatus status)
     : m_position{position}, m_velocity{velocity}, m_radius{radius},
       m_time_of_infection{0.0}, m_infection_status{status} {
   if (radius <= 0) {
@@ -37,19 +37,19 @@ Person::Person(Vector2d position, Vector2d velocity, double radius,
  * # Exceptions
  * - Throws std::invalid_argument when @radius is less than or equal to zero
  */
-Person::Person(double x, double y, double vx, double vy, double radius,
-               InfectionStatus status)
+Person::Person(const double x, const double y, const double vx, const double vy,
+               const double radius, const InfectionStatus status)
     : Person{{x, y}, {vx, vy}, radius, status} {}
 
 Vector2d Person::position() const noexcept { return this->m_position; }
 
-void Person::position(Vector2d position) noexcept {
+void Person::position(const Vector2d position) noexcept {
   this->m_position = position;
 }
 
 Vector2d Person::velocity() const noexcept { return this->m_velocity; }
 
-void Person::velocity(Vector2d velocity) noexcept {
+void Person::velocity(const Vector2d velocity) noexcept {
   this->m_velocity = velocity;
 }
 
@@ -59,7 +59,7 @@ double Person::time_of_infection() const noexcept {
   return this->m_time_of_infection;
 }
 
-void Person::time_of_infection(double time) noexcept {
+void Person::time_of_infection(const double time) noexcept {
   this->m_time_of_infection = time;
 }
 
@@ -67,7 +67,7 @@ InfectionStatus Person::infection_status() const noexcept {
   return this->m_infection_status;
 }
 
-void Person::infection_status(InfectionStatus status) noexcept {
+void Person::infection_status(const InfectionStatus status) noexcept {
   this->m_infection_status = status;
 }
 
@@ -86,7 +86,7 @@ void Person::draw() const {
   matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}});
 }
 
-void Person::move(double dt, double city_size) {
+void Person::move(const double dt, const double city_size) {
   // TODO: implement this function
 }
 

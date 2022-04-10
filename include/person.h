@@ -7,29 +7,30 @@
 
 enum class InfectionStatus { GREEN, RED, BLUE };
 
-std::string infection_status_to_colour(InfectionStatus);
+std::string infection_status_to_colour(const InfectionStatus);
 
 class Person {
 public:
-  Person(Vector2d, Vector2d, double, InfectionStatus);
-  Person(double, double, double, double, double, InfectionStatus);
+  Person(const Vector2d, const Vector2d, const double, const InfectionStatus);
+  Person(const double, const double, const double, const double, const double,
+         const InfectionStatus);
   Person(Person&&) = default;
   ~Person() = default;
 
   Person& operator=(Person&&) = default;
 
   Vector2d position() const noexcept;
-  void position(Vector2d) noexcept;
+  void position(const Vector2d) noexcept;
   Vector2d velocity() const noexcept;
-  void velocity(Vector2d) noexcept;
+  void velocity(const Vector2d) noexcept;
   double radius() const noexcept;
   double time_of_infection() const noexcept;
-  void time_of_infection(double) noexcept;
+  void time_of_infection(const double) noexcept;
   InfectionStatus infection_status() const noexcept;
-  void infection_status(InfectionStatus) noexcept;
+  void infection_status(const InfectionStatus) noexcept;
 
   void draw() const;
-  void move(double, double);
+  void move(const double, const double);
 
   static bool is_in_infection_range(const Person&, const Person&);
 
