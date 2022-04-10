@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include "algebra.h"
 #include "exceptions.h"
 #include "person.h"
 
@@ -20,10 +21,8 @@ TEST(InfectionStatus, infection_status_to_colour) {
 TEST(Person, getters) {
   const Person p{1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
 
-  EXPECT_EQ(p.x(), 1.0);
-  EXPECT_EQ(p.y(), 2.0);
-  EXPECT_EQ(p.vx(), 3.0);
-  EXPECT_EQ(p.vy(), -2.0);
+  EXPECT_EQ(p.position(), Vector2d(1.0, 2.0));
+  EXPECT_EQ(p.velocity(), Vector2d(3.0, -2.0));
   EXPECT_EQ(p.radius(), 5.0);
   EXPECT_EQ(p.time_of_infection(), 0.0);
   EXPECT_EQ(p.infection_status(), InfectionStatus::GREEN);
@@ -32,14 +31,10 @@ TEST(Person, getters) {
 TEST(Person, setters) {
   Person p{0, 0, 0, 0, 1, InfectionStatus::GREEN};
 
-  p.x(3.0);
-  EXPECT_EQ(p.x(), 3.0);
-  p.y(2.0);
-  EXPECT_EQ(p.y(), 2.0);
-  p.vx(7.0);
-  EXPECT_EQ(p.vx(), 7.0);
-  p.vy(-3.0);
-  EXPECT_EQ(p.vy(), -3.0);
+  p.position({3.0, 2.0});
+  EXPECT_EQ(p.position(), Vector2d(3.0, 2.0));
+  p.velocity({7.0, -3.0});
+  EXPECT_EQ(p.velocity(), Vector2d(7.0, -3.0));
   p.time_of_infection(120.0);
   EXPECT_EQ(p.time_of_infection(), 120.0);
   p.infection_status(InfectionStatus::RED);
@@ -66,12 +61,13 @@ TEST(Person, exceptions) {
 /* **********************************************
  * Person::move() tests
  * *********************************************/
+/*
 void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
                double dt, double city_size) {
   Person p{x, y, vx, vy, 1.0, InfectionStatus::GREEN};
   p.move(dt, city_size);
 
-  EXPECT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
+  EXPECT_EQ(p.position(), Vector2d(xdt, ydt))
     << "Test failed with following values: "
     << "x=" << x << ", y=" << y << ", vx=" << vx << ", vy=" << vy
     << ", xdt=" << xdt << ", ydt=" << ydt << ", city_size=" << city_size;
@@ -99,6 +95,7 @@ TEST(Person_move, normal_in_the_middle) {
 TEST(Person_move, touch_perimeter_from_outside) {
   // test_move(0, 0, );
 }
+*/
 
 /* **********************************************
  * Person::is_in_infection_range() tests

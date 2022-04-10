@@ -7,7 +7,7 @@ class Vector2d {
 public:
   Vector2d();
   Vector2d(double, double);
-  Vector2d(std::tuple<double, double>);
+  explicit Vector2d(std::tuple<double, double>);
 
   Vector2d(const Vector2d&) = default;
   Vector2d& operator=(const Vector2d&) = default;

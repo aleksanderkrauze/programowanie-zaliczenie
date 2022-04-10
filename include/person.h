@@ -3,27 +3,25 @@
 
 #include <string>
 
+#include "algebra.h"
+
 enum class InfectionStatus { GREEN, RED, BLUE };
 
-std::string infection_status_to_colour(const InfectionStatus);
+std::string infection_status_to_colour(InfectionStatus);
 
 class Person {
 public:
-  Person(const double, const double, const double, const double, const double,
-         const InfectionStatus);
+  Person(Vector2d, Vector2d, double, InfectionStatus);
+  Person(double, double, double, double, double, InfectionStatus);
   Person(Person&&) = default;
   ~Person() = default;
 
   Person& operator=(Person&&) = default;
 
-  double x() const noexcept;
-  void x(double) noexcept;
-  double y() const noexcept;
-  void y(double) noexcept;
-  double vx() const noexcept;
-  void vx(double) noexcept;
-  double vy() const noexcept;
-  void vy(double) noexcept;
+  Vector2d position() const noexcept;
+  void position(Vector2d) noexcept;
+  Vector2d velocity() const noexcept;
+  void velocity(Vector2d) noexcept;
   double radius() const noexcept;
   double time_of_infection() const noexcept;
   void time_of_infection(double) noexcept;
@@ -31,12 +29,13 @@ public:
   void infection_status(InfectionStatus) noexcept;
 
   void draw() const;
-  void move(const double, const double);
+  void move(double, double);
 
   static bool is_in_infection_range(const Person&, const Person&);
 
 private:
-  double m_x, m_y, m_vx, m_vy, m_radius, m_time_of_infection;
+  Vector2d m_position, m_velocity;
+  double m_radius, m_time_of_infection;
   InfectionStatus m_infection_status;
 
   Person(const Person&) = default;

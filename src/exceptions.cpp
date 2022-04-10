@@ -30,8 +30,9 @@ OutOfCityBoundsException::OutOfCityBoundsException(
 
 OutOfCityBoundsException::OutOfCityBoundsException(
   const Person& p, const double city_size) noexcept {
+  const auto [x, y] = p.position().tuple();
   std::ostringstream s;
-  s << "Person's coordinates (x, y) = (" << p.x() << ", " << p.y()
+  s << "Person's coordinates (x, y) = (" << x << ", " << y
     << ") are outside of City's bounds: [0, " << city_size << "]";
 
   this->m_msg = s.str();
