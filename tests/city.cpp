@@ -9,15 +9,15 @@
 TEST(City, exceptions) {
 #define C(dt, size, rtime) City(0, dt, size, rtime)
 
-  EXPECT_NO_THROW(C(1, 1, 1));
+  ASSERT_NO_THROW(C(1, 1, 1));
 
-  EXPECT_THROW(C(-1, 1, 1), RequiredPositiveDoubleValueException);
-  EXPECT_THROW(C(1, -1, 1), RequiredPositiveDoubleValueException);
-  EXPECT_THROW(C(1, 1, -1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(-1, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, -1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, -1), RequiredPositiveDoubleValueException);
 
-  EXPECT_THROW(C(0, 1, 1), RequiredPositiveDoubleValueException);
-  EXPECT_THROW(C(1, 0, 1), RequiredPositiveDoubleValueException);
-  EXPECT_THROW(C(1, 1, 0), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(0, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 0, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, 0), RequiredPositiveDoubleValueException);
 
 #undef C
 }
@@ -31,30 +31,30 @@ TEST(City, add_person) {
   City c = {0, 1, SIZE, 1};
 
   // middle
-  EXPECT_NO_THROW(c.add_person(P(SIZE / 2, SIZE / 2)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE / 2, SIZE / 2)));
 
   // sides
-  EXPECT_NO_THROW(c.add_person(P(SIZE / 2, 0.0)));
-  EXPECT_NO_THROW(c.add_person(P(SIZE, SIZE / 2)));
-  EXPECT_NO_THROW(c.add_person(P(SIZE / 2, SIZE)));
-  EXPECT_NO_THROW(c.add_person(P(0.0, SIZE / 2)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE / 2, 0.0)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE, SIZE / 2)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE / 2, SIZE)));
+  ASSERT_NO_THROW(c.add_person(P(0.0, SIZE / 2)));
 
   // corners
-  EXPECT_NO_THROW(c.add_person(P(0.0, 0.0)));
-  EXPECT_NO_THROW(c.add_person(P(SIZE, 0.0)));
-  EXPECT_NO_THROW(c.add_person(P(SIZE, SIZE)));
-  EXPECT_NO_THROW(c.add_person(P(0.0, SIZE)));
+  ASSERT_NO_THROW(c.add_person(P(0.0, 0.0)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE, 0.0)));
+  ASSERT_NO_THROW(c.add_person(P(SIZE, SIZE)));
+  ASSERT_NO_THROW(c.add_person(P(0.0, SIZE)));
 
   // outside (bottom left corner going counter-clockwise)
-  EXPECT_THROW(c.add_person(P(-EPS, -EPS)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(SIZE / 2, -EPS)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(SIZE + EPS, -EPS)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE / 2)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(SIZE + EPS, SIZE + EPS)),
+  ASSERT_THROW(c.add_person(P(-EPS, -EPS)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(SIZE / 2, -EPS)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(SIZE + EPS, -EPS)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(SIZE + EPS, SIZE / 2)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(SIZE + EPS, SIZE + EPS)),
                OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(SIZE / 2, SIZE + EPS)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(-EPS, SIZE + EPS)), OutOfCityBoundsException);
-  EXPECT_THROW(c.add_person(P(-EPS, SIZE / 2)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(SIZE / 2, SIZE + EPS)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(-EPS, SIZE + EPS)), OutOfCityBoundsException);
+  ASSERT_THROW(c.add_person(P(-EPS, SIZE / 2)), OutOfCityBoundsException);
 
 #undef P
 #undef SIZE
@@ -70,29 +70,29 @@ TEST(City, is_in_bound) {
   City c = {0, 1, SIZE, 1};
 
   // middle
-  EXPECT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE / 2)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE / 2)));
 
   // sides
-  EXPECT_TRUE(c.is_in_bound(P(SIZE / 2, 0.0)));
-  EXPECT_TRUE(c.is_in_bound(P(SIZE, SIZE / 2)));
-  EXPECT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE)));
-  EXPECT_TRUE(c.is_in_bound(P(0.0, SIZE / 2)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, 0.0)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE, SIZE / 2)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE)));
+  ASSERT_TRUE(c.is_in_bound(P(0.0, SIZE / 2)));
 
   // corners
-  EXPECT_TRUE(c.is_in_bound(P(0.0, 0.0)));
-  EXPECT_TRUE(c.is_in_bound(P(SIZE, 0.0)));
-  EXPECT_TRUE(c.is_in_bound(P(SIZE, SIZE)));
-  EXPECT_TRUE(c.is_in_bound(P(0.0, SIZE)));
+  ASSERT_TRUE(c.is_in_bound(P(0.0, 0.0)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE, 0.0)));
+  ASSERT_TRUE(c.is_in_bound(P(SIZE, SIZE)));
+  ASSERT_TRUE(c.is_in_bound(P(0.0, SIZE)));
 
   // outside (bottom left corner going counter-clockwise)
-  EXPECT_FALSE(c.is_in_bound(P(-EPS, -EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(SIZE / 2, -EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(SIZE + EPS, -EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE / 2)));
-  EXPECT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE + EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(SIZE / 2, SIZE + EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(-EPS, SIZE + EPS)));
-  EXPECT_FALSE(c.is_in_bound(P(-EPS, SIZE / 2)));
+  ASSERT_FALSE(c.is_in_bound(P(-EPS, -EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(SIZE / 2, -EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, -EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE / 2)));
+  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE + EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(SIZE / 2, SIZE + EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE + EPS)));
+  ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE / 2)));
 
 #undef P
 #undef SIZE
@@ -111,12 +111,12 @@ TEST(City, people) {
 
   const auto& people = c.people();
 
-  EXPECT_EQ(people.size(), 5);
+  ASSERT_EQ(people.size(), 5);
 
   for (std::size_t i = 0; i < people.size(); i++) {
     const auto r = people[i].radius();
 
-    EXPECT_EQ(r, i + 1);
+    ASSERT_EQ(r, i + 1);
   }
 
 #undef P
