@@ -5,12 +5,16 @@
 #include "exceptions.h"
 #include "person.h"
 
-TEST(InfectionStatus, infection_status_to_colour) {
-  EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(),
-               "green");
-  EXPECT_STREQ(infection_status_to_colour(InfectionStatus::RED).c_str(), "red");
-  EXPECT_STREQ(infection_status_to_colour(InfectionStatus::BLUE).c_str(),
-               "blue");
+TEST(Person, infection_status_to_colour) {
+  EXPECT_STREQ(
+    Person::infection_status_to_colour(Person::InfectionStatus::GREEN).c_str(),
+    "green");
+  EXPECT_STREQ(
+    Person::infection_status_to_colour(Person::InfectionStatus::RED).c_str(),
+    "red");
+  EXPECT_STREQ(
+    Person::infection_status_to_colour(Person::InfectionStatus::BLUE).c_str(),
+    "blue");
 }
 
 /* **********************************************
@@ -18,7 +22,7 @@ TEST(InfectionStatus, infection_status_to_colour) {
  * *********************************************/
 
 TEST(Person, getters) {
-  const Person p{1.0, 2.0, 3.0, -2.0, 5.0, InfectionStatus::GREEN};
+  const Person p{1.0, 2.0, 3.0, -2.0, 5.0, Person::InfectionStatus::GREEN};
 
   EXPECT_EQ(p.x(), 1.0);
   EXPECT_EQ(p.y(), 2.0);
@@ -26,11 +30,11 @@ TEST(Person, getters) {
   EXPECT_EQ(p.vy(), -2.0);
   EXPECT_EQ(p.radius(), 5.0);
   EXPECT_EQ(p.time_of_infection(), 0.0);
-  EXPECT_EQ(p.infection_status(), InfectionStatus::GREEN);
+  EXPECT_EQ(p.infection_status(), Person::InfectionStatus::GREEN);
 }
 
 TEST(Person, setters) {
-  Person p{0, 0, 0, 0, 1, InfectionStatus::GREEN};
+  Person p{0, 0, 0, 0, 1, Person::InfectionStatus::GREEN};
 
   p.x(3.0);
   EXPECT_EQ(p.x(), 3.0);
@@ -42,8 +46,8 @@ TEST(Person, setters) {
   EXPECT_EQ(p.vy(), -3.0);
   p.time_of_infection(120.0);
   EXPECT_EQ(p.time_of_infection(), 120.0);
-  p.infection_status(InfectionStatus::RED);
-  EXPECT_EQ(p.infection_status(), InfectionStatus::RED);
+  p.infection_status(Person::InfectionStatus::RED);
+  EXPECT_EQ(p.infection_status(), Person::InfectionStatus::RED);
 }
 
 /* **********************************************
@@ -51,7 +55,7 @@ TEST(Person, setters) {
  * *********************************************/
 
 TEST(Person, exceptions) {
-#define P(r) Person(0, 0, 0, 0, r, InfectionStatus::GREEN)
+#define P(r) Person(0, 0, 0, 0, r, Person::InfectionStatus::GREEN)
 
   EXPECT_NO_THROW(P(10.0));
 
@@ -68,7 +72,7 @@ TEST(Person, exceptions) {
  * *********************************************/
 void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
                double dt, double city_size) {
-  Person p{x, y, vx, vy, 1.0, InfectionStatus::GREEN};
+  Person p{x, y, vx, vy, 1.0, Person::InfectionStatus::GREEN};
   p.move(dt, city_size);
 
   EXPECT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
@@ -78,7 +82,7 @@ void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
 }
 
 TEST(Person_move, exceptions) {
-  Person p{0, 0, 0, 0, 1, InfectionStatus::GREEN};
+  Person p{0, 0, 0, 0, 1, Person::InfectionStatus::GREEN};
 
   // No Exceptions of correct arguments
   EXPECT_NO_THROW(p.move(1, 100));
@@ -104,7 +108,7 @@ TEST(Person_move, touch_perimeter_from_outside) {
  * Person::is_in_infection_range() tests
  * *********************************************/
 #define P(x, y, r)                                                             \
-  Person { x, y, 0, 0, r, InfectionStatus::GREEN }
+  Person { x, y, 0, 0, r, Person::InfectionStatus::GREEN }
 
 TEST(Person_is_in_infection_range, apart) {
   EXPECT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));

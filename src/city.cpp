@@ -58,9 +58,9 @@ bool City::is_in_bound(const Person& person) const noexcept {
 
 void City::update_recovering() noexcept {
   for (auto& person : this->m_people) {
-    if (person.infection_status() == InfectionStatus::RED) {
+    if (person.infection_status() == Person::InfectionStatus::RED) {
       if (person.time_of_infection() + this->m_recovery_time <= this->m_time) {
-        person.infection_status(InfectionStatus::BLUE);
+        person.infection_status(Person::InfectionStatus::BLUE);
       }
     }
   }

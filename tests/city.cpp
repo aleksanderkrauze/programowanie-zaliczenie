@@ -24,7 +24,7 @@ TEST(City, exceptions) {
 
 TEST(City, add_person) {
 #define P(x, y)                                                                \
-  Person { x, y, 0, 0, 1, InfectionStatus::GREEN }
+  Person { x, y, 0, 0, 1, Person::InfectionStatus::GREEN }
 #define SIZE 100.0
 #define EPS 0.1
 
@@ -63,7 +63,7 @@ TEST(City, add_person) {
 
 TEST(City, is_in_bound) {
 #define P(x, y)                                                                \
-  Person { x, y, 0, 0, 1, InfectionStatus::GREEN }
+  Person { x, y, 0, 0, 1, Person::InfectionStatus::GREEN }
 #define SIZE 100.0
 #define EPS 0.1
 
@@ -100,7 +100,7 @@ TEST(City, is_in_bound) {
 }
 
 TEST(City, people) {
-#define P(r) Person(1, 1, 0, 0, r, InfectionStatus::GREEN)
+#define P(r) Person(1, 1, 0, 0, r, Person::InfectionStatus::GREEN)
   City c = {0, 1, 100, 1};
 
   c.add_person(P(1));

@@ -21,19 +21,6 @@ double people_distance(const Person& p1, const Person& p2) {
  * End of private functions
  * **********************************************/
 
-std::string infection_status_to_colour(const InfectionStatus status) {
-  switch (status) {
-  case InfectionStatus::GREEN:
-    return "green";
-  case InfectionStatus::RED:
-    return "red";
-  case InfectionStatus::BLUE:
-    return "blue";
-  }
-
-  throw std::runtime_error("Unexpected infection status");
-}
-
 /**
  * # Exceptions
  * - Throws std::invalid_argument when @radius is less than zero
@@ -73,11 +60,11 @@ void Person::time_of_infection(double time) noexcept {
   this->m_time_of_infection = time;
 }
 
-InfectionStatus Person::infection_status() const noexcept {
+Person::InfectionStatus Person::infection_status() const noexcept {
   return this->m_infection_status;
 }
 
-void Person::infection_status(InfectionStatus status) noexcept {
+void Person::infection_status(Person::InfectionStatus status) noexcept {
   this->m_infection_status = status;
 }
 
@@ -90,7 +77,8 @@ void Person::draw() const {
   const auto radius = this->m_radius * radius_to_pixel;
   const auto circle_area = M_PI * radius * radius;
 
-  const auto colour = infection_status_to_colour(this->m_infection_status);
+  const auto colour =
+    Person::infection_status_to_colour(this->m_infection_status);
 
   matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}});
 }
@@ -101,4 +89,18 @@ void Person::move(const double dt, const double city_size) {
 
 bool Person::is_in_infection_range(const Person& p1, const Person& p2) {
   return people_distance(p1, p2) <= (p1.radius() + p2.radius());
+}
+
+std::string
+Person::infection_status_to_colour(const Person::InfectionStatus status) {
+  switch (status) {
+  case InfectionStatus::GREEN:
+    return "green";
+  case InfectionStatus::RED:
+    return "red";
+  case InfectionStatus::BLUE:
+    return "blue";
+  }
+
+  throw std::runtime_error("Unexpected infection status");
 }

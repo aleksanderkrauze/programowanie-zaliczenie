@@ -3,12 +3,10 @@
 
 #include <string>
 
-enum class InfectionStatus { GREEN, RED, BLUE };
-
-std::string infection_status_to_colour(const InfectionStatus);
-
 class Person {
 public:
+  enum class InfectionStatus { GREEN, RED, BLUE };
+
   Person(const double, const double, const double, const double, const double,
          const InfectionStatus);
   Person(Person&&) = default;
@@ -27,13 +25,14 @@ public:
   double radius() const noexcept;
   double time_of_infection() const noexcept;
   void time_of_infection(double) noexcept;
-  InfectionStatus infection_status() const noexcept;
-  void infection_status(InfectionStatus) noexcept;
+  Person::InfectionStatus infection_status() const noexcept;
+  void infection_status(Person::InfectionStatus) noexcept;
 
   void draw() const;
   void move(const double, const double);
 
   static bool is_in_infection_range(const Person&, const Person&);
+  static std::string infection_status_to_colour(const Person::InfectionStatus);
 
 private:
   double m_x, m_y, m_vx, m_vy, m_radius, m_time_of_infection;
