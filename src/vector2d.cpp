@@ -1,7 +1,7 @@
 #include <cmath>
 #include <tuple>
 
-#include "algebra.h"
+#include "vector2d.h"
 
 Vector2d::Vector2d() : m_x{0.0}, m_y{0.0} {}
 

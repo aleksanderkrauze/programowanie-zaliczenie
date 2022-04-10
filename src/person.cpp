@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 
-#include "algebra.h"
 #include "exceptions.h"
 #include "matplotlibcpp.h"
 #include "person.h"
+#include "vector2d.h"
 
 std::string infection_status_to_colour(const InfectionStatus status) {
   switch (status) {

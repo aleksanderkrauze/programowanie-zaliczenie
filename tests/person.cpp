@@ -2,9 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "algebra.h"
 #include "exceptions.h"
 #include "person.h"
+#include "vector2d.h"
 
 TEST(InfectionStatus, infection_status_to_colour) {
   EXPECT_STREQ(infection_status_to_colour(InfectionStatus::GREEN).c_str(),

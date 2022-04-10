@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "algebra.h"
+#include "vector2d.h"
 
 TEST(Vector2d, Vector2d_default_constructor) {
   const Vector2d v{};
