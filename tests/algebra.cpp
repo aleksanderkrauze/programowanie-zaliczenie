@@ -98,12 +98,18 @@ TEST(Vector2d, operator_eq) {
   ASSERT_EQ(Vector2d(), Vector2d());
   ASSERT_EQ(Vector2d(1.1, 2.2), Vector2d(1.1, 2.2));
   ASSERT_EQ(Vector2d(1.0, -3.0), Vector2d(1.0, -3.0));
+
+  // precision
+  ASSERT_EQ(3 * Vector2d(0.3, 0.7), Vector2d(0.9, 2.1));
 }
 
 TEST(Vector2d, operator_neq) {
   ASSERT_NE(Vector2d(1.0, 1.0), Vector2d(1.0, -1.0));
   ASSERT_NE(Vector2d(0.0, 1.0), Vector2d(0.0, 1.1));
   ASSERT_NE(Vector2d(3.0, 4.0), Vector2d(-4.0, 7.0));
+
+  // precision
+  ASSERT_NE(Vector2d(1.0, 1.0), Vector2d(1.0 + 1e-9, 1.0 - 1e-9));
 }
 
 TEST(Vector2d, operator_unary_plus) {
