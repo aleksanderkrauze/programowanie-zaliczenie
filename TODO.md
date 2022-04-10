@@ -1,4 +1,5 @@
 # TODOs:
+	- move InfectionStatus enum into class Person
 	- write simple algebra library, or use some existing
 	- use http://tclap.sourceforge.net/ for parsing command line arguments
  	- add constexpr where applicable
