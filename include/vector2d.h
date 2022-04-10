@@ -35,7 +35,6 @@ public:
   Vector2d& operator+=(const Vector2d&) noexcept;
   Vector2d& operator-=(const Vector2d&) noexcept;
   Vector2d& operator*=(const double) noexcept; // scalar multiplication
-
 private:
   double m_x, m_y;
 };
