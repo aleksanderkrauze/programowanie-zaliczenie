@@ -24,6 +24,8 @@ public:
 
   double length() const;
 
+  static double distance(const Vector2d&, const Vector2d&);
+
   bool operator==(const Vector2d&) const;
   bool operator!=(const Vector2d&) const;
   Vector2d operator+() const;

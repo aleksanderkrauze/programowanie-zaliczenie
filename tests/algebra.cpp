@@ -78,6 +78,22 @@ TEST(Vector2d, length) {
   ASSERT_EQ(v4.length(), std::sqrt(2.0));
 }
 
+TEST(Vector2d, distance) {
+  const Vector2d v0{};
+  const Vector2d v1{1.0, 0.0};
+  const Vector2d v2{10.0, 0.0};
+  const Vector2d v3{-1.0, 0.0};
+  const Vector2d v4{1.0, 1.0};
+  const Vector2d v5{4.0, 5.0};
+
+  ASSERT_EQ(Vector2d::distance(v1, v0), 1.0);
+  ASSERT_EQ(Vector2d::distance(v1, v1), 0.0);
+  ASSERT_EQ(Vector2d::distance(v1, v2), 9.0);
+  ASSERT_EQ(Vector2d::distance(v1, v3), 2.0);
+  ASSERT_EQ(Vector2d::distance(v4, v5), 5.0);
+  ASSERT_EQ(Vector2d::distance(v3, v5), 5.0 * std::sqrt(2.0));
+}
+
 TEST(Vector2d, operator_eq) {
   ASSERT_EQ(Vector2d(), Vector2d());
   ASSERT_EQ(Vector2d(1.1, 2.2), Vector2d(1.1, 2.2));

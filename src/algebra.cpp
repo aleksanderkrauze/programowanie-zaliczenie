@@ -32,6 +32,11 @@ double Vector2d::length() const {
   return std::sqrt((this->m_x * this->m_x) + (this->m_y * this->m_y));
 }
 
+double Vector2d::distance(const Vector2d& lhs, const Vector2d& rhs) {
+  auto diff = lhs - rhs;
+  return diff.length();
+}
+
 bool Vector2d::operator==(const Vector2d& rhs) const {
   return (this->m_x == rhs.m_x) && (this->m_y == rhs.m_y);
 }
