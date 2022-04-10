@@ -1,5 +1,5 @@
-#ifndef ALGEBRA_H
-#define ALGEBRA_H
+#ifndef VECTOR_2D_H
+#define VECTOR_2D_H
 
 #include <tuple>
 
@@ -42,4 +42,4 @@ private:
 
 Vector2d operator*(const double, const Vector2d&);
 
-#endif // ALGEBRA_H
+#endif // VECTOR_2D_H

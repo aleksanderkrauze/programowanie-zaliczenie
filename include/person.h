@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "algebra.h"
+#include "vector2d.h"
 
 enum class InfectionStatus { GREEN, RED, BLUE };
 

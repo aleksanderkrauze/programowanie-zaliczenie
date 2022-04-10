@@ -1,11 +1,11 @@
 #include <iostream>
 #include <utility>
 
-#include "algebra.h"
 #include "city.h"
 #include "exceptions.h"
 #include "person.h"
 #include "plotter.h"
+#include "vector2d.h"
 
 int main(int argc, char* argv[]) {
   Person p1 = {{0.1, 0.2}, {0.1, 0.2}, 0.02, InfectionStatus::GREEN};
