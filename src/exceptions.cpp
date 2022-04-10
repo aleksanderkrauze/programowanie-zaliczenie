@@ -51,11 +51,5 @@ RequiredPositiveDoubleValueException::RequiredPositiveDoubleValueException(
 }
 
 RequiredPositiveDoubleValueException::RequiredPositiveDoubleValueException(
-  const std::string& arg_name, const double value) noexcept {
-  std::ostringstream s;
-  s << "Argument `" << arg_name
-    << "` can have only positive values (greater that 0), but it's value was: "
-    << value;
-
-  this->m_msg = s.str();
-}
+  const std::string& arg_name, const double value) noexcept
+    : RequiredPositiveDoubleValueException{arg_name.c_str(), value} {}
