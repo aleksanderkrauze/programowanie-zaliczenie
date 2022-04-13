@@ -34,4 +34,9 @@ public:
                                                 const double) noexcept;
 };
 
+class Line2dException : public SimulationBaseException {
+public:
+  Line2dException() noexcept;
+};
+
 #endif // EXCEPTIONS_H

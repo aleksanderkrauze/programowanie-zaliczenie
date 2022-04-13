@@ -60,3 +60,11 @@ RequiredPositiveDoubleValueException::RequiredPositiveDoubleValueException(
 
   this->m_msg = s.str();
 }
+
+/* **********************************************
+ * Line2dException
+ * *********************************************/
+Line2dException::Line2dException() noexcept {
+  this->m_msg = "Line2d error: cannot create Line2d (Ax + By + C = 0) with "
+                "both A and B beeing 0.";
+}

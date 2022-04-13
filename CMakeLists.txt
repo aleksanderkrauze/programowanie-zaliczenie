@@ -62,6 +62,7 @@ set(TARGET_LIB_SRC
 	"src/plotter.cpp"
 	"src/exceptions.cpp"
 	"src/vector2d.cpp"
+	"src/line2d.cpp"
 )
 set(TARGET_TEST_SRC
 	"tests/person.cpp"
