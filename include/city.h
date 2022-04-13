@@ -27,6 +27,7 @@ private:
   City& operator=(const City&) = default;
 
   void update_recovering() noexcept;
+  void infection() noexcept;
 };
 
 #endif // CITY_H

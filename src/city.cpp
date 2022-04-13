@@ -65,3 +65,30 @@ void City::update_recovering() noexcept {
     }
   }
 }
+
+void City::infection() noexcept {
+  const size_t size = this->m_people.size();
+
+  for (size_t i = 0; i < size; ++i) {
+    const auto& current_person = this->m_people[i];
+    if (current_person.infection_status() == Person::InfectionStatus::RED) {
+      // all pople before current_person
+      for (size_t j = 0; j < i; ++j) {
+        auto& person = this->m_people[j];
+        if (person.infection_status() == Person::InfectionStatus::GREEN &&
+            Person::is_in_infection_range(current_person, person)) {
+          person.infection_status(Person::InfectionStatus::RED);
+        }
+      }
+
+      // all people after current_person
+      for (size_t j = i + 1; j < size; ++j) {
+        auto& person = this->m_people[j];
+        if (person.infection_status() == Person::InfectionStatus::GREEN &&
+            Person::is_in_infection_range(current_person, person)) {
+          person.infection_status(Person::InfectionStatus::RED);
+        }
+      }
+    }
+  }
+}
