@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "exceptions.h"
-#include "matplotlibcpp.h"
 #include "person.h"
 #include "vector2d.h"
 
@@ -56,22 +55,6 @@ Person::InfectionStatus Person::infection_status() const noexcept {
 
 void Person::infection_status(const Person::InfectionStatus status) noexcept {
   this->m_infection_status = status;
-}
-
-void Person::draw() const {
-  const double radius_to_pixel = 200;
-
-  const auto [_x, _y] = this->m_position.tuple();
-  const std::vector<double> x = {_x};
-  const std::vector<double> y = {_y};
-
-  const auto radius = this->m_radius * radius_to_pixel;
-  const auto circle_area = M_PI * radius * radius;
-
-  const auto colour =
-    Person::infection_status_to_colour(this->m_infection_status);
-
-  matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}});
 }
 
 void Person::move(const double dt, const double city_size) {

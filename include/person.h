@@ -26,7 +26,6 @@ public:
   Person::InfectionStatus infection_status() const noexcept;
   void infection_status(const Person::InfectionStatus) noexcept;
 
-  void draw() const;
   void move(const double, const double);
 
   static bool is_in_infection_range(const Person&, const Person&);
