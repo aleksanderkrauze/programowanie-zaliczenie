@@ -4,6 +4,7 @@
 
 #include "exceptions.h"
 #include "person.h"
+#include "vector2d.h"
 
 TEST(Person, infection_status_to_colour) {
   ASSERT_STREQ(
@@ -24,10 +25,8 @@ TEST(Person, infection_status_to_colour) {
 TEST(Person, getters) {
   const Person p{1.0, 2.0, 3.0, -2.0, 5.0, Person::InfectionStatus::GREEN};
 
-  ASSERT_EQ(p.x(), 1.0);
-  ASSERT_EQ(p.y(), 2.0);
-  ASSERT_EQ(p.vx(), 3.0);
-  ASSERT_EQ(p.vy(), -2.0);
+  ASSERT_EQ(p.position(), Vector2d(1.0, 2.0));
+  ASSERT_EQ(p.velocity(), Vector2d(3.0, -2.0));
   ASSERT_EQ(p.radius(), 5.0);
   ASSERT_EQ(p.time_of_infection(), 0.0);
   ASSERT_EQ(p.infection_status(), Person::InfectionStatus::GREEN);
@@ -36,14 +35,10 @@ TEST(Person, getters) {
 TEST(Person, setters) {
   Person p{0, 0, 0, 0, 1, Person::InfectionStatus::GREEN};
 
-  p.x(3.0);
-  ASSERT_EQ(p.x(), 3.0);
-  p.y(2.0);
-  ASSERT_EQ(p.y(), 2.0);
-  p.vx(7.0);
-  ASSERT_EQ(p.vx(), 7.0);
-  p.vy(-3.0);
-  ASSERT_EQ(p.vy(), -3.0);
+  p.position({3.0, 2.0});
+  ASSERT_EQ(p.position(), Vector2d(3.0, 2.0));
+  p.velocity({7.0, -3.0});
+  ASSERT_EQ(p.velocity(), Vector2d(7.0, -3.0));
   p.time_of_infection(120.0);
   ASSERT_EQ(p.time_of_infection(), 120.0);
   p.infection_status(Person::InfectionStatus::RED);
@@ -70,12 +65,17 @@ TEST(Person, exceptions) {
 /* **********************************************
  * Person::move() tests
  * *********************************************/
+/*
 void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
                double dt, double city_size) {
   Person p{x, y, vx, vy, 1.0, Person::InfectionStatus::GREEN};
   p.move(dt, city_size);
 
+<<<<<<< HEAD
   ASSERT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
+=======
+  ASSERT_EQ(p.position(), Vector2d(xdt, ydt))
+>>>>>>> algebra
     << "Test failed with following values: "
     << "x=" << x << ", y=" << y << ", vx=" << vx << ", vy=" << vy
     << ", xdt=" << xdt << ", ydt=" << ydt << ", city_size=" << city_size;
@@ -103,6 +103,7 @@ TEST(Person_move, normal_in_the_middle) {
 TEST(Person_move, touch_perimeter_from_outside) {
   // test_move(0, 0, );
 }
+*/
 
 /* **********************************************
  * Person::is_in_infection_range() tests

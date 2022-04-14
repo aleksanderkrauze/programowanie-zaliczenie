@@ -49,8 +49,7 @@ const std::vector<Person>& City::people() const noexcept {
 }
 
 bool City::is_in_bound(const Person& person) const noexcept {
-  const auto x = person.x();
-  const auto y = person.y();
+  const auto [x, y] = person.position().tuple();
   const auto size = this->m_city_size;
 
   return (0 <= x && x <= size) && (0 <= y && y <= size);
