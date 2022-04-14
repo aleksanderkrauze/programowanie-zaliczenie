@@ -68,6 +68,7 @@ set(TARGET_TEST_SRC
 	"tests/person.cpp"
 	"tests/city.cpp"
 	"tests/vector2d.cpp"
+	"tests/line2d.cpp"
 )
 set(MATPLOTLIBCPP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/include/matplotlibcpp.h")
 set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
