@@ -1,6 +1,7 @@
 #ifndef VECTOR_2D_H
 #define VECTOR_2D_H
 
+#include <iostream>
 #include <tuple>
 
 class Vector2d {
@@ -40,5 +41,6 @@ private:
 };
 
 Vector2d operator*(const double, const Vector2d&) noexcept;
+std::ostream& operator<<(std::ostream&, const Vector2d&) noexcept;
 
 #endif // VECTOR_2D_H

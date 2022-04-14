@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include <tuple>
 
 #include "constants.h"
@@ -101,4 +102,9 @@ Vector2d& Vector2d::operator*=(const double scalar) noexcept {
   this->m_y *= scalar;
 
   return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector2d& v) noexcept {
+  os << "(" << v.x() << ", " << v.y() << ")";
+  return os;
 }
