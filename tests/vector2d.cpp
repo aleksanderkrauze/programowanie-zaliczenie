@@ -78,6 +78,66 @@ TEST(Vector2d, length) {
   ASSERT_EQ(v4.length(), std::sqrt(2.0));
 }
 
+TEST(Vector2d, reflect) {
+  const Vector2d n_right{1.0, 0.0};
+  const Vector2d n_upper{0.0, 1.0};
+  const Vector2d n_left{-1.0, 0.0};
+  const Vector2d n_bottom{0.0, -1.0};
+  Vector2d v;
+
+  // Reflection from rigth wall
+  v = {1.0, 0.0};
+  v.reflect(n_right);
+  ASSERT_EQ(v, Vector2d(-1.0, 0.0));
+
+  v = {1.0, 1.0};
+  v.reflect(n_right);
+  ASSERT_EQ(v, Vector2d(-1.0, 1.0));
+
+  v = {2.0, -1.0};
+  v.reflect(n_right);
+  ASSERT_EQ(v, Vector2d(-2.0, -1.0));
+
+  // Reflection from upper wall
+  v = {0.0, 2.0};
+  v.reflect(n_upper);
+  ASSERT_EQ(v, Vector2d(0.0, -2.0));
+
+  v = {0.5, 0.3};
+  v.reflect(n_upper);
+  ASSERT_EQ(v, Vector2d(0.5, -0.3));
+
+  v = {-2.0, 5.0};
+  v.reflect(n_upper);
+  ASSERT_EQ(v, Vector2d(-2.0, -5.0));
+
+  // Reflection from left wall
+  v = {-1.0, 0.0};
+  v.reflect(n_left);
+  ASSERT_EQ(v, Vector2d(1.0, 0.0));
+
+  v = {-2.0, -0.1};
+  v.reflect(n_left);
+  ASSERT_EQ(v, Vector2d(2.0, -0.1));
+
+  v = {-1.0, 3.0};
+  v.reflect(n_left);
+  ASSERT_EQ(v, Vector2d(1.0, 3.0));
+
+  // Reflection from bottom wall
+  v = {0.0, -5.0};
+  v.reflect(n_bottom);
+  ASSERT_EQ(v, Vector2d(0.0, 5.0));
+
+  v = {1.0, -3.0};
+  v.reflect(n_bottom);
+  ASSERT_EQ(v, Vector2d(1.0, 3.0));
+
+  v = {-1.5, -2.0};
+  v.reflect(n_bottom);
+  ASSERT_EQ(v, Vector2d(-1.5, 2.0));
+}
+
 TEST(Vector2d, distance) {
   const Vector2d v0{};
   const Vector2d v1{1.0, 0.0};

@@ -23,6 +23,7 @@ public:
   std::tuple<double, double> tuple() const noexcept;
   void tuple(const std::tuple<double, double>) noexcept;
   double length() const noexcept;
+  void reflect(const Vector2d) noexcept;
   static double distance(const Vector2d&, const Vector2d&) noexcept;
 
   bool operator==(const Vector2d&) const noexcept;

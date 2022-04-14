@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <tuple>
@@ -33,6 +34,12 @@ void Vector2d::tuple(const std::tuple<double, double> coordinates) noexcept {
 double Vector2d::length() const noexcept {
   const auto square = [](auto x) { return x * x; };
   return std::sqrt(square(this->m_x) + square(this->m_y));
+}
+
+void Vector2d::reflect(const Vector2d normal) noexcept {
+  assert(normal.length() == 1.0);
+
+  *this = *this - 2 * (*this * normal) * normal;
 }
 
 double Vector2d::distance(const Vector2d& lhs, const Vector2d& rhs) noexcept {
