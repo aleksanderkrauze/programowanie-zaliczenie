@@ -25,6 +25,13 @@ Line2d::Line2d(const Vector2d base, const Vector2d direction)
     : Line2d{direction.y(), -direction.x(),
              (-direction.y() * base.x() + direction.x() * base.y())} {}
 
+Vector2d Line2d::normal() const noexcept {
+  Vector2d v{this->m_A, this->m_B};
+  v.normalize();
+  
+  return v;
+}
+
 /**
  * # Exceptions
  * - Throws Line2dException when both first and second numers of @data are equal

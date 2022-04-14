@@ -24,6 +24,8 @@ public:
   void tuple(const std::tuple<double, double>) noexcept;
   double length() const noexcept;
   void reflect(const Vector2d) noexcept;
+  void normalize() noexcept;
+  
   static double distance(const Vector2d&, const Vector2d&) noexcept;
 
   bool operator==(const Vector2d&) const noexcept;

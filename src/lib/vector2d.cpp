@@ -42,6 +42,12 @@ void Vector2d::reflect(const Vector2d normal) noexcept {
   *this = *this - 2 * (*this * normal) * normal;
 }
 
+void Vector2d::normalize() noexcept {
+  const auto length = this->length();
+
+  *this *= 1.0 / length;
+}
+
 double Vector2d::distance(const Vector2d& lhs, const Vector2d& rhs) noexcept {
   const auto diff = lhs - rhs;
   return diff.length();

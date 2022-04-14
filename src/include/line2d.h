@@ -18,6 +18,8 @@ public:
   Line2d& operator=(Line2d&&) = default;
   ~Line2d() = default;
 
+  Vector2d normal() const noexcept;
+  
   static std::optional<Vector2d> intersection(const Line2d&,
                                               const Line2d&) noexcept;
 

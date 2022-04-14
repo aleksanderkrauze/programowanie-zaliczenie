@@ -138,6 +138,26 @@ TEST(Vector2d, reflect) {
   ASSERT_EQ(v, Vector2d(-1.5, 2.0));
 }
 
+TEST(Vector2d, normalize) {
+  Vector2d v;
+
+  v = {2.0, 0.0};
+  v.normalize();
+  ASSERT_EQ(v, Vector2d(1.0, 0.0));
+
+  v = {1.0, 1.0};
+  v.normalize();
+  ASSERT_EQ(v, Vector2d(1.0 / std::sqrt(2.0), 1.0 / std::sqrt(2.0)));
+
+  v = {2.0, -2.0};
+  v.normalize();
+  ASSERT_EQ(v, Vector2d(1.0 / std::sqrt(2.0), -1.0 / std::sqrt(2.0)));
+
+  v = {-3.0, -1.5};
+  v.normalize();
+  ASSERT_EQ(v, Vector2d(-2.0 / std::sqrt(5.0), -1.0 / std::sqrt(5.0)));
+}
+
 TEST(Vector2d, distance) {
   const Vector2d v0{};
   const Vector2d v1{1.0, 0.0};

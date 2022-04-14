@@ -39,6 +39,13 @@ TEST(Line2d, no_intersection) {
   ASSERT_FALSE(Line2d::intersection(l0, l1));
 }
 
+TEST(Line2d, normal) {
+  ASSERT_EQ(Line2d({1, 0}, {0, 1}).normal(), Vector2d(1, 0));
+  ASSERT_EQ(Line2d({1, 1}, {-1, 0}).normal(), Vector2d(0, 1));
+  ASSERT_EQ(Line2d({0, 0}, {0, -1}).normal(), Vector2d(-1, 0));
+  ASSERT_EQ(Line2d({0, 0}, {1, 0}).normal(), Vector2d(0, -1));
+}
+
 TEST(Line2d, intersection) {
   // Intersection of axis is (0, 0)
   ASSERT_EQ(Line2d::intersection(Line2d{Vector2d{}, Vector2d{0, 1}},
