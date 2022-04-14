@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(Simulation_of_a_pandemic)
+project("Simulation of a pandemic")
 
 # ###############################################
 # C++ stuff
@@ -31,7 +31,7 @@ if(BUILD_ENV_REMOTE)
 		"/usr/include/python3.6m/"
 	)
 	set(LOCAL_PYTHON_LIBS
-		"python3"
+		"python3.6m"
 	)
 else()
 	find_package(Python3 COMPONENTS Development NumPy REQUIRED)
@@ -53,26 +53,17 @@ set(TARGET_BIN_NAME simulation)
 set(TARGET_LIB_NAME simulationlib)
 set(TARGET_TESTS_NAME tests)
 set(MATPLOTLIBCPP_LIB_NAME matplotlibcpp)
-set(TARGET_BIN_SRC
-	"src/main.cpp"
-)
-set(TARGET_LIB_SRC
-	"src/city.cpp"
-	"src/person.cpp"
-	"src/plotter.cpp"
-	"src/exceptions.cpp"
-	"src/vector2d.cpp"
-	"src/line2d.cpp"
-)
-set(TARGET_TEST_SRC
-	"tests/person.cpp"
-	"tests/city.cpp"
-	"tests/vector2d.cpp"
-	"tests/line2d.cpp"
-)
-set(MATPLOTLIBCPP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/include/matplotlibcpp.h")
-set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+set(TARGET_BIN_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+)
+file(GLOB TARGET_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/*.cpp")
+set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
+
+file(GLOB TARGET_TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
+
+set(MATPLOTLIBCPP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp/matplotlibcpp.h")
+set(MATPLOTLIBCPP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp")
 # ###############################################
 # target matplotlibcpp.h
 # ###############################################
@@ -100,6 +91,7 @@ add_library(${TARGET_LIB_NAME} STATIC
 
 target_include_directories(${TARGET_LIB_NAME} PUBLIC
 	${TARGET_INCLUDE_DIRS}
+	${MATPLOTLIBCPP_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_LIB_NAME} PUBLIC
