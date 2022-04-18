@@ -8,7 +8,9 @@
 
 class Line2d {
 public:
-  Line2d(const double, const double, const double);
+  enum class PointPosition {LEFT, MIDDLE, RIGHT};
+  
+  Line2d(const double, const double, const double);  
   Line2d(const Vector2d, const Vector2d);
   explicit Line2d(const std::tuple<double, double, double>);
 
@@ -19,6 +21,7 @@ public:
   ~Line2d() = default;
 
   Vector2d normal() const noexcept;
+  Line2d::PointPosition point_position(const Vector2d) const noexcept;
   
   static std::optional<Vector2d> intersection(const Line2d&,
                                               const Line2d&) noexcept;

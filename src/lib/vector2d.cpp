@@ -3,7 +3,7 @@
 #include <iostream>
 #include <tuple>
 
-#include "constants.h"
+#include "utils.h"
 #include "vector2d.h"
 
 Vector2d::Vector2d() noexcept : m_x{0.0}, m_y{0.0} {}
@@ -56,7 +56,7 @@ double Vector2d::distance(const Vector2d& lhs, const Vector2d& rhs) noexcept {
 bool Vector2d::operator==(const Vector2d& rhs) const noexcept {
   const auto distance = Vector2d::distance(*this, rhs);
 
-  return distance < constants::EPSILON;
+  return utils::double_equality(distance, 0.0);
 }
 
 bool Vector2d::operator!=(const Vector2d& rhs) const noexcept {

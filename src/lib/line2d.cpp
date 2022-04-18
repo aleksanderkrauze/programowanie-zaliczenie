@@ -1,9 +1,9 @@
 #include <optional>
 #include <tuple>
 
-#include "constants.h"
 #include "exceptions.h"
 #include "line2d.h"
+#include "utils.h"
 #include "vector2d.h"
 
 /**
@@ -12,7 +12,7 @@
  */
 Line2d::Line2d(const double A, const double B, const double C)
     : m_A{A}, m_B{B}, m_C{C} {
-  if (A == 0 && B == 0) {
+  if (A == 0.0 && B == 0.0) {
     throw Line2dException{};
   }
 }
@@ -25,13 +25,6 @@ Line2d::Line2d(const Vector2d base, const Vector2d direction)
     : Line2d{direction.y(), -direction.x(),
              (-direction.y() * base.x() + direction.x() * base.y())} {}
 
-Vector2d Line2d::normal() const noexcept {
-  Vector2d v{this->m_A, this->m_B};
-  v.normalize();
-  
-  return v;
-}
-
 /**
  * # Exceptions
  * - Throws Line2dException when both first and second numers of @data are equal
@@ -40,6 +33,27 @@ Vector2d Line2d::normal() const noexcept {
 Line2d::Line2d(const std::tuple<double, double, double> data)
     : Line2d{std::get<0>(data), std::get<1>(data), std::get<2>(data)} {}
 
+Vector2d Line2d::normal() const noexcept {
+  Vector2d v{this->m_A, this->m_B};
+  v.normalize();
+
+  return v;
+}
+
+Line2d::PointPosition
+Line2d::point_position(const Vector2d point) const noexcept {
+  const auto [x, y] = point.tuple();
+  const auto delta = (this->m_A * x) + (this->m_B * y) + this->m_C;
+
+  if (utils::double_equality(delta, 0.0)) {
+    return Line2d::PointPosition::MIDDLE;
+  } else if (delta > 0.0) {
+    return Line2d::PointPosition::RIGHT;
+  } else { // delta < 0.0
+    return Line2d::PointPosition::LEFT;
+  }
+}
+
 std::optional<Vector2d> Line2d::intersection(const Line2d& lhs,
                                              const Line2d& rhs) noexcept {
   const auto A1 = lhs.m_A, B1 = lhs.m_B, C1 = lhs.m_C;
@@ -47,7 +61,7 @@ std::optional<Vector2d> Line2d::intersection(const Line2d& lhs,
 
   const auto D = A1 * B2 - A2 * B1;
 
-  if (std::abs(D) < constants::EPSILON) {
+  if (utils::double_equality(D, 0.0)) {
     return std::nullopt;
   }
 

@@ -46,6 +46,44 @@ TEST(Line2d, normal) {
   ASSERT_EQ(Line2d({0, 0}, {1, 0}).normal(), Vector2d(0, -1));
 }
 
+#include <ostream>
+std::ostream& operator<<(std::ostream& os,
+                         const Line2d::PointPosition position) {
+  switch (position) {
+  case Line2d::PointPosition::LEFT:
+    os << "LEFT";
+    break;
+  case Line2d::PointPosition::MIDDLE:
+    os << "MIDDLE";
+    break;
+  case Line2d::PointPosition::RIGHT:
+    os << "RIGHT";
+    break;
+  }
+
+  return os;
+}
+
+TEST(Line2d, point_position) {
+  const Line2d vertical{{1.0, 0.0}, {0.0, 1.0}};
+  const Line2d horizontal{{0.0, -1.0}, {2.0, 0.0}};
+  const Line2d diagonal{{0.0, 0.0}, {1.0, 1.0}};
+
+  ASSERT_EQ(vertical.point_position({2.0, -3.0}), Line2d::PointPosition::RIGHT);
+  ASSERT_EQ(vertical.point_position({1.0, 1.0}), Line2d::PointPosition::MIDDLE);
+  ASSERT_EQ(vertical.point_position({-2.0, 0.0}), Line2d::PointPosition::LEFT);
+
+  ASSERT_EQ(horizontal.point_position({-3.0, -3.0}),
+            Line2d::PointPosition::RIGHT);
+  ASSERT_EQ(horizontal.point_position({2.0, -1.0}),
+            Line2d::PointPosition::MIDDLE);
+  ASSERT_EQ(horizontal.point_position({3.0, 3.0}), Line2d::PointPosition::LEFT);
+
+  ASSERT_EQ(diagonal.point_position({1.0, -1.0}), Line2d::PointPosition::RIGHT);
+  ASSERT_EQ(diagonal.point_position({0.0, 0.0}), Line2d::PointPosition::MIDDLE);
+  ASSERT_EQ(diagonal.point_position({-1.0, 1.0}), Line2d::PointPosition::LEFT);
+}
+
 TEST(Line2d, intersection) {
   // Intersection of axis is (0, 0)
   ASSERT_EQ(Line2d::intersection(Line2d{Vector2d{}, Vector2d{0, 1}},

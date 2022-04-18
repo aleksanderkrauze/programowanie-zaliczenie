@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "exceptions.h"
+#include "line2d.h"
 #include "person.h"
 #include "vector2d.h"
 
@@ -58,7 +59,89 @@ void Person::infection_status(const Person::InfectionStatus status) noexcept {
 }
 
 void Person::move(const double dt, const double city_size) {
-  // TODO: implement this function
+  if (dt <= 0.0) {
+    throw RequiredPositiveDoubleValueException("dt", dt);
+  }
+  if (city_size <= 0.0) {
+    throw RequiredPositiveDoubleValueException("city_size", city_size);
+  }
+
+  // This variables are static, because they are constant across every
+  // `Person::move` function call
+  static const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
+  static const Line2d top_edge{{city_size, city_size}, {-1.0, 0.0}};
+  static const Line2d left_edge{{0.0, city_size}, {0.0, -1.0}};
+  static const Line2d bottom_edge{{0.0, 0.0}, {1.0, 0.0}};
+
+  Vector2d translation = this->m_velocity * dt;
+
+  // Lambdas
+  const auto is_in_city = [](const auto& p) {
+    return (right_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
+           (top_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
+           (left_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
+           (bottom_edge.point_position(p) == Line2d::PointPosition::LEFT);
+  };
+
+  const auto get_intersection = [this](const auto& edge, const auto& v) {
+    const Line2d path{this->m_position, v};
+    return Line2d::intersection(edge, path);
+  };
+
+  const auto is_intersection_ok = [city_size, this](const auto& intersection,
+                                                    const auto& compound) {
+    if (!intersection) {
+      return false;
+    }
+
+    const auto vector = intersection.value();
+
+    if (vector == this->m_position) {
+      return false;
+    }
+
+    const auto val = compound(vector);
+    return (0.0 <= val) && (val <= city_size);
+  };
+
+  const auto partial_move = [this, &translation](const auto intersection_point,
+                                                 const auto& edge) {
+    const auto to_edge = intersection_point - this->m_position;
+    translation -= to_edge;
+    this->m_position = intersection_point;
+
+    translation.reflect(edge.normal());
+    this->m_velocity.reflect(edge.normal());
+  };
+
+  const auto vertical = [](const auto& v) { return v.y(); };
+  const auto horizontal = [](const auto& v) { return v.x(); };
+
+  // Moving Person
+  while (true) {
+    const Vector2d candidate_position = this->m_position + translation;
+    if (is_in_city(candidate_position)) {
+      this->m_position = candidate_position;
+      break;
+    }
+
+    const auto right_interscetion = get_intersection(right_edge, translation);
+    const auto top_interscetion = get_intersection(top_edge, translation);
+    const auto left_interscetion = get_intersection(left_edge, translation);
+    const auto bottom_interscetion = get_intersection(bottom_edge, translation);
+
+    if (is_intersection_ok(right_interscetion, vertical)) {
+      partial_move(right_interscetion.value(), right_edge);
+    } else if (is_intersection_ok(top_interscetion, horizontal)) {
+      partial_move(top_interscetion.value(), top_edge);
+    } else if (is_intersection_ok(left_interscetion, vertical)) {
+      partial_move(left_interscetion.value(), left_edge);
+    } else if (is_intersection_ok(bottom_interscetion, horizontal)) {
+      partial_move(bottom_interscetion.value(), bottom_edge);
+    } else {
+      throw std::runtime_error("Person::move() unreachable condidtion!");
+    }
+  }
 }
 
 bool Person::is_in_infection_range(const Person& p1, const Person& p2) {
