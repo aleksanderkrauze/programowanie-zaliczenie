@@ -63,19 +63,46 @@ TEST(Person, exceptions) {
 }
 
 /* **********************************************
+ * Person::is_in_infection_range() tests
+ * *********************************************/
+#define P(x, y, r)                                                             \
+  Person { x, y, 0, 0, r, Person::InfectionStatus::GREEN }
+
+TEST(Person, is_in_infection_range_apart) {
+  ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));
+  ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 8)));
+  ASSERT_FALSE(Person::is_in_infection_range(P(-1, -1, 1), P(1, 1, 1)));
+}
+
+TEST(Person, is_in_infection_range_tangential_outside) {
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 0.5), P(0, 1, 0.5)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 10, 5)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(4, 4, 2), P(4, 1, 1)));
+}
+
+TEST(Person, is_in_infection_range_overlaping) {
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 0, 1)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 1, 2)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 2), P(1, 1, 2)));
+}
+
+TEST(Person, is_in_infection_range_inside) {
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(0, 0, 1)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 0, 1)));
+  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(1, 1, 1)));
+}
+
+#undef P
+
+/* **********************************************
  * Person::move() tests
  * *********************************************/
-/*
 void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
                double dt, double city_size) {
   Person p{x, y, vx, vy, 1.0, Person::InfectionStatus::GREEN};
   p.move(dt, city_size);
 
-<<<<<<< HEAD
-  ASSERT_EQ(std::make_pair(p.x(), p.y()), std::make_pair(xdt, ydt))
-=======
   ASSERT_EQ(p.position(), Vector2d(xdt, ydt))
->>>>>>> algebra
     << "Test failed with following values: "
     << "x=" << x << ", y=" << y << ", vx=" << vx << ", vy=" << vy
     << ", xdt=" << xdt << ", ydt=" << ydt << ", city_size=" << city_size;
@@ -103,36 +130,3 @@ TEST(Person_move, normal_in_the_middle) {
 TEST(Person_move, touch_perimeter_from_outside) {
   // test_move(0, 0, );
 }
-*/
-
-/* **********************************************
- * Person::is_in_infection_range() tests
- * *********************************************/
-#define P(x, y, r)                                                             \
-  Person { x, y, 0, 0, r, Person::InfectionStatus::GREEN }
-
-TEST(Person_is_in_infection_range, apart) {
-  ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));
-  ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 8)));
-  ASSERT_FALSE(Person::is_in_infection_range(P(-1, -1, 1), P(1, 1, 1)));
-}
-
-TEST(Person_is_in_infection_range, tangential_outside) {
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 0.5), P(0, 1, 0.5)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 10, 5)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(4, 4, 2), P(4, 1, 1)));
-}
-
-TEST(Person_is_in_infection_range, overlaping) {
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 0, 1)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(1, 1, 2)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 2), P(1, 1, 2)));
-}
-
-TEST(Person_is_in_infection_range, inside) {
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 1), P(0, 0, 1)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 0, 1)));
-  ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(1, 1, 1)));
-}
-
-#undef P
