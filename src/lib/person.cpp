@@ -66,17 +66,15 @@ void Person::move(const double dt, const double city_size) {
     throw RequiredPositiveDoubleValueException("city_size", city_size);
   }
 
-  // This variables are static, because they are constant across every
-  // `Person::move` function call
-  static const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
-  static const Line2d top_edge{{city_size, city_size}, {-1.0, 0.0}};
-  static const Line2d left_edge{{0.0, city_size}, {0.0, -1.0}};
-  static const Line2d bottom_edge{{0.0, 0.0}, {1.0, 0.0}};
+  const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
+  const Line2d top_edge{{city_size, city_size}, {-1.0, 0.0}};
+  const Line2d left_edge{{0.0, city_size}, {0.0, -1.0}};
+  const Line2d bottom_edge{{0.0, 0.0}, {1.0, 0.0}};
 
   Vector2d translation = this->m_velocity * dt;
 
   // Lambdas
-  const auto is_in_city = [](const auto& p) {
+  const auto is_in_city = [&](const auto& p) {
     return (right_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
            (top_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
            (left_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
