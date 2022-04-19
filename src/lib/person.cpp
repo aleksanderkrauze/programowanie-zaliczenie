@@ -1,4 +1,5 @@
 #include <cmath> // M_PI const, sqrt
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -58,17 +59,19 @@ void Person::infection_status(const Person::InfectionStatus status) noexcept {
   this->m_infection_status = status;
 }
 
+/**
+ * # Exceptions:
+ * - Throws OutOfCityBoundsException when starting position would be outside
+ * city bounds with given @city_size
+ * - Throws RequiredPositiveDoubleValueException when @dt or @city_size are not
+ * greater than 0
+ */
 void Person::move(const double dt, const double city_size) {
   if (dt <= 0.0) {
     throw RequiredPositiveDoubleValueException("dt", dt);
   }
   if (city_size <= 0.0) {
     throw RequiredPositiveDoubleValueException("city_size", city_size);
-  }
-
-  // If person's speed is 0 then it won't move.
-  if (this->m_velocity.length() == 0.0) {
-    return;
   }
 
   const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
@@ -78,35 +81,62 @@ void Person::move(const double dt, const double city_size) {
 
   Vector2d translation = this->m_velocity * dt;
 
-  // Lambdas
-  const auto is_in_city = [&](const auto& p) {
-    return (right_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
-           (top_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
-           (left_edge.point_position(p) == Line2d::PointPosition::LEFT) &&
-           (bottom_edge.point_position(p) == Line2d::PointPosition::LEFT);
+  // Returns true <=> given @val is inside [0, city_size].
+  const auto compound_in_city_bounds = [city_size](const auto val) {
+    return (0 <= val) && (val <= city_size);
   };
 
+  // Returns true <=> point @p is inside city with size @city_size.
+  const auto is_in_city = [&](const auto& p) {
+    // We must check position in relation to lines, because due to floating
+    // point arithmetic we could be *slightly* outside, but is reality on the
+    // edge.
+    return !(right_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+           !(top_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+           !(left_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+           !(bottom_edge.point_position(p) == Line2d::PointPosition::RIGHT);
+  };
+
+  // Returns intersection of given @edge and line passing through current
+  // position and direction the same as vector's @v.
   const auto get_intersection = [this](const auto& edge, const auto& v) {
     const Line2d path{this->m_position, v};
     return Line2d::intersection(edge, path);
   };
 
-  const auto is_intersection_ok = [city_size, this](const auto& intersection,
-                                                    const auto& compound) {
+  // Returns true <=> given @intersection satisfy following condidtions:
+  // - intersection is not empty
+  // - it is proper intersection for current @translation
+  // - it's proper @compound is in bounds of [0, @city_size]
+  const auto is_intersection_ok = [this, &translation, &compound_in_city_bounds,
+                                   &is_in_city](const auto& intersection,
+                                                const auto& compound) {
     if (!intersection) {
       return false;
     }
 
     const auto vector = intersection.value();
 
-    if (vector == this->m_position) {
+    // If point of intersection is the same as current position then
+    // depending on the direction of translation vector (does it point inside or
+    // outside the city) this is corrent point or not. Otherwise we check if
+    // direction of translation vector and vector form out position to the point
+    // of intersection point in the same direction (by checking if their scalar
+    // product is greater then 0). If not, then it is not the point we are
+    // looking for.
+    const auto from_position_to_intersection = vector - this->m_position;
+    if (from_position_to_intersection == Vector2d{}) {
+      return !is_in_city(this->m_position + translation);
+    } else if (translation * from_position_to_intersection < 0) {
       return false;
     }
 
     const auto val = compound(vector);
-    return (0.0 <= val) && (val <= city_size);
+    return compound_in_city_bounds(val);
   };
 
+  // Moves person to given @intersection_point and reflects it's velocity and
+  // remaining @translation agains given @edge.
   const auto partial_move = [this, &translation](const auto intersection_point,
                                                  const auto& edge) {
     const auto to_edge = intersection_point - this->m_position;
@@ -117,8 +147,21 @@ void Person::move(const double dt, const double city_size) {
     this->m_velocity.reflect(edge.normal());
   };
 
+  // Returns vector's y compound.
   const auto vertical = [](const auto& v) { return v.y(); };
+  // Returns vector's x compound.
   const auto horizontal = [](const auto& v) { return v.x(); };
+
+  // Checking if starting position is inside city bounds
+  if (!is_in_city(this->m_position)) {
+    std::ostringstream msg;
+    msg << "Called Person::move() with parameter city_size = " << city_size
+        << " on person with position = " << this->m_position;
+    throw OutOfCityBoundsException(msg.str());
+  }
+
+  // Set initial position to one that is illegal.
+  Vector2d previous_position{-1, -1};
 
   // Moving Person
   while (true) {
@@ -142,7 +185,14 @@ void Person::move(const double dt, const double city_size) {
     } else if (is_intersection_ok(bottom_interscetion, horizontal)) {
       partial_move(bottom_interscetion.value(), bottom_edge);
     } else {
-      throw std::runtime_error("Person::move() unreachable condidtion!");
+      throw std::runtime_error("Person::move(): unreachable condidtion");
+    }
+
+    // If position didn't change we encountered some weird runtime error.
+    if (previous_position == this->m_position) {
+      throw std::runtime_error("Person::move(): position didn't change");
+    } else {
+      previous_position = this->m_position;
     }
   }
 }
