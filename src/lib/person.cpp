@@ -66,6 +66,11 @@ void Person::move(const double dt, const double city_size) {
     throw RequiredPositiveDoubleValueException("city_size", city_size);
   }
 
+  // If person's speed is 0 then it won't move.
+  if (this->m_velocity.length() == 0.0) {
+    return;
+  }
+
   const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
   const Line2d top_edge{{city_size, city_size}, {-1.0, 0.0}};
   const Line2d left_edge{{0.0, city_size}, {0.0, -1.0}};
