@@ -28,6 +28,7 @@ private:
 
   void update_recovering() noexcept;
   void infection() noexcept;
+  void move() noexcept;
 };
 
 #endif // CITY_H

@@ -95,3 +95,9 @@ void City::infection() noexcept {
     }
   }
 }
+
+void City::move() noexcept {
+  for (auto& p : this->m_people) {
+    p.move(this->m_dt, this->m_city_size);
+  }
+}
