@@ -1,7 +1,7 @@
 #ifndef VECTOR_2D_H
 #define VECTOR_2D_H
 
-#include <iostream>
+#include <ostream>
 #include <tuple>
 
 class Vector2d {

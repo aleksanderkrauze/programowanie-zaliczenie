@@ -1,6 +1,6 @@
 #include <cassert>
 #include <cmath>
-#include <iostream>
+#include <ostream>
 #include <tuple>
 
 #include "utils.h"
