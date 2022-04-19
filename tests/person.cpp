@@ -50,7 +50,7 @@ TEST(Person, setters) {
  * *********************************************/
 
 TEST(Person, exceptions) {
-#define P(r) Person(0, 0, 0, 0, r, Person::InfectionStatus::GREEN)
+#define P(r) Person(0, 0, 0, 0, r)
 
   ASSERT_NO_THROW(P(10.0));
 
@@ -66,7 +66,7 @@ TEST(Person, exceptions) {
  * Person::is_in_infection_range() tests
  * *********************************************/
 #define P(x, y, r)                                                             \
-  Person { x, y, 0, 0, r, Person::InfectionStatus::GREEN }
+  Person { x, y, 0, 0, r }
 
 TEST(Person, is_in_infection_range_apart) {
   ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));
@@ -99,7 +99,7 @@ TEST(Person, is_in_infection_range_inside) {
  * *********************************************/
 void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
                double dt, double city_size) {
-  Person p{x, y, vx, vy, 1.0, Person::InfectionStatus::GREEN};
+  Person p{x, y, vx, vy, 1.0};
   p.move(dt, city_size);
 
   ASSERT_EQ(p.position(), Vector2d(xdt, ydt))
@@ -109,7 +109,7 @@ void test_move(double x, double y, double vx, double vy, double xdt, double ydt,
 }
 
 TEST(Person_move, exceptions) {
-  Person p{0, 0, 0, 0, 1, Person::InfectionStatus::GREEN};
+  Person p{0, 0, 0, 0, 1};
 
   // No Exceptions of correct arguments
   ASSERT_NO_THROW(p.move(1, 100));

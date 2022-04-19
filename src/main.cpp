@@ -8,8 +8,8 @@
 #include "vector2d.h"
 
 int main(int argc, char* argv[]) {
-  Person p1 = {{0.1, 0.2}, {0.1, 0.2}, 0.02, Person::InfectionStatus::GREEN};
-  Person p2 = {{0.1, 0.1}, {0.5, 0.3}, 0.05, Person::InfectionStatus::GREEN};
+  Person p1 = {{0.1, 0.2}, {0.1, 0.2}, 0.02};
+  Person p2 = {{0.1, 0.1}, {0.5, 0.3}, 0.05};
   Person p3 = {{0.2, 0.1}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
 
   // City c = {100, 0.02, 0.25, 0.5};

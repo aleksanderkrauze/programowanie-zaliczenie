@@ -22,11 +22,28 @@ Person::Person(const Vector2d position, const Vector2d velocity,
 
 /**
  * # Exceptions
+ * - Throws std::invalid_argument when @radius is less than or equalt to zero
+ */
+Person::Person(const Vector2d position, const Vector2d velocity,
+               const double radius)
+    : Person{position, velocity, radius, Person::InfectionStatus::GREEN} {}
+
+/**
+ * # Exceptions
  * - Throws std::invalid_argument when @radius is less than or equal to zero
  */
 Person::Person(const double x, const double y, const double vx, const double vy,
                const double radius, const InfectionStatus status)
     : Person{{x, y}, {vx, vy}, radius, status} {}
+
+/**
+ * # Exceptions
+ * - Throws std::invalid_argument when @radius is less than or equalt to zero
+ */
+
+Person::Person(const double x, const double y, const double vx, const double vy,
+               const double radius)
+    : Person{{x, y}, {vx, vy}, radius, Person::InfectionStatus::GREEN} {}
 
 Vector2d Person::position() const noexcept { return this->m_position; }
 

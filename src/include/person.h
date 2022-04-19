@@ -9,8 +9,10 @@ public:
   enum class InfectionStatus { GREEN, RED, BLUE };
 
   Person(const Vector2d, const Vector2d, const double, const InfectionStatus);
+  Person(const Vector2d, const Vector2d, const double);
   Person(const double, const double, const double, const double, const double,
          const InfectionStatus);
+  Person(const double, const double, const double, const double, const double);
 
   Person(Person&&) = default;
   Person& operator=(Person&&) = default;
