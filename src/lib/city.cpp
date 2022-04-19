@@ -52,7 +52,11 @@ bool City::is_in_bound(const Person& person) const noexcept {
   const auto [x, y] = person.position().tuple();
   const auto size = this->m_city_size;
 
-  return (0 <= x && x <= size) && (0 <= y && y <= size);
+  const auto test = [size](const auto val) {
+    return (0 <= val) && (val <= size);
+  };
+
+  return test(x) && test(y);
 }
 
 void City::update_recovering() noexcept {
