@@ -1,9 +1,11 @@
 #ifndef PERSON_H
 #define PERSON_H
 
+#include <ostream>
 #include <string>
 
 #include "vector2d.h"
+
 class Person {
 public:
   enum class InfectionStatus { GREEN, RED, BLUE };
@@ -31,7 +33,6 @@ public:
   void move(const double, const double);
 
   static bool is_in_infection_range(const Person&, const Person&);
-  static std::string infection_status_to_colour(const Person::InfectionStatus);
 
 private:
   Vector2d m_position, m_velocity;
@@ -41,5 +42,7 @@ private:
   Person(const Person&) = default;
   Person& operator=(const Person&) = default;
 };
+
+std::ostream& operator<<(std::ostream&, const Person::InfectionStatus);
 
 #endif // PERSON_H

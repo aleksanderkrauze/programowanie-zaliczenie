@@ -1,4 +1,5 @@
 #include <cmath> // M_PI const, sqrt
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -169,16 +170,22 @@ bool Person::is_in_infection_range(const Person& p1, const Person& p2) {
          (p1.m_radius + p2.m_radius);
 }
 
-std::string
-Person::infection_status_to_colour(const Person::InfectionStatus status) {
+std::ostream& operator<<(std::ostream& os,
+                         const Person::InfectionStatus status) {
   switch (status) {
-  case InfectionStatus::GREEN:
-    return "green";
-  case InfectionStatus::RED:
-    return "red";
-  case InfectionStatus::BLUE:
-    return "blue";
+  case Person::InfectionStatus::GREEN:
+    os << "green";
+    break;
+  case Person::InfectionStatus::RED:
+    os << "red";
+    break;
+  case Person::InfectionStatus::BLUE:
+    os << "blue";
+    break;
+  default:
+    throw std::runtime_error("Unexpected infection status");
+    break;
   }
 
-  throw std::runtime_error("Unexpected infection status");
+  return os;
 }

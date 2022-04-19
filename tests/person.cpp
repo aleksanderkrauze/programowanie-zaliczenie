@@ -1,3 +1,4 @@
+#include <ostream>
 #include <utility>
 
 #include <gtest/gtest.h>
@@ -6,16 +7,17 @@
 #include "person.h"
 #include "vector2d.h"
 
-TEST(Person, infection_status_to_colour) {
-  ASSERT_STREQ(
-    Person::infection_status_to_colour(Person::InfectionStatus::GREEN).c_str(),
-    "green");
-  ASSERT_STREQ(
-    Person::infection_status_to_colour(Person::InfectionStatus::RED).c_str(),
-    "red");
-  ASSERT_STREQ(
-    Person::infection_status_to_colour(Person::InfectionStatus::BLUE).c_str(),
-    "blue");
+TEST(Person, InfectionStatus_ostream_operator) {
+  const auto test = [](const auto status, const auto expected_value) {
+    std::ostringstream os;
+    os << status;
+
+    ASSERT_STREQ(os.str().c_str(), expected_value);
+  };
+  
+  test(Person::InfectionStatus::GREEN, "green");
+  test(Person::InfectionStatus::RED, "red");
+  test(Person::InfectionStatus::BLUE, "blue");
 }
 
 /* **********************************************

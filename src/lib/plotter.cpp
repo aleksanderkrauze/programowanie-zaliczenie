@@ -11,6 +11,7 @@
 namespace plt = matplotlibcpp;
 
 namespace plotter {
+
 void plot(const std::vector<Person>& people,
           const std::uint32_t iteration_number, const double plot_size) {
   plt::xlim(0.0, plot_size);
@@ -20,17 +21,17 @@ void plot(const std::vector<Person>& people,
 
   const double radius_to_pixel = 200;
   for (const auto& p : people) {
-    const auto [_x, _y] = p.position().tuple();
-    const std::vector<double> x = {_x};
-    const std::vector<double> y = {_y};
+    const auto [x, y] = p.position().tuple();
+    const std::vector<double> xs = {x};
+    const std::vector<double> ys = {y};
 
     const auto radius = p.radius() * radius_to_pixel;
     const auto circle_area = M_PI * radius * radius;
 
-    const auto colour =
-      Person::infection_status_to_colour(p.infection_status());
+    std::ostringstream colour;
+    colour << p.infection_status();
 
-    matplotlibcpp::scatter(x, y, circle_area, {{"color", colour}});
+    matplotlibcpp::scatter(xs, ys, circle_area, {{"color", colour.str()}});
   }
 
   const int frameNumberWidth = 4;
@@ -49,4 +50,5 @@ void makeAnimation() {
 }
 
 void clean() { system("cd plots; rm -f animation.gif; rm -f frame*.png"); }
+
 } // namespace plotter
