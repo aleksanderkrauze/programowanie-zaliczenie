@@ -29,14 +29,35 @@ int main(int argc, char* argv[]) {
   const auto size = 0.25;
   const auto iter = 1000;
 
-  for (int i = 0; i < iter; i++) {
+  int i = 0;
+  std::size_t index = 0;
+
+  for (; i < iter; i++) {
+    std::cout << i << std::endl;
     plotter::plot(people, i, size);
 
     for (auto& p : people) {
-      p.move(dt, size);
-    }
+      index++;
+      const auto position = p.position();
+      const auto velocity = p.velocity();
 
-    std::cout << i << std::endl;
+      try {
+        p.move(dt, size);
+      } catch (std::runtime_error& e) {
+        std::cerr << "Caught runtime error: " << e.what() << std::endl;
+
+        std::cerr << "Person no. " << index << std::endl;
+        std::cerr << "Person's state before calling move():" << std::endl;
+        std::cerr << "position = " << position << " velocity = " << velocity
+                  << std::endl;
+        std::cerr << "Current person's state:" << std::endl;
+        std::cerr << "position = " << p.position()
+                  << " velocity = " << p.velocity() << std::endl;
+
+        return 1;
+      }
+    }
+    index = 0;
   }
 
   return 0;
