@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 
   for (; i < iter; i++) {
     std::cout << i << std::endl;
-    // plotter::plot(people, i, size);
+    plotter::plot(people, i, size);
 
 
     for (auto& p : people) {

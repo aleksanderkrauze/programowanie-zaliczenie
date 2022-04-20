@@ -81,6 +81,11 @@ void Person::move(const double dt, const double city_size) {
 
   Vector2d translation = this->m_velocity * dt;
 
+  // Returns vector's y compound.
+  const auto vertical = [](const auto& v) { return v.y(); };
+  // Returns vector's x compound.
+  const auto horizontal = [](const auto& v) { return v.x(); };
+
   // Returns true <=> given @val is inside [0, city_size].
   const auto compound_in_city_bounds = [city_size](const auto val) {
     return (0 <= val) && (val <= city_size);
@@ -104,36 +109,67 @@ void Person::move(const double dt, const double city_size) {
     return Line2d::intersection(edge, path);
   };
 
+  // Returns true <=> vector from @point_no_edge to @point_outside_city
+  // intersects city.
+  const auto vector_intersects_city = [&](const auto& point_on_edge,
+                                          const auto& point_outside_city) {
+    if (right_edge.point_position(point_on_edge) ==
+        Line2d::PointPosition::MIDDLE) {
+      return right_edge.point_position(point_outside_city) ==
+             Line2d::PointPosition::LEFT;
+    } else if (top_edge.point_position(point_on_edge) ==
+               Line2d::PointPosition::MIDDLE) {
+      return top_edge.point_position(point_outside_city) ==
+             Line2d::PointPosition::LEFT;
+    } else if (left_edge.point_position(point_on_edge) ==
+               Line2d::PointPosition::MIDDLE) {
+      return left_edge.point_position(point_outside_city) ==
+             Line2d::PointPosition::LEFT;
+    } else if (bottom_edge.point_position(point_on_edge) ==
+               Line2d::PointPosition::MIDDLE) {
+      return bottom_edge.point_position(point_outside_city) ==
+             Line2d::PointPosition::LEFT;
+    } else {
+      throw std::runtime_error("Person::move(): vector_intersects_city: passed "
+                               "point is not on eny edge");
+    }
+  };
+
   // Returns true <=> given @intersection satisfy following condidtions:
   // - intersection is not empty
   // - it is proper intersection for current @translation
   // - it's proper @compound is in bounds of [0, @city_size]
-  const auto is_intersection_ok = [this, &translation, &compound_in_city_bounds,
-                                   &is_in_city](const auto& intersection,
-                                                const auto& compound) {
-    if (!intersection) {
-      return false;
-    }
+  const auto is_intersection_ok =
+    [this, &translation, &compound_in_city_bounds, &is_in_city,
+     &vector_intersects_city](const auto& intersection, const auto& compound) {
+      if (!intersection) {
+        return false;
+      }
 
-    const auto vector = intersection.value();
+      const auto vector = intersection.value();
 
-    // If point of intersection is the same as current position then
-    // depending on the direction of translation vector (does it point inside or
-    // outside the city) this is corrent point or not. Otherwise we check if
-    // direction of translation vector and vector form out position to the point
-    // of intersection point in the same direction (by checking if their scalar
-    // product is greater then 0). If not, then it is not the point we are
-    // looking for.
-    const auto from_position_to_intersection = vector - this->m_position;
-    if (from_position_to_intersection == Vector2d{}) {
-      return !is_in_city(this->m_position + translation);
-    } else if (translation * from_position_to_intersection < 0) {
-      return false;
-    }
+      // If point of intersection is the same as current position then
+      // depending on the direction of translation vector (does it point inside
+      // or outside the city) this is corrent point or not. Otherwise we check
+      // if direction of translation vector and vector form out position to the
+      // point of intersection point in the same direction (by checking if their
+      // scalar product is greater then 0). If not, then it is not the point we
+      // are looking for.
+      const auto from_position_to_intersection = vector - this->m_position;
+      if (from_position_to_intersection == Vector2d{}) {
+        const auto point_outside_city = this->m_position + translation;
+        if (is_in_city(point_outside_city)) {
+          return false;
+        } else {
+          return !vector_intersects_city(this->m_position, point_outside_city);
+        }
+      } else if (translation * from_position_to_intersection < 0) {
+        return false;
+      }
 
-    const auto val = compound(vector);
-    return compound_in_city_bounds(val);
-  };
+      const auto val = compound(vector);
+      return compound_in_city_bounds(val);
+    };
 
   // Moves person to given @intersection_point and reflects it's velocity and
   // remaining @translation agains given @edge.
@@ -146,11 +182,6 @@ void Person::move(const double dt, const double city_size) {
     translation.reflect(edge.normal());
     this->m_velocity.reflect(edge.normal());
   };
-
-  // Returns vector's y compound.
-  const auto vertical = [](const auto& v) { return v.y(); };
-  // Returns vector's x compound.
-  const auto horizontal = [](const auto& v) { return v.x(); };
 
   // Checking if starting position is inside city bounds
   if (!is_in_city(this->m_position)) {

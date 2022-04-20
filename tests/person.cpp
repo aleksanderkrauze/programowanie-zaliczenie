@@ -222,7 +222,7 @@ TEST(Person, move_single_bounce_bottom) {
 TEST(Person, move_double_bounce_top_right) {
   // top first
   test_move_one_ten({8, 8}, {2.5, 5}, {9.5, 7});
-  test_move_one_ten({9, 9}, {2, 1 + 2.0 / 3.0}, {9 + 1.0 / 3.0, 6});
+  test_move_one_ten({9, 9}, {2, 3}, {9, 8});
 
   // rigth first
   test_move_one_ten({9, 8}, {3, 3}, {8, 9});
@@ -245,8 +245,8 @@ TEST(Person, move_double_bounce_bottom_left) {
   test_move_one_ten({5, 1}, {-7.5, -3}, {2.5, 2});
 
   // left first
-  test_move_one_ten({2, 1}, {-4, -4}, {4, 2});
-  test_move_one_ten({1, 1}, {-3, -1}, {2, 1.0 / 3.0});
+  test_move_one_ten({2, 1}, {-4, -4}, {2, 3});
+  test_move_one_ten({1, 1}, {-4, -(1 + 1.0 / 3.0)}, {3, 1.0 / 3.0});
 }
 
 TEST(Person, move_double_bounce_bottom_right) {
@@ -256,7 +256,7 @@ TEST(Person, move_double_bounce_bottom_right) {
 
   // right first
   test_move_one_ten({10, 2}, {1.5, -3}, {8.5, 1});
-  test_move_one_ten({8, 2}, {5, -3}, {1.0 / 3.0, 7});
+  test_move_one_ten({8, 2}, {5, -3}, {7, 1});
 }
 
 TEST(Person, move_corner_top_right) {
