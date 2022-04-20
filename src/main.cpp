@@ -36,12 +36,11 @@ int main(int argc, char* argv[]) {
     std::cout << i << std::endl;
     plotter::plot(people, i, size);
 
-
     for (auto& p : people) {
       index++;
       const auto position = p.position();
       const auto velocity = p.velocity();
-      
+
       try {
         p.move(dt, size);
       } catch (std::runtime_error& e) {

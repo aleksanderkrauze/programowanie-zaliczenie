@@ -299,6 +299,9 @@ TEST(Person, move_from_corner_to_corner) {
   test_move_one_ten({10, 10}, {-20, -20}, {10, 10});
   test_move_one_ten({10, 0}, {-15, 15}, {5, 5});
   test_move_one_ten({0, 10}, {25, -25}, {5, 5});
+
+  // initial velocity facing outsde
+  test_move_one_ten({10, 10}, {10, 10}, {0, 0});
 }
 
 TEST(Person, move_reverse_fuzzy_testing) {

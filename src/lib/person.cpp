@@ -173,14 +173,24 @@ void Person::move(const double dt, const double city_size) {
 
   // Moves person to given @intersection_point and reflects it's velocity and
   // remaining @translation agains given @edge.
-  const auto partial_move = [this, &translation](const auto intersection_point,
-                                                 const auto& edge) {
+  const auto partial_move = [this, &translation, city_size](
+                              const auto intersection_point, const auto& edge) {
     const auto to_edge = intersection_point - this->m_position;
     translation -= to_edge;
     this->m_position = intersection_point;
 
-    translation.reflect(edge.normal());
-    this->m_velocity.reflect(edge.normal());
+    // If intersection point is in the corner reverse speed, otherwise reflect
+    // it from passed edge.
+    if (intersection_point == Vector2d{0.0, 0.0} ||
+        intersection_point == Vector2d{city_size, 0.0} ||
+        intersection_point == Vector2d{city_size, city_size} ||
+        intersection_point == Vector2d{0.0, city_size}) {
+      translation *= -1;
+      this->m_velocity *= -1;
+    } else {
+      translation.reflect(edge.normal());
+      this->m_velocity.reflect(edge.normal());
+    }
   };
 
   // Checking if starting position is inside city bounds
