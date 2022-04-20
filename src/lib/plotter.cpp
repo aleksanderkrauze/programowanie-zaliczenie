@@ -14,6 +14,8 @@ namespace plotter {
 
 void plot(const std::vector<Person>& people,
           const std::uint32_t iteration_number, const double plot_size) {
+  plt::backend("Agg");
+
   plt::xlim(0.0, plot_size);
   plt::ylim(0.0, plot_size);
   plt::xlabel("x");
