@@ -57,17 +57,19 @@ set(TARGET_BIN_NAME simulation)
 set(TARGET_LIB_NAME simulationlib)
 set(TARGET_TESTS_NAME tests)
 set(MATPLOTLIBCPP_LIB_NAME matplotlibcpp)
+set(TCLAP_LIB_NAME tclap)
 
-set(TARGET_BIN_SRC
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
-)
+set(TARGET_BIN_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 file(GLOB TARGET_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/*.cpp")
 set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
-
 file(GLOB TARGET_TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
 
 set(MATPLOTLIBCPP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp/matplotlibcpp.h")
 set(MATPLOTLIBCPP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp")
+
+file(GLOB TCLAP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/tclap/*.h")
+set(TCLAP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/")
+
 # ###############################################
 # target matplotlibcpp.h
 # ###############################################
@@ -84,6 +86,15 @@ target_include_directories(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
 
 target_link_libraries(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
 	${LOCAL_PYTHON_LIBS}
+)
+
+# ###############################################
+# target tclap
+# ###############################################
+add_library(${TCLAP_LIB_NAME} INTERFACE)
+
+target_sources(${TCLAP_LIB_NAME} INTERFACE
+	${TCLAP_LIB_SRC}
 )
 
 # ###############################################
@@ -111,10 +122,12 @@ add_executable(${TARGET_BIN_NAME}
 
 target_include_directories(${TARGET_BIN_NAME} PUBLIC
 	${TARGET_INCLUDE_DIRS}
+	${TCLAP_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_BIN_NAME} PUBLIC
 	${TARGET_LIB_NAME}
+	${TCLAP_LIB_NAME}
 )
 
 # ###############################################
