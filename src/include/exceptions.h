@@ -39,4 +39,10 @@ public:
   Line2dException() noexcept;
 };
 
+class InfectionStatusException : public SimulationBaseException {
+public:
+  explicit InfectionStatusException(const char*) noexcept;
+  explicit InfectionStatusException(const std::string&) noexcept;
+};
+
 #endif // EXCEPTIONS_H

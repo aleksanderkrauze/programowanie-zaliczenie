@@ -61,3 +61,18 @@ Line2dException::Line2dException() noexcept {
   this->m_msg = "Line2d error: cannot create Line2d (Ax + By + C = 0) with "
                 "both A and B beeing 0.";
 }
+
+/* **********************************************
+ * InfectionStatusException
+ * *********************************************/
+
+InfectionStatusException::InfectionStatusException(const char* msg) noexcept {
+  std::ostringstream os;
+  os << "Unknown InfectionStatus: " << msg;
+
+  this->m_msg = os.str();
+}
+
+InfectionStatusException::InfectionStatusException(
+  const std::string& msg) noexcept
+    : InfectionStatusException(msg.c_str()) {}

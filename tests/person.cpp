@@ -1,4 +1,6 @@
 #include <chrono>
+#include <istream>
+#include <optional>
 #include <ostream>
 #include <random>
 #include <utility>
@@ -20,6 +22,34 @@ TEST(Person, InfectionStatus_ostream_operator) {
   test(Person::InfectionStatus::GREEN, "green");
   test(Person::InfectionStatus::RED, "red");
   test(Person::InfectionStatus::BLUE, "blue");
+}
+
+TEST(Person, InfectionStatus_istream_operator) {
+  const auto test =
+    [](const auto string,
+       const std::optional<Person::InfectionStatus> expected_value) {
+      std::istringstream is{string};
+      Person::InfectionStatus status;
+
+      if (expected_value) {
+        is >> status;
+        ASSERT_EQ(status, expected_value.value());
+      } else {
+        ASSERT_THROW(is >> status, InfectionStatusException);
+      }
+    };
+
+  test("green", Person::InfectionStatus::GREEN);
+  test("red", Person::InfectionStatus::RED);
+  test("blue", Person::InfectionStatus::BLUE);
+
+  test(" green ", Person::InfectionStatus::GREEN);
+  test(" red ", Person::InfectionStatus::RED);
+  test(" blue ", Person::InfectionStatus::BLUE);
+
+  test("yellow", {});
+  test("greeN", {});
+  test("RED", {});
 }
 
 /* **********************************************

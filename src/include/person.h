@@ -1,6 +1,7 @@
 #ifndef PERSON_H
 #define PERSON_H
 
+#include <istream>
 #include <ostream>
 #include <string>
 
@@ -44,5 +45,6 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Person::InfectionStatus);
+std::istream& operator>>(std::istream&, Person::InfectionStatus&);
 
 #endif // PERSON_H

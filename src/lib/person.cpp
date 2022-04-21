@@ -1,4 +1,5 @@
 #include <cmath> // M_PI const, sqrt
+#include <iostream>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -279,4 +280,21 @@ std::ostream& operator<<(std::ostream& os,
   }
 
   return os;
+}
+
+std::istream& operator>>(std::istream& is, Person::InfectionStatus& status) {
+  std::string buff;
+  is >> buff;
+
+  if (buff == "green") {
+    status = Person::InfectionStatus::GREEN;
+  } else if (buff == "red") {
+    status = Person::InfectionStatus::RED;
+  } else if (buff == "blue") {
+    status = Person::InfectionStatus::BLUE;
+  } else {
+    throw InfectionStatusException(buff);
+  }
+
+  return is;
 }
