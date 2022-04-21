@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <random>
 #include <sstream>
 #include <utility>
 #include <vector>
@@ -119,7 +120,50 @@ City City::from_config(const Config& config) {
     city.add_person(std::move(p2));
     city.add_person(std::move(p3));
   } else if (config.simulation_type == Config::SimulationType::RANDOM) {
-    //
+    const unsigned seed =
+      std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator{seed};
+    std::uniform_real_distribution<double> position_distribution{
+      0, config.city_size};
+    std::uniform_real_distribution<double> velocity_distribution{-0.5, 0.5};
+    std::uniform_real_distribution<double> radius_distribution{0.01, 0.05};
+
+    const auto get_position = [&generator, &position_distribution]() {
+      const auto x = position_distribution(generator);
+      const auto y = position_distribution(generator);
+
+      return Vector2d{x, y};
+    };
+
+    const auto get_velocity = [&generator, &velocity_distribution]() {
+      const auto x = velocity_distribution(generator);
+      const auto y = velocity_distribution(generator);
+
+      return Vector2d{x, y};
+    };
+
+    const auto get_radius = [&generator, &radius_distribution]() {
+      return radius_distribution(generator);
+    };
+
+    const auto get_person = [&get_position, &get_velocity,
+                             &get_radius](const auto status) {
+      const auto position = get_position();
+      const auto velocity = get_velocity();
+      const auto radius = get_radius();
+
+      return Person{position, velocity, radius, status};
+    };
+
+    const int n_red = config.n_people * 0.1;
+    const int n_green = config.n_people - n_red;
+
+    for (auto i = 0; i < n_red; ++i) {
+      city.add_person(get_person(Person::InfectionStatus::RED));
+    }
+    for (auto i = 0; i < n_green; ++i) {
+      city.add_person(get_person(Person::InfectionStatus::GREEN));
+    }
   } else if (config.simulation_type == Config::SimulationType::FILE) {
     //
   } else {
