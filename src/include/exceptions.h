@@ -39,10 +39,16 @@ public:
   Line2dException() noexcept;
 };
 
-class InfectionStatusException : public SimulationBaseException {
+class EnumClassException : public SimulationBaseException {
 public:
-  explicit InfectionStatusException(const char*) noexcept;
-  explicit InfectionStatusException(const std::string&) noexcept;
+  EnumClassException(const char*, const char*) noexcept;
+  EnumClassException(const char*, const std::string&) noexcept;
+};
+
+class ArgumentsParsingException : public SimulationBaseException {
+public:
+  ArgumentsParsingException(const char*) noexcept;
+  ArgumentsParsingException(const std::string&) noexcept;
 };
 
 #endif // EXCEPTIONS_H

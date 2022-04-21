@@ -63,16 +63,26 @@ Line2dException::Line2dException() noexcept {
 }
 
 /* **********************************************
- * InfectionStatusException
+ * EnumClassException
  * *********************************************/
-
-InfectionStatusException::InfectionStatusException(const char* msg) noexcept {
+EnumClassException::EnumClassException(const char* enum_name,
+                                       const char* value) noexcept {
   std::ostringstream os;
-  os << "Unknown InfectionStatus: " << msg;
+  os << "Unknown " << enum_name << " value: " << value;
 
   this->m_msg = os.str();
 }
 
-InfectionStatusException::InfectionStatusException(
+EnumClassException::EnumClassException(const char* enum_name,
+                                       const std::string& value) noexcept
+    : EnumClassException{enum_name, value.c_str()} {}
+
+/* **********************************************
+ * ArgumentsParsingException
+ * *********************************************/
+ArgumentsParsingException::ArgumentsParsingException(const char* msg) noexcept
+    : SimulationBaseException{msg} {}
+
+ArgumentsParsingException::ArgumentsParsingException(
   const std::string& msg) noexcept
-    : InfectionStatusException(msg.c_str()) {}
+    : SimulationBaseException{msg} {}

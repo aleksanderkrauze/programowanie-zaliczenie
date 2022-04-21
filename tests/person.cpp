@@ -35,7 +35,7 @@ TEST(Person, InfectionStatus_istream_operator) {
         is >> status;
         ASSERT_EQ(status, expected_value.value());
       } else {
-        ASSERT_THROW(is >> status, InfectionStatusException);
+        ASSERT_THROW(is >> status, EnumClassException);
       }
     };
 

@@ -293,7 +293,7 @@ std::istream& operator>>(std::istream& is, Person::InfectionStatus& status) {
   } else if (buff == "blue") {
     status = Person::InfectionStatus::BLUE;
   } else {
-    throw InfectionStatusException(buff);
+    throw EnumClassException("InfectionStatus", buff);
   }
 
   return is;
