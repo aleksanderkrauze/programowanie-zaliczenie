@@ -103,11 +103,15 @@ int main(int argc, char* argv[]) {
 
     return 1;
   } catch (const EnumClassException& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Parsing error: " << e.what() << std::endl;
 
     return 1;
   } catch (const ArgumentsParsingException& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Parsing error: " << e.what() << std::endl;
+
+    return 1;
+  } catch (const std::exception& e) {
+    std::cerr << "Caught unexpected error: " << e.what() << std::endl;
 
     return 1;
   }
@@ -125,11 +129,11 @@ int main(int argc, char* argv[]) {
   try {
     auto city = City::from_config(config);
   } catch (const SimulationBaseException& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
 
     return 1;
   } catch (const std::exception& e) {
-    std::cerr << e.what() << std::endl;
+    std::cerr << "Caught unexpected error: " << e.what() << std::endl;
 
     return 1;
   }
