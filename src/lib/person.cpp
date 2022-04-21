@@ -165,7 +165,7 @@ void Person::move(const double dt, const double city_size) {
         return false;
       }
 
-      const auto vector = intersection.value();
+      const auto intersection_point = intersection.value();
 
       // If point of intersection is the same as current position then
       // depending on the direction of translation vector (does it point inside
@@ -174,19 +174,19 @@ void Person::move(const double dt, const double city_size) {
       // point of intersection point in the same direction (by checking if their
       // scalar product is greater then 0). If not, then it is not the point we
       // are looking for.
-      const auto from_position_to_intersection = vector - this->m_position;
-      if (from_position_to_intersection == Vector2d{}) {
+      const auto to_edge = intersection_point - this->m_position;
+      if (to_edge == Vector2d{}) {
         const auto point_outside_city = this->m_position + translation;
         if (is_in_city(point_outside_city)) {
           return false;
         } else {
           return !vector_intersects_city(this->m_position, point_outside_city);
         }
-      } else if (translation * from_position_to_intersection < 0) {
+      } else if (translation * to_edge < 0) {
         return false;
       }
 
-      const auto val = compound(vector);
+      const auto val = compound(intersection_point);
       return compound_in_city_bounds(val);
     };
 
