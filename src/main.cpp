@@ -68,6 +68,17 @@ int main(int argc, char* argv[]) {
       throw ArgumentsParsingException(s.str());
     };
 
+    // Can be called only after config was full initialised
+    const auto warn_unused = [](const auto& arg, const auto& value) {
+      if (arg.isSet()) {
+        std::ostringstream s;
+        s << "Warning: argument --" << arg.getName()
+          << " will be ignored. Using value `" << value << "` instead";
+
+        std::cerr << s.str() << std::endl;
+      }
+    };
+
     switch (type_arg.getValue()) {
     case Config::SimulationType::TEST:
       config.simulation_type = Config::SimulationType::TEST;
@@ -76,6 +87,12 @@ int main(int argc, char* argv[]) {
       config.time = 2.0;
       config.dt = 0.02;
       config.recovery_time = 0.5;
+
+      warn_unused(city_size_arg, config.city_size);
+      warn_unused(n_people_arg, config.n_people);
+      warn_unused(time_arg, config.time);
+      warn_unused(dt_arg, config.dt);
+      warn_unused(recovery_time_arg, config.recovery_time);
       break;
     case Config::SimulationType::RANDOM:
       config.simulation_type = Config::SimulationType::RANDOM;
@@ -84,6 +101,8 @@ int main(int argc, char* argv[]) {
       config.time = get_or_throw(time_arg);
       config.dt = get_or_throw(dt_arg);
       config.recovery_time = get_or_throw(recovery_time_arg);
+
+      warn_unused(city_size_arg, config.city_size);
       break;
     case Config::SimulationType::FILE:
       config.simulation_type = Config::SimulationType::FILE;
