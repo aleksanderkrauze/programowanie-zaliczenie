@@ -1,8 +1,10 @@
+#include <exception>
 #include <iostream>
 #include <sstream>
 
 #include "tclap/CmdLine.h"
 
+#include "city.h"
 #include "config.h"
 #include "exceptions.h"
 
@@ -23,8 +25,7 @@ int main(int argc, char* argv[]) {
     TCLAP::ValueArg<double> city_size_arg = {
       "s", "size", "Size of a city", false, 0.0, "float", cmd};
     TCLAP::ValueArg<std::uint32_t> n_people_arg = {
-      "n",      "nPeople", "Number of people (must be positive!)", false, 0,
-      "number", cmd};
+      "n", "nPeople", "Number of people", false, 0, "number", cmd};
     TCLAP::ValueArg<double> time_arg = {
       "t", "time", "Time of simulation", false, 0.0, "float", cmd};
     TCLAP::ValueArg<double> dt_arg = {"",      "dt", "Value of dt", false, 0.0,
@@ -120,6 +121,18 @@ int main(int argc, char* argv[]) {
             << "save configuration: " << config.save_configuration << std::endl
             << "save frames: " << config.save_frames << std::endl
             << "save animation: " << config.save_animation << std::endl;
+
+  try {
+    auto city = City::from_config(config);
+  } catch (const SimulationBaseException& e) {
+    std::cerr << e.what() << std::endl;
+
+    return 1;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << std::endl;
+
+    return 1;
+  }
 
   return 0;
 }

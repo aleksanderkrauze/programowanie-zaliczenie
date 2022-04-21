@@ -7,17 +7,19 @@
 #include "person.h"
 
 TEST(City, exceptions) {
-#define C(dt, size, rtime) City(0, dt, size, rtime)
+#define C(size, time, dt, rtime) City(size, time, dt, rtime)
 
-  ASSERT_NO_THROW(C(1, 1, 1));
+  ASSERT_NO_THROW(C(1, 1, 1, 1));
 
-  ASSERT_THROW(C(-1, 1, 1), RequiredPositiveDoubleValueException);
-  ASSERT_THROW(C(1, -1, 1), RequiredPositiveDoubleValueException);
-  ASSERT_THROW(C(1, 1, -1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(-1, 1, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, -1, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, -1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, 1, -1), RequiredPositiveDoubleValueException);
 
-  ASSERT_THROW(C(0, 1, 1), RequiredPositiveDoubleValueException);
-  ASSERT_THROW(C(1, 0, 1), RequiredPositiveDoubleValueException);
-  ASSERT_THROW(C(1, 1, 0), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(0, 1, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 0, 1, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, 0, 1), RequiredPositiveDoubleValueException);
+  ASSERT_THROW(C(1, 1, 1, 0), RequiredPositiveDoubleValueException);
 
 #undef C
 }
@@ -28,7 +30,7 @@ TEST(City, add_person) {
 #define SIZE 100.0
 #define EPS 0.1
 
-  City c = {0, 1, SIZE, 1};
+  City c = {SIZE, 1, 1, 1};
 
   // middle
   ASSERT_NO_THROW(c.add_person(P(SIZE / 2, SIZE / 2)));
@@ -67,7 +69,7 @@ TEST(City, is_in_bound) {
 #define SIZE 100.0
 #define EPS 0.1
 
-  City c = {0, 1, SIZE, 1};
+  City c = {SIZE, 1, 1, 1};
 
   // middle
   ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE / 2)));
@@ -101,7 +103,7 @@ TEST(City, is_in_bound) {
 
 TEST(City, people) {
 #define P(r) Person(1, 1, 0, 0, r)
-  City c = {0, 1, 100, 1};
+  City c = {100, 1, 1, 1};
 
   c.add_person(P(1));
   c.add_person(P(2));

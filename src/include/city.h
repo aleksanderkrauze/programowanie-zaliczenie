@@ -1,14 +1,14 @@
 #ifndef CITY_H
 #define CITY_H
 
-#include <cstdint>
 #include <vector>
 
+#include "config.h"
 #include "person.h"
 
 class City {
 public:
-  City(const std::uint32_t, const double, const double, const double);
+  City(const double, const double, const double, const double);
   City(City&&) = default;
   ~City() = default;
 
@@ -18,9 +18,10 @@ public:
   const std::vector<Person>& people() const noexcept;
   bool is_in_bound(const Person&) const noexcept;
 
+  static City from_config(const Config&);
+
 private:
-  std::uint32_t m_n_iter;
-  double m_time, m_dt, m_city_size, m_recovery_time;
+  double m_city_size, m_time, m_dt, m_recovery_time;
   std::vector<Person> m_people;
 
   City(const City&) = default;

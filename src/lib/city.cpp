@@ -4,27 +4,33 @@
 #include <vector>
 
 #include "city.h"
+#include "config.h"
 #include "exceptions.h"
 #include "person.h"
 
 /**
  * # Exceptions
- * - Throws RequiredPositiveDoubleValueException when @dt is less than or equal
- * to zero
  * - Throws RequiredPositiveDoubleValueException when @city_size is less than or
  * equal to zero
+ * - Throws RequiredPositiveDoubleValueException when @time is less than or
+ * equal to zero
+ * - Throws RequiredPositiveDoubleValueException when @dt is less than or equal
+ * to zero
  * - Throws RequiredPositiveDoubleValueException when @recovery_time is less
  * than or equal to zero
  */
-City::City(const std::uint32_t n_iter, const double dt, const double city_size,
+City::City(const double city_size, const double time, const double dt,
            const double recovery_time)
-    : m_n_iter{n_iter}, m_time{0.0}, m_dt{dt}, m_city_size{city_size},
+    : m_city_size{city_size}, m_time{time}, m_dt{dt},
       m_recovery_time{recovery_time}, m_people{} {
-  if (dt <= 0) {
-    throw RequiredPositiveDoubleValueException("dt", dt);
-  }
   if (city_size <= 0) {
     throw RequiredPositiveDoubleValueException("city_size", city_size);
+  }
+  if (time <= 0) {
+    throw RequiredPositiveDoubleValueException("time", city_size);
+  }
+  if (dt <= 0) {
+    throw RequiredPositiveDoubleValueException("dt", dt);
   }
   if (recovery_time <= 0) {
     throw RequiredPositiveDoubleValueException("recovery_time", recovery_time);
@@ -57,6 +63,28 @@ bool City::is_in_bound(const Person& person) const noexcept {
   };
 
   return test(x) && test(y);
+}
+
+City City::from_config(const Config& config) {
+  City city{config.city_size, config.time, config.dt, config.recovery_time};
+
+  if (config.simulation_type == Config::SimulationType::TEST) {
+    Person p1{{0.1, 0.2}, {0.1, 0.2}, 0.02, Person::InfectionStatus::GREEN};
+    Person p2{{0.1, 0.1}, {0.5, 0.3}, 0.05, Person::InfectionStatus::GREEN};
+    Person p3{{0.2, 0.l}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
+
+    city.add_person(std::move(p1));
+    city.add_person(std::move(p2));
+    city.add_person(std::move(p3));
+  } else if (config.simulation_type == Config::SimulationType::RANDOM) {
+    //
+  } else if (config.simulation_type == Config::SimulationType::FILE) {
+    //
+  } else {
+    throw std::runtime_error("Unknown simulation type");
+  }
+
+  return city;
 }
 
 void City::update_recovering() noexcept {
