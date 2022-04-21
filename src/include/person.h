@@ -2,6 +2,7 @@
 #define PERSON_H
 
 #include <istream>
+#include <optional>
 #include <ostream>
 #include <string>
 
@@ -31,6 +32,8 @@ public:
   Person::InfectionStatus infection_status() const noexcept;
   void infection_status(const Person::InfectionStatus) noexcept;
 
+  void register_next_infection_status(const Person::InfectionStatus) noexcept;
+  void apply_next_infection_status() noexcept;
   void move(const double, const double);
 
   static bool is_in_infection_range(const Person&, const Person&);
@@ -38,7 +41,8 @@ public:
 private:
   Vector2d m_position, m_velocity;
   double m_radius, m_time_of_infection;
-  InfectionStatus m_infection_status;
+  Person::InfectionStatus m_infection_status;
+  std::optional<Person::InfectionStatus> m_next_infection_status;
 
   Person(const Person&) = default;
   Person& operator=(const Person&) = default;

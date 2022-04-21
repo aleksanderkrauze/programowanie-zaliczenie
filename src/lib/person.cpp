@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <optional>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -18,7 +19,8 @@
 Person::Person(const Vector2d position, const Vector2d velocity,
                const double radius, const InfectionStatus status)
     : m_position{position}, m_velocity{velocity}, m_radius{radius},
-      m_time_of_infection{0.0}, m_infection_status{status} {
+      m_time_of_infection{0.0}, m_infection_status{status},
+      m_next_infection_status{std::nullopt} {
   if (radius <= 0) {
     throw RequiredPositiveDoubleValueException("radius", radius);
   }
@@ -77,6 +79,18 @@ Person::InfectionStatus Person::infection_status() const noexcept {
 
 void Person::infection_status(const Person::InfectionStatus status) noexcept {
   this->m_infection_status = status;
+}
+
+void Person::register_next_infection_status(
+  const Person::InfectionStatus status) noexcept {
+  this->m_next_infection_status = status;
+}
+
+void Person::apply_next_infection_status() noexcept {
+  if (this->m_next_infection_status) {
+    this->m_infection_status = this->m_next_infection_status.value();
+    this->m_next_infection_status = std::nullopt;
+  }
 }
 
 /**

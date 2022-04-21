@@ -125,6 +125,28 @@ TEST(Person, is_in_infection_range_inside) {
   ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(1, 1, 1)));
 }
 
+TEST(Person, register_and_apply_next_infection_status) {
+  Person p{{}, {}, 1, Person::InfectionStatus::GREEN};
+
+  // only registering does nothing
+  p.register_next_infection_status(Person::InfectionStatus::RED);
+  ASSERT_EQ(p.infection_status(), Person::InfectionStatus::GREEN);
+
+  // applying changes status
+  p.apply_next_infection_status();
+  ASSERT_EQ(p.infection_status(), Person::InfectionStatus::RED);
+
+  // but next apply will not work
+  p.infection_status(Person::InfectionStatus::BLUE);
+  p.apply_next_infection_status();
+  ASSERT_EQ(p.infection_status(), Person::InfectionStatus::BLUE);
+
+  // until we set it again
+  p.register_next_infection_status(Person::InfectionStatus::GREEN);
+  p.apply_next_infection_status();
+  ASSERT_EQ(p.infection_status(), Person::InfectionStatus::GREEN);
+}
+
 /* **********************************************
  * Person::move() tests
  * *********************************************/
