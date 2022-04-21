@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 
+#include "config.h"
 #include "matplotlibcpp.h"
 #include "person.h"
 #include "plotter.h"
@@ -13,7 +14,8 @@ namespace plt = matplotlibcpp;
 namespace plotter {
 
 void plot(const std::vector<Person>& people,
-          const std::uint32_t iteration_number, const double plot_size) {
+          const std::uint32_t iteration_number, const double plot_size,
+          const Config& config) {
   plt::backend("Agg");
   plt::figure_size(1000, 1000);
   plt::xlim(0.0, plot_size);

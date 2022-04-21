@@ -64,13 +64,11 @@ void City::run_simulation(const Config& config) {
   const auto total_frames =
     static_cast<int>(std::ceil(this->m_time / this->m_dt));
 
-  plotter::plot(this->m_people, 0, this->m_city_size);
+  plotter::plot(this->m_people, 0, this->m_city_size, config);
 
   for (auto frame = 1; frame <= total_frames; ++frame) {
-    this->run_frame(config);
-    this->m_current_time += this->m_dt;
-
-    plotter::plot(this->m_people, frame, this->m_city_size);
+    this->run_frame();
+    plotter::plot(this->m_people, frame, this->m_city_size, config);
 
     const auto p = static_cast<int>(100 * static_cast<double>(frame) /
                                     static_cast<double>(total_frames));
@@ -78,10 +76,11 @@ void City::run_simulation(const Config& config) {
   }
 }
 
-void City::run_frame(const Config& config) {
+void City::run_frame() {
   this->move();
   this->infection();
   this->update_recovering();
+  this->m_current_time += this->m_dt;
 }
 
 /**
