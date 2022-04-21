@@ -84,7 +84,7 @@ TEST(Person, setters) {
  * *********************************************/
 
 TEST(Person, exceptions) {
-#define P(r) Person(0, 0, 0, 0, r)
+  const auto P = [](const double r) { return Person{{0, 0}, {0, 0}, r}; };
 
   ASSERT_NO_THROW(P(10.0));
 
@@ -92,15 +92,14 @@ TEST(Person, exceptions) {
   ASSERT_THROW(P(-0.001), RequiredPositiveDoubleValueException);
   ASSERT_THROW(P(-0.5), RequiredPositiveDoubleValueException);
   ASSERT_THROW(P(-5), RequiredPositiveDoubleValueException);
-
-#undef P
 }
 
 /* **********************************************
  * Person::is_in_infection_range() tests
  * *********************************************/
-#define P(x, y, r)                                                             \
-  Person { x, y, 0, 0, r }
+const auto P = [](const double x, const double y, const double r) {
+  return Person{{x, y}, {0, 0}, r};
+};
 
 TEST(Person, is_in_infection_range_apart) {
   ASSERT_FALSE(Person::is_in_infection_range(P(0, 0, 1), P(10, 10, 1)));
@@ -125,8 +124,6 @@ TEST(Person, is_in_infection_range_inside) {
   ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(0, 0, 1)));
   ASSERT_TRUE(Person::is_in_infection_range(P(0, 0, 5), P(1, 1, 1)));
 }
-
-#undef P
 
 /* **********************************************
  * Person::move() tests

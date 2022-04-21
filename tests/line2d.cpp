@@ -46,24 +46,6 @@ TEST(Line2d, normal) {
   ASSERT_EQ(Line2d({0, 0}, {1, 0}).normal(), Vector2d(0, -1));
 }
 
-#include <ostream>
-std::ostream& operator<<(std::ostream& os,
-                         const Line2d::PointPosition position) {
-  switch (position) {
-  case Line2d::PointPosition::LEFT:
-    os << "LEFT";
-    break;
-  case Line2d::PointPosition::MIDDLE:
-    os << "MIDDLE";
-    break;
-  case Line2d::PointPosition::RIGHT:
-    os << "RIGHT";
-    break;
-  }
-
-  return os;
-}
-
 TEST(Line2d, point_position) {
   const Line2d vertical{{1.0, 0.0}, {0.0, 1.0}};
   const Line2d horizontal{{0.0, -1.0}, {2.0, 0.0}};

@@ -1,4 +1,5 @@
 #include <optional>
+#include <ostream>
 #include <tuple>
 
 #include "exceptions.h"
@@ -69,4 +70,21 @@ std::optional<Vector2d> Line2d::intersection(const Line2d& lhs,
   const auto y = -(A1 * C2 - A2 * C1) / D;
 
   return Vector2d{x, y};
+}
+
+std::ostream& operator<<(std::ostream& os,
+                         const Line2d::PointPosition position) {
+  switch (position) {
+  case Line2d::PointPosition::LEFT:
+    os << "LEFT";
+    break;
+  case Line2d::PointPosition::MIDDLE:
+    os << "MIDDLE";
+    break;
+  case Line2d::PointPosition::RIGHT:
+    os << "RIGHT";
+    break;
+  }
+
+  return os;
 }

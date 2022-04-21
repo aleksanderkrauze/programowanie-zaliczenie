@@ -7,7 +7,10 @@
 #include "person.h"
 
 TEST(City, exceptions) {
-#define C(size, time, dt, rtime) City(size, time, dt, rtime)
+  const auto C = [](const double size, const double time, const double dt,
+                    const double rtime) {
+    return City{size, time, dt, rtime};
+  };
 
   ASSERT_NO_THROW(C(1, 1, 1, 1));
 
@@ -20,17 +23,16 @@ TEST(City, exceptions) {
   ASSERT_THROW(C(1, 0, 1, 1), RequiredPositiveDoubleValueException);
   ASSERT_THROW(C(1, 1, 0, 1), RequiredPositiveDoubleValueException);
   ASSERT_THROW(C(1, 1, 1, 0), RequiredPositiveDoubleValueException);
-
-#undef C
 }
 
 TEST(City, add_person) {
-#define P(x, y)                                                                \
-  Person { x, y, 0, 0, 1 }
-#define SIZE 100.0
-#define EPS 0.1
+  const auto P = [](const double x, const double y) {
+    return Person{{x, y}, {0, 0}, 1};
+  };
+  const auto SIZE = 100.0;
+  const auto EPS = 0.1;
 
-  City c = {SIZE, 1, 1, 1};
+  City c{SIZE, 1, 1, 1};
 
   // middle
   ASSERT_NO_THROW(c.add_person(P(SIZE / 2, SIZE / 2)));
@@ -57,19 +59,16 @@ TEST(City, add_person) {
   ASSERT_THROW(c.add_person(P(SIZE / 2, SIZE + EPS)), OutOfCityBoundsException);
   ASSERT_THROW(c.add_person(P(-EPS, SIZE + EPS)), OutOfCityBoundsException);
   ASSERT_THROW(c.add_person(P(-EPS, SIZE / 2)), OutOfCityBoundsException);
-
-#undef P
-#undef SIZE
-#undef EPS
 }
 
 TEST(City, is_in_bound) {
-#define P(x, y)                                                                \
-  Person { x, y, 0, 0, 1 }
-#define SIZE 100.0
-#define EPS 0.1
+  const auto P = [](const double x, const double y) {
+    return Person{{x, y}, {0, 0}, 1};
+  };
+  const auto SIZE = 100.0;
+  const auto EPS = 0.1;
 
-  City c = {SIZE, 1, 1, 1};
+  City c{SIZE, 1, 1, 1};
 
   // middle
   ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE / 2)));
@@ -95,14 +94,10 @@ TEST(City, is_in_bound) {
   ASSERT_FALSE(c.is_in_bound(P(SIZE / 2, SIZE + EPS)));
   ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE + EPS)));
   ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE / 2)));
-
-#undef P
-#undef SIZE
-#undef EPS
 }
 
 TEST(City, people) {
-#define P(r) Person(1, 1, 0, 0, r)
+  const auto P = [](const double r) { return Person{{1, 1}, {0, 0}, r}; };
   City c = {100, 1, 1, 1};
 
   c.add_person(P(1));
@@ -120,6 +115,4 @@ TEST(City, people) {
 
     ASSERT_EQ(r, i + 1);
   }
-
-#undef P
 }

@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <tuple>
+#include <ostream>
 
 #include "vector2d.h"
 
@@ -29,5 +30,7 @@ public:
 private:
   double m_A, m_B, m_C;
 };
+
+std::ostream& operator<<(std::ostream&, const Line2d::PointPosition);
 
 #endif // LINE_2D_H
