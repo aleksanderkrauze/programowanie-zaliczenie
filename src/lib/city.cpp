@@ -6,7 +6,9 @@
 #include "city.h"
 #include "config.h"
 #include "exceptions.h"
+#include "line2d.h"
 #include "person.h"
+#include "vector2d.h"
 
 /**
  * # Exceptions
@@ -27,7 +29,7 @@ City::City(const double city_size, const double time, const double dt,
     throw RequiredPositiveDoubleValueException("city_size", city_size);
   }
   if (time <= 0) {
-    throw RequiredPositiveDoubleValueException("time", city_size);
+    throw RequiredPositiveDoubleValueException("time", time);
   }
   if (dt <= 0) {
     throw RequiredPositiveDoubleValueException("dt", dt);
@@ -43,7 +45,7 @@ City::City(const double city_size, const double time, const double dt,
  * size bounds
  */
 void City::add_person(Person&& person) {
-  if (!this->is_in_bound(person)) {
+  if (!City::is_in_bound(person.position(), this->m_city_size)) {
     throw OutOfCityBoundsException(person, this->m_city_size);
   }
 
@@ -54,15 +56,28 @@ const std::vector<Person>& City::people() const noexcept {
   return this->m_people;
 }
 
-bool City::is_in_bound(const Person& person) const noexcept {
-  const auto [x, y] = person.position().tuple();
-  const auto size = this->m_city_size;
+/**
+ * # Exceptions
+ * - Throws RequiredPositiveDoubleValueException when @city_size is less than or
+ * equal to zero
+ */
+bool City::is_in_bound(const Vector2d& p, const double city_size) {
+  if (city_size <= 0) {
+    throw RequiredPositiveDoubleValueException("city_size", city_size);
+  }
 
-  const auto test = [size](const auto val) {
-    return (0 <= val) && (val <= size);
-  };
+  const Line2d right_edge{{city_size, 0.0}, {0.0, 1.0}};
+  const Line2d top_edge{{city_size, city_size}, {-1.0, 0.0}};
+  const Line2d left_edge{{0.0, city_size}, {0.0, -1.0}};
+  const Line2d bottom_edge{{0.0, 0.0}, {1.0, 0.0}};
 
-  return test(x) && test(y);
+  // We must check position in relation to lines, because due to floating
+  // point arithmetic we could be *slightly* outside, but is reality on the
+  // edge.
+  return !(right_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+         !(top_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+         !(left_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
+         !(bottom_edge.point_position(p) == Line2d::PointPosition::RIGHT);
 }
 
 City City::from_config(const Config& config) {

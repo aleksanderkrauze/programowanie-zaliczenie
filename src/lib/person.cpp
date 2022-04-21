@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "city.h"
 #include "exceptions.h"
 #include "line2d.h"
 #include "person.h"
@@ -110,17 +111,6 @@ void Person::move(const double dt, const double city_size) {
     return (0 <= val) && (val <= city_size);
   };
 
-  // Returns true <=> point @p is inside city with size @city_size.
-  const auto is_in_city = [&](const auto& p) {
-    // We must check position in relation to lines, because due to floating
-    // point arithmetic we could be *slightly* outside, but is reality on the
-    // edge.
-    return !(right_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
-           !(top_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
-           !(left_edge.point_position(p) == Line2d::PointPosition::RIGHT) &&
-           !(bottom_edge.point_position(p) == Line2d::PointPosition::RIGHT);
-  };
-
   // Returns intersection of given @edge and line passing through current
   // position and direction the same as vector's @v.
   const auto get_intersection = [this](const auto& edge, const auto& v) {
@@ -159,8 +149,8 @@ void Person::move(const double dt, const double city_size) {
   // - it is proper intersection for current @translation
   // - it's proper @compound is in bounds of [0, @city_size]
   const auto is_intersection_ok =
-    [this, &translation, &compound_in_city_bounds, &is_in_city,
-     &vector_intersects_city](const auto& intersection, const auto& compound) {
+    [this, &translation, &compound_in_city_bounds, &vector_intersects_city,
+     city_size](const auto& intersection, const auto& compound) {
       if (!intersection) {
         return false;
       }
@@ -177,7 +167,7 @@ void Person::move(const double dt, const double city_size) {
       const auto to_edge = intersection_point - this->m_position;
       if (to_edge == Vector2d{}) {
         const auto point_outside_city = this->m_position + translation;
-        if (is_in_city(point_outside_city)) {
+        if (City::is_in_bound(point_outside_city, city_size)) {
           return false;
         } else {
           return !vector_intersects_city(this->m_position, point_outside_city);
@@ -213,7 +203,7 @@ void Person::move(const double dt, const double city_size) {
   };
 
   // Checking if starting position is inside city bounds
-  if (!is_in_city(this->m_position)) {
+  if (!City::is_in_bound(this->m_position, city_size)) {
     std::ostringstream msg;
     msg << "Called Person::move() with parameter city_size = " << city_size
         << " on person with position = " << this->m_position;
@@ -226,7 +216,7 @@ void Person::move(const double dt, const double city_size) {
   // Moving Person
   while (true) {
     const Vector2d candidate_position = this->m_position + translation;
-    if (is_in_city(candidate_position)) {
+    if (City::is_in_bound(candidate_position, city_size)) {
       this->m_position = candidate_position;
       break;
     }

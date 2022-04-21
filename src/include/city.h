@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "person.h"
+#include "vector2d.h"
 
 class City {
 public:
@@ -16,8 +17,8 @@ public:
 
   void add_person(Person&&);
   const std::vector<Person>& people() const noexcept;
-  bool is_in_bound(const Person&) const noexcept;
 
+  static bool is_in_bound(const Vector2d&, const double);
   static City from_config(const Config&);
 
 private:

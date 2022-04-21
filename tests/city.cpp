@@ -62,38 +62,33 @@ TEST(City, add_person) {
 }
 
 TEST(City, is_in_bound) {
-  const auto P = [](const double x, const double y) {
-    return Person{{x, y}, {0, 0}, 1};
-  };
   const auto SIZE = 100.0;
   const auto EPS = 0.1;
 
-  City c{SIZE, 1, 1, 1};
-
   // middle
-  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE / 2)));
+  ASSERT_TRUE(City::is_in_bound({SIZE / 2, SIZE / 2}, SIZE));
 
   // sides
-  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, 0.0)));
-  ASSERT_TRUE(c.is_in_bound(P(SIZE, SIZE / 2)));
-  ASSERT_TRUE(c.is_in_bound(P(SIZE / 2, SIZE)));
-  ASSERT_TRUE(c.is_in_bound(P(0.0, SIZE / 2)));
+  ASSERT_TRUE(City::is_in_bound({SIZE / 2, 0.0}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({SIZE, SIZE / 2}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({SIZE / 2, SIZE}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({0.0, SIZE / 2}, SIZE));
 
   // corners
-  ASSERT_TRUE(c.is_in_bound(P(0.0, 0.0)));
-  ASSERT_TRUE(c.is_in_bound(P(SIZE, 0.0)));
-  ASSERT_TRUE(c.is_in_bound(P(SIZE, SIZE)));
-  ASSERT_TRUE(c.is_in_bound(P(0.0, SIZE)));
+  ASSERT_TRUE(City::is_in_bound({0.0, 0.0}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({SIZE, 0.0}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({SIZE, SIZE}, SIZE));
+  ASSERT_TRUE(City::is_in_bound({0.0, SIZE}, SIZE));
 
   // outside (bottom left corner going counter-clockwise)
-  ASSERT_FALSE(c.is_in_bound(P(-EPS, -EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(SIZE / 2, -EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, -EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE / 2)));
-  ASSERT_FALSE(c.is_in_bound(P(SIZE + EPS, SIZE + EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(SIZE / 2, SIZE + EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE + EPS)));
-  ASSERT_FALSE(c.is_in_bound(P(-EPS, SIZE / 2)));
+  ASSERT_FALSE(City::is_in_bound({-EPS, -EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({SIZE / 2, -EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({SIZE + EPS, -EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({SIZE + EPS, SIZE / 2}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({SIZE + EPS, SIZE + EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({SIZE / 2, SIZE + EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({-EPS, SIZE + EPS}, SIZE));
+  ASSERT_FALSE(City::is_in_bound({-EPS, SIZE / 2}, SIZE));
 }
 
 TEST(City, people) {
