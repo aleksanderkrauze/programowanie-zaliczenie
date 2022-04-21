@@ -22,7 +22,7 @@
 City::City(const double city_size, const double time, const double dt,
            const double recovery_time)
     : m_city_size{city_size}, m_time{time}, m_dt{dt},
-      m_recovery_time{recovery_time}, m_people{} {
+      m_recovery_time{recovery_time}, m_current_time{0.0}, m_people{} {
   if (city_size <= 0) {
     throw RequiredPositiveDoubleValueException("city_size", city_size);
   }
@@ -90,7 +90,8 @@ City City::from_config(const Config& config) {
 void City::update_recovering() noexcept {
   for (auto& person : this->m_people) {
     if (person.infection_status() == Person::InfectionStatus::RED) {
-      if (person.time_of_infection() + this->m_recovery_time <= this->m_time) {
+      if (person.time_of_infection() + this->m_recovery_time <=
+          this->m_current_time) {
         person.infection_status(Person::InfectionStatus::BLUE);
       }
     }

@@ -21,7 +21,7 @@ public:
   static City from_config(const Config&);
 
 private:
-  double m_city_size, m_time, m_dt, m_recovery_time;
+  double m_city_size, m_time, m_dt, m_recovery_time, m_current_time;
   std::vector<Person> m_people;
 
   City(const City&) = default;
