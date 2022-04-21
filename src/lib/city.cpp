@@ -158,11 +158,11 @@ City City::from_config(const Config& config) {
     const int n_red = config.n_people * 0.1;
     const int n_green = config.n_people - n_red;
 
-    for (auto i = 0; i < n_red; ++i) {
-      city.add_person(get_person(Person::InfectionStatus::RED));
-    }
     for (auto i = 0; i < n_green; ++i) {
       city.add_person(get_person(Person::InfectionStatus::GREEN));
+    }
+    for (auto i = 0; i < n_red; ++i) {
+      city.add_person(get_person(Person::InfectionStatus::RED));
     }
   } else if (config.simulation_type == Config::SimulationType::FILE) {
     //
