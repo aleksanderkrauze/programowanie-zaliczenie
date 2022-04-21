@@ -1,4 +1,4 @@
-#include <cmath> // M_PI const, sqrt
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <sstream>

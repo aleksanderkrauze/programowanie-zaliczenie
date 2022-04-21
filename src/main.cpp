@@ -124,10 +124,12 @@ int main(int argc, char* argv[]) {
             << "recovery time: " << config.recovery_time << std::endl
             << "save configuration: " << config.save_configuration << std::endl
             << "save frames: " << config.save_frames << std::endl
-            << "save animation: " << config.save_animation << std::endl;
+            << "save animation: " << config.save_animation << std::endl
+            << std::endl;
 
   try {
     auto city = City::from_config(config);
+    city.run_simulation(config);
   } catch (const SimulationBaseException& e) {
     std::cerr << "Error: " << e.what() << std::endl;
 

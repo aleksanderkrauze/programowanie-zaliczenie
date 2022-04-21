@@ -15,11 +15,10 @@ namespace plotter {
 void plot(const std::vector<Person>& people,
           const std::uint32_t iteration_number, const double plot_size) {
   plt::backend("Agg");
-
+  plt::figure_size(1000, 1000);
   plt::xlim(0.0, plot_size);
   plt::ylim(0.0, plot_size);
-  plt::xlabel("x");
-  plt::ylabel("y");
+  plt::set_aspect_equal();
 
   const double radius_to_pixel = 200;
   for (const auto& p : people) {
@@ -33,7 +32,7 @@ void plot(const std::vector<Person>& people,
     std::ostringstream colour;
     colour << p.infection_status();
 
-    matplotlibcpp::scatter(xs, ys, circle_area, {{"color", colour.str()}});
+    plt::scatter(xs, ys, circle_area, {{"color", colour.str()}});
   }
 
   const int frameNumberWidth = 4;

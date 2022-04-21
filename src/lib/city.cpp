@@ -1,4 +1,7 @@
+#include <chrono>
+#include <cmath>
 #include <cstdint>
+#include <iostream>
 #include <sstream>
 #include <utility>
 #include <vector>
@@ -8,6 +11,7 @@
 #include "exceptions.h"
 #include "line2d.h"
 #include "person.h"
+#include "plotter.h"
 #include "vector2d.h"
 
 /**
@@ -56,6 +60,30 @@ const std::vector<Person>& City::people() const noexcept {
   return this->m_people;
 }
 
+void City::run_simulation(const Config& config) {
+  const auto total_frames =
+    static_cast<int>(std::ceil(this->m_time / this->m_dt));
+
+  plotter::plot(this->m_people, 0, this->m_city_size);
+
+  for (auto frame = 1; frame <= total_frames; ++frame) {
+    this->run_frame(config);
+    this->m_current_time += this->m_dt;
+
+    plotter::plot(this->m_people, frame, this->m_city_size);
+
+    const auto p = static_cast<int>(100 * static_cast<double>(frame) /
+                                    static_cast<double>(total_frames));
+    std::cout << "Created frame no. " << frame << " [" << p << "%]\n";
+  }
+}
+
+void City::run_frame(const Config& config) {
+  this->move();
+  this->infection();
+  this->update_recovering();
+}
+
 /**
  * # Exceptions
  * - Throws RequiredPositiveDoubleValueException when @city_size is less than or
@@ -86,7 +114,7 @@ City City::from_config(const Config& config) {
   if (config.simulation_type == Config::SimulationType::TEST) {
     Person p1{{0.1, 0.2}, {0.1, 0.2}, 0.02, Person::InfectionStatus::GREEN};
     Person p2{{0.1, 0.1}, {0.5, 0.3}, 0.05, Person::InfectionStatus::GREEN};
-    Person p3{{0.2, 0.l}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
+    Person p3{{0.2, 0.1}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
 
     city.add_person(std::move(p1));
     city.add_person(std::move(p2));
@@ -115,10 +143,12 @@ void City::update_recovering() noexcept {
 
 void City::infection() noexcept {
   const size_t size = this->m_people.size();
-  const auto check_and_infect = [](const auto& infected_person, auto& person) {
+  const auto check_and_infect = [this](const auto& infected_person,
+                                       auto& person) {
     if (person.infection_status() == Person::InfectionStatus::GREEN &&
         Person::is_in_infection_range(infected_person, person)) {
       person.infection_status(Person::InfectionStatus::RED);
+      person.time_of_infection(this->m_current_time);
     }
   };
 

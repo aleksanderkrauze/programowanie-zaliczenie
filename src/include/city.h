@@ -17,6 +17,9 @@ public:
 
   void add_person(Person&&);
   const std::vector<Person>& people() const noexcept;
+  
+  void run_simulation(const Config&);
+  void run_frame(const Config&);
 
   static bool is_in_bound(const Vector2d&, const double);
   static City from_config(const Config&);
