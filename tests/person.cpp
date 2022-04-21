@@ -342,7 +342,7 @@ TEST(Person, move_reverse_fuzzy_testing) {
     std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine generator{seed};
   std::uniform_real_distribution<double> position_distribution{0, city_size};
-  std::uniform_real_distribution<double> velocity_distribution{0,
+  std::uniform_real_distribution<double> velocity_distribution{-city_size / 2.0,
                                                                city_size / 2.0};
 
   const auto get_position = [&generator, &position_distribution]() {
