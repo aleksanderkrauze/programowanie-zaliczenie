@@ -42,40 +42,82 @@ else()
 
 	set(LOCAL_PYTHON_INCLUDE_DIRS
 		${Python3_INCLUDE_DIRS}
-		${Python3_NumPy_INCLUDE_DIRS}
+		# ${Python3_NumPy_INCLUDE_DIRS}
 	)
 	set(LOCAL_PYTHON_LIBS
 		${Python3_LIBRARIES}
-		Python3::NumPy
+		# Python3::NumPy
 	)
 endif()
 
 # ###############################################
 # defining targets names, sources, include directories, etc.
 # ###############################################
+set(SRC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(TESTS_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+set(3RD_PARTY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party")
+
 set(TARGET_BIN_NAME simulation)
 set(TARGET_LIB_NAME simulationlib)
 set(TARGET_TESTS_NAME tests)
 set(MATPLOTLIBCPP_LIB_NAME matplotlibcpp)
 set(TCLAP_LIB_NAME tclap)
+set(PYBIND11_LIB_NAME pybind11)
+set(MATPLOTLIBCPP17_LIB_NAME matplotlibcpp17)
 
-set(TARGET_BIN_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
-file(GLOB TARGET_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/*.cpp")
-set(TARGET_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src/include")
-file(GLOB TARGET_TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
+set(TARGET_BIN_SRC "${SRC_ROOT}/main.cpp")
+file(GLOB TARGET_LIB_SRC "${SRC_ROOT}/lib/*.cpp")
+set(TARGET_INCLUDE_DIRS "${SRC_ROOT}/include")
+file(GLOB TARGET_TEST_SRC "${TESTS_ROOT}/*.cpp")
 
-set(MATPLOTLIBCPP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp/matplotlibcpp.h")
-set(MATPLOTLIBCPP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/matplotlibcpp")
+set(MATPLOTLIBCPP_LIB_SRC "${3RD_PARTY_ROOT}/matplotlibcpp/matplotlibcpp.h")
+set(MATPLOTLIBCPP_INCLUDE_DIRS "${3RD_PARTY_ROOT}/matplotlibcpp")
 
-file(GLOB TCLAP_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/tclap/*.h")
-set(TCLAP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/")
+file(GLOB TCLAP_LIB_SRC "${3RD_PARTY_ROOT}/tclap/*.h")
+set(TCLAP_INCLUDE_DIRS "${3RD_PARTY_ROOT}")
 
+file(GLOB PYBIND11_LIB_SRC "${3RD_PARTY_ROOT}/pybind11/*.h")
+set(PYBIND11_INCLUDE_DIRS "${3RD_PARTY_ROOT}/pybind11")
+
+file(GLOB MATPLOTLIBCPP17_LIB_SRC "${3RD_PARTY_ROOT}/matplotlibcpp17/*.h")
+set(MATPLOTLIBCPP17_INCLUDE_DIRS "${3RD_PARTY_ROOT}")
+
+# ###############################################
+# target pybind11
+# ###############################################
+add_library(${PYBIND11_LIB_NAME} INTERFACE)
+
+target_sources(${PYBIND11_LIB_NAME} INTERFACE
+	${PYBIND11_LIB_SRC}
+)
+
+target_link_libraries(${PYBIND11_LIB_NAME} INTERFACE
+	${LOCAL_PYTHON_LIBS}
+)
+
+# ###############################################
+# target matplotlibcpp17
+# ###############################################
+add_library(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE)
+
+target_sources(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
+	${MATPLOTLIBCPP17_LIB_SRC}
+)
+
+target_include_directories(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
+	${LOCAL_PYTHON_INCLUDE_DIRS}
+	${PYBIND11_INCLUDE_DIRS}
+)
+
+target_link_libraries(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
+	${LOCAL_PYTHON_LIBS}
+	${PYBIND11_LIB_NAME}
+)
 # ###############################################
 # target matplotlibcpp.h
 # ###############################################
 add_library(${MATPLOTLIBCPP_LIB_NAME} INTERFACE)
 
-# Divide adding library and specifying it's sources to support older versions of CMake
 target_sources(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
 	${MATPLOTLIBCPP_LIB_SRC}
 )
@@ -106,11 +148,14 @@ add_library(${TARGET_LIB_NAME} STATIC
 
 target_include_directories(${TARGET_LIB_NAME} PUBLIC
 	${TARGET_INCLUDE_DIRS}
-	${MATPLOTLIBCPP_INCLUDE_DIRS}
+	# ${MATPLOTLIBCPP_INCLUDE_DIRS}
+	${PYBIND11_INCLUDE_DIRS}
+	${MATPLOTLIBCPP17_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_LIB_NAME} PUBLIC
-	${MATPLOTLIBCPP_LIB_NAME}
+	# ${MATPLOTLIBCPP_LIB_NAME}
+	${MATPLOTLIBCPP17_LIB_NAME}
 )
 
 # ###############################################
