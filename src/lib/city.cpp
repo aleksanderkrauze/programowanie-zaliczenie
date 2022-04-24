@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <ostream>
 #include <random>
 #include <sstream>
 #include <utility>
@@ -82,6 +83,12 @@ void City::run_frame() {
   this->infection();
   this->update_recovering();
   this->m_current_time += this->m_dt;
+}
+
+void City::write_state(std::ostream& os) const {
+  for (const auto& p : this->m_people) {
+    os << p << "\n";
+  }
 }
 
 /**

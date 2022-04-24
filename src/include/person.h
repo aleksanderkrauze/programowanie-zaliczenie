@@ -50,5 +50,6 @@ private:
 
 std::ostream& operator<<(std::ostream&, const Person::InfectionStatus);
 std::istream& operator>>(std::istream&, Person::InfectionStatus&);
+std::ostream& operator<<(std::ostream&, const Person&);
 
 #endif // PERSON_H

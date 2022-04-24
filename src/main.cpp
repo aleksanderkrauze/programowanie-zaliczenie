@@ -1,4 +1,5 @@
 #include <exception>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -155,7 +156,40 @@ int main(int argc, char* argv[]) {
 
   try {
     auto city = City::from_config(config);
+
+    const auto save_state = [&city](const auto filename) {
+      std::cout << "Saving City's state to " << filename << std::endl;
+
+      std::ofstream file;
+      file.exceptions(std::fstream::failbit | std::fstream::badbit);
+      try {
+        file.open(filename);
+        city.write_state(file);
+      }
+      // XXX: This exception is not beeing caught even it *should* be.
+      // For now I will leave it here and in future I will try to fix this.
+      // See: https://stackoverflow.com/questions/40246459
+      catch (const std::fstream::failure& e) {
+        file.close();
+
+        std::ostringstream s;
+        s << "Couldn't write to file " << filename;
+        throw IOException(s.str());
+      } catch (const std::exception& e) {
+        file.close();
+        throw e;
+      }
+    };
+
+    if (config.save_initial_state) {
+      save_state("initial_state.txt");
+    }
+
     city.run_simulation(config);
+
+    if (config.save_final_state) {
+      save_state("final_state.txt");
+    }
   } catch (const SimulationBaseException& e) {
     std::cerr << "Error: " << e.what() << std::endl;
 

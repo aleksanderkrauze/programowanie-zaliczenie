@@ -302,3 +302,15 @@ std::istream& operator>>(std::istream& is, Person::InfectionStatus& status) {
 
   return is;
 }
+
+std::ostream& operator<<(std::ostream& os, const Person& p) {
+  const auto [x, y] = p.position().tuple();
+  const auto [vx, vy] = p.velocity().tuple();
+  const auto radius = p.radius();
+  const auto status = p.infection_status();
+
+  os << x << " " << y << " "
+     << " " << vx << " " << vy << " " << radius << " " << status;
+
+  return os;
+}

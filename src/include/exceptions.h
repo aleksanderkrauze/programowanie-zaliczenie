@@ -51,4 +51,10 @@ public:
   ArgumentsParsingException(const std::string&) noexcept;
 };
 
+class IOException : SimulationBaseException {
+public:
+  IOException(const char*) noexcept;
+  IOException(const std::string&) noexcept;
+};
+
 #endif // EXCEPTIONS_H

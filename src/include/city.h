@@ -2,6 +2,7 @@
 #define CITY_H
 
 #include <vector>
+#include <ostream>
 
 #include "config.h"
 #include "person.h"
@@ -20,6 +21,7 @@ public:
 
   void run_simulation(const Config&);
   void run_frame();
+  void write_state(std::ostream&) const;
 
   static bool is_in_bound(const Vector2d&, const double);
   static City from_config(const Config&);

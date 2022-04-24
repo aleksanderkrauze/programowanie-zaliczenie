@@ -86,3 +86,12 @@ ArgumentsParsingException::ArgumentsParsingException(const char* msg) noexcept
 ArgumentsParsingException::ArgumentsParsingException(
   const std::string& msg) noexcept
     : SimulationBaseException{msg} {}
+
+/* **********************************************
+ * IOException
+ * *********************************************/
+IOException::IOException(const char* msg) noexcept
+    : SimulationBaseException{msg} {}
+
+IOException::IOException(const std::string& msg) noexcept
+    : SimulationBaseException{msg} {}
