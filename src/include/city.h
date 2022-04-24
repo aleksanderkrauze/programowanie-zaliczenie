@@ -12,6 +12,7 @@ class City {
 public:
   City(const double, const double, const double, const double);
 
+  City(const City&) = delete;
   City& operator=(const City&) = delete;
   City(City&&) = default;
   City& operator=(City&&) = delete;
@@ -31,8 +32,6 @@ private:
   const double m_city_size, m_time, m_dt, m_recovery_time;
   double m_current_time;
   std::vector<Person> m_people;
-
-  City(const City&) = default;
 
   void update_recovering() noexcept;
   void infection() noexcept;

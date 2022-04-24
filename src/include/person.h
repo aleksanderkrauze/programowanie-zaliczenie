@@ -25,6 +25,7 @@ public:
   Person(const double, const double, const double, const double, const double);
   Person(const _PersonData&);
 
+  Person(const Person&) = delete;
   Person& operator=(const Person&) = delete;
   Person(Person&&) = default;
   Person& operator=(Person&&) = delete;
@@ -52,8 +53,6 @@ private:
   double m_time_of_infection;
   Person::InfectionStatus m_infection_status;
   std::optional<Person::InfectionStatus> m_next_infection_status;
-
-  Person(const Person&) = default;
 };
 
 struct _PersonData {
