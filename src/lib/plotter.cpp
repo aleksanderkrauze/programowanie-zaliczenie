@@ -23,19 +23,13 @@ static std::optional<py::scoped_interpreter> py_interpreter_guard =
 void plot(const std::vector<Person>& people,
           const std::uint32_t iteration_number, const double plot_size,
           const Config& config) {
-  // plt::backend("Agg");
-  // plt::figure_size(1000, 1000);
-  // plt::xlim(0.0, plot_size);
-  // plt::ylim(0.0, plot_size);
-  // plt::set_aspect_equal();
-
   // This is a dirty hack, but it seems to work.
   // Potentaily move it outside this function.
   char env[] = "MPLBACKEND=agg";
   putenv(env);
 
   // This access and modification is safe, because this program uses only one
-  // (main) thread.
+  // thread (main).
   if (!py_interpreter_guard) {
     py_interpreter_guard.emplace(py::scoped_interpreter{});
   }
@@ -47,21 +41,10 @@ void plot(const std::vector<Person>& people,
   ax.set_xlim(Args(0.0, plot_size));
   ax.set_ylim(Args(0.0, plot_size));
 
-  const double radius_to_pixel = 200;
   for (const auto& p : people) {
     const auto [x, y] = p.position().tuple();
-    const std::vector<double> xs = {x};
-    const std::vector<double> ys = {y};
-
-    const auto radius = p.radius() * radius_to_pixel;
-    const auto circle_area = M_PI * radius * radius;
-
     std::ostringstream colour;
     colour << p.infection_status();
-
-    // plt::scatter(xs, ys, circle_area, {{"color", colour.str()}});
-    // plt.scatter(Args(xs, ys), Kwargs("s"_a = circle_area, "c"_a =
-    // colour.str()));
 
     auto circle = matplotlibcpp17::patches::Circle(
       Args(Args(x, y), p.radius()),
@@ -73,8 +56,6 @@ void plot(const std::vector<Person>& people,
   std::ostringstream ostr;
   ostr << "plots/frame_" << std::setfill('0') << std::setw(frameNumberWidth)
        << iteration_number << ".png";
-  // plt::save(ostr.str());
-  // plt::close();
   plt.savefig(Args(ostr.str()));
   plt.cla();
 }
