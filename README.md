@@ -17,6 +17,9 @@ Program `simulation` może zostać uruchomiony w 3 trybach: test, random, file. 
 W trybie "test" program przeprowadza symulację dla 3 testowych osób. W trybie "random" losuje n osób w
 mieście o rozmiarze 1.0. A w trybie "file" wczytuje początkowe informacje o osobach z podanego pliku.
 
+Poszczególne klatki symulacji będą zapisywane w jako `plots/frame_xxxx.png` jeżeli flaga --saveFrames
+zostanie przekazana do programu.
+
 W celu zobaczenia wszystkich informacji o dostępnych opcjach wywołaj `simulation --help`.
 
 ## Struktura projektu

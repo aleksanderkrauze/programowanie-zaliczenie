@@ -67,11 +67,17 @@ void City::run_simulation(const Config& config) {
   const auto total_frames =
     static_cast<int>(std::ceil(this->m_time / this->m_dt));
 
-  plotter::plot(this->m_people, 0, this->m_city_size, config);
+  const auto plot = [this, &config](const auto frame_no) {
+    if (config.save_frames) {
+      plotter::plot(this->m_people, frame_no, this->m_city_size, config);
+    }
+  };
+
+  plot(0);
 
   for (auto frame = 1; frame <= total_frames; ++frame) {
     this->run_frame();
-    plotter::plot(this->m_people, frame, this->m_city_size, config);
+    plot(frame);
 
     const auto p = static_cast<int>(100 * static_cast<double>(frame) /
                                     static_cast<double>(total_frames));
