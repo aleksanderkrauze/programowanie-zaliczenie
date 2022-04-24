@@ -60,13 +60,8 @@ int main(int argc, char* argv[]) {
       "saved to a file `final_state.txt`",
       cmd};
     TCLAP::SwitchArg save_frames_switch = {
-      "", "saveFrames",
+      "", "save",
       "When turned on simulation frames will be saved in the plots/ directory",
-      cmd};
-    TCLAP::SwitchArg save_animation_switch = {
-      "", "saveAnimation",
-      "When turned on frames combined into a .gif will be saved in the plots/ "
-      "directory",
       cmd};
 
     cmd.parse(argc, argv);
@@ -146,7 +141,6 @@ int main(int argc, char* argv[]) {
     config.save_initial_state = save_initial_state_switch.getValue();
     config.save_final_state = save_final_state_switch.getValue();
     config.save_frames = save_frames_switch.getValue();
-    config.save_animation = save_animation_switch.getValue();
   } catch (const TCLAP::ArgException& e) {
     std::cerr << "Parsing error: " << e.error() << " for argument " << e.argId()
               << std::endl;

@@ -21,7 +21,6 @@ struct Config {
   bool save_initial_state;
   bool save_final_state;
   bool save_frames;
-  bool save_animation;
 };
 
 std::ostream& operator<<(std::ostream&, const Config::SimulationType);

@@ -14,8 +14,7 @@ namespace plt = matplotlibcpp;
 namespace plotter {
 
 void plot(const std::vector<Person>& people,
-          const std::uint32_t iteration_number, const double plot_size,
-          const Config& config) {
+          const std::uint32_t iteration_number, const double plot_size) {
   plt::backend("Agg");
   plt::figure_size(1000, 1000);
   plt::xlim(0.0, plot_size);
@@ -44,14 +43,5 @@ void plot(const std::vector<Person>& people,
   plt::save(ostr.str());
   plt::close();
 }
-
-void makeAnimation() {
-  std::cout << "Plotter: making animation" << std::endl;
-  std::string command = "cd plots; convert frame_*.png animation.gif";
-  system(command.c_str());
-  std::cout << "Done." << std::endl;
-}
-
-void clean() { system("cd plots; rm -f animation.gif; rm -f frame*.png"); }
 
 } // namespace plotter

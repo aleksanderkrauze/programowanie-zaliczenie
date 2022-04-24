@@ -69,7 +69,7 @@ void City::run_simulation(const Config& config) {
 
   const auto plot = [this, &config](const auto frame_no) {
     if (config.save_frames) {
-      plotter::plot(this->m_people, frame_no, this->m_city_size, config);
+      plotter::plot(this->m_people, frame_no, this->m_city_size);
     }
   };
 
