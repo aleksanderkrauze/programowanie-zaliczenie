@@ -25,8 +25,9 @@ public:
   Person(const double, const double, const double, const double, const double);
   Person(const _PersonData&);
 
+  Person& operator=(const Person&) = delete;
   Person(Person&&) = default;
-  Person& operator=(Person&&) = default;
+  Person& operator=(Person&&) = delete;
   ~Person() = default;
 
   Vector2d position() const noexcept;
@@ -47,12 +48,12 @@ public:
 
 private:
   Vector2d m_position, m_velocity;
-  double m_radius, m_time_of_infection;
+  const double m_radius;
+  double m_time_of_infection;
   Person::InfectionStatus m_infection_status;
   std::optional<Person::InfectionStatus> m_next_infection_status;
 
   Person(const Person&) = default;
-  Person& operator=(const Person&) = default;
 };
 
 struct _PersonData {
