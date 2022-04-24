@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "tclap/CmdLine.h"
 
@@ -38,6 +39,15 @@ int main(int argc, char* argv[]) {
       false,
       0.0,
       "float",
+      cmd};
+    TCLAP::ValueArg<std::string> input_file_arg = {
+      "i",
+      "input",
+      "File from which initial configuration is loaded when --type is file. "
+      "Defaults to input_configuration.txt",
+      false,
+      "input_configuration.txt",
+      "FILE",
       cmd};
     TCLAP::SwitchArg save_initial_state_switch = {
       "", "saveInitialState",
@@ -84,6 +94,14 @@ int main(int argc, char* argv[]) {
         std::cerr << s.str() << std::endl;
       }
     };
+    const auto warn_unused_short = [](const auto& arg) {
+      if (arg.isSet()) {
+        std::ostringstream s;
+        s << "Warning: argument --" << arg.getName() << " will be ignored.";
+
+        std::cerr << s.str() << std::endl;
+      }
+    };
 
     switch (type_arg.getValue()) {
     case Config::SimulationType::TEST:
@@ -99,6 +117,7 @@ int main(int argc, char* argv[]) {
       warn_unused(time_arg, config.time);
       warn_unused(dt_arg, config.dt);
       warn_unused(recovery_time_arg, config.recovery_time);
+      warn_unused_short(input_file_arg);
       break;
     case Config::SimulationType::RANDOM:
       config.simulation_type = Config::SimulationType::RANDOM;
@@ -109,14 +128,19 @@ int main(int argc, char* argv[]) {
       config.recovery_time = get_or_throw(recovery_time_arg);
 
       warn_unused(city_size_arg, config.city_size);
+      warn_unused_short(input_file_arg);
       break;
     case Config::SimulationType::FILE:
       config.simulation_type = Config::SimulationType::FILE;
       config.city_size = get_or_throw(city_size_arg);
-      config.n_people = get_or_throw(n_people_arg);
+      // Set it to something
+      config.n_people = 0;
       config.time = get_or_throw(time_arg);
       config.dt = get_or_throw(dt_arg);
       config.recovery_time = get_or_throw(recovery_time_arg);
+      config.input_file = input_file_arg.getValue();
+
+      warn_unused_short(n_people_arg);
       break;
     }
     config.save_initial_state = save_initial_state_switch.getValue();
@@ -142,18 +166,6 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::cout << "simulation type: " << config.simulation_type << std::endl
-            << "city size: " << config.city_size << std::endl
-            << "number of people: " << config.n_people << std::endl
-            << "time: " << config.time << std::endl
-            << "dt: " << config.dt << std::endl
-            << "recovery time: " << config.recovery_time << std::endl
-            << "save initial state: " << config.save_initial_state << std::endl
-            << "save final state: " << config.save_final_state << std::endl
-            << "save frames: " << config.save_frames << std::endl
-            << "save animation: " << config.save_animation << std::endl
-            << std::endl;
-
   try {
     auto city = City::from_config(config);
 
@@ -169,15 +181,15 @@ int main(int argc, char* argv[]) {
       // XXX: This exception is not beeing caught even it *should* be.
       // For now I will leave it here and in future I will try to fix this.
       // See: https://stackoverflow.com/questions/40246459
-      catch (const std::fstream::failure& e) {
+      catch (const std::fstream::failure&) {
         file.close();
 
         std::ostringstream s;
         s << "Couldn't write to file " << filename;
         throw IOException(s.str());
-      } catch (const std::exception& e) {
+      } catch (const std::exception&) {
         file.close();
-        throw e;
+        throw;
       }
     };
 

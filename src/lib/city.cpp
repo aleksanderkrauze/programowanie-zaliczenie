@@ -1,6 +1,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <iostream>
 #include <ostream>
 #include <random>
@@ -236,5 +237,34 @@ void City::add_random_people(const Config& config) noexcept {
 }
 
 void City::add_from_file_people(const Config& config) {
-  //
+  const auto& filename = config.input_file;
+  std::cout << "Loading configuration from file " << filename << std::endl;
+
+  std::ifstream file;
+  file.exceptions(std::fstream::failbit | std::fstream::badbit);
+  try {
+    file.open(filename);
+
+    _PersonData data;
+    while (file >> data) {
+      this->add_person(Person{data});
+    }
+  }
+  // XXX: The same problem as in main.cpp when opening ofstream.
+  catch (const std::fstream::failure&) {
+    file.close();
+
+    // XXX: This is a **very** dirty hack, but it seams to work
+    if (!file.eof()) {
+      std::ostringstream s;
+      s << "Couldn't read City's configuration from file " << filename;
+      throw IOException(s.str());
+    } else {
+      // We got to the end of file, that means that *probably* that was the
+      // cause for this exception. In which case we igore it.
+    }
+  } catch (const std::exception&) {
+    file.close();
+    throw;
+  }
 }
