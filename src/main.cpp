@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     TCLAP::ValueArg<double> dt_arg = {"",      "dt", "Value of dt", false, 0.0,
                                       "float", cmd};
     TCLAP::ValueArg<double> recovery_time_arg = {
-      "",
+      "r",
       "recoveryTime",
       "Time for a person to recover from a infection",
       false,
