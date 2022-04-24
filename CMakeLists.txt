@@ -42,11 +42,9 @@ else()
 
 	set(LOCAL_PYTHON_INCLUDE_DIRS
 		${Python3_INCLUDE_DIRS}
-		# ${Python3_NumPy_INCLUDE_DIRS}
 	)
 	set(LOCAL_PYTHON_LIBS
 		${Python3_LIBRARIES}
-		# Python3::NumPy
 	)
 endif()
 
@@ -60,7 +58,6 @@ set(3RD_PARTY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/3rd_party")
 set(TARGET_BIN_NAME simulation)
 set(TARGET_LIB_NAME simulationlib)
 set(TARGET_TESTS_NAME tests)
-set(MATPLOTLIBCPP_LIB_NAME matplotlibcpp)
 set(TCLAP_LIB_NAME tclap)
 set(PYBIND11_LIB_NAME pybind11)
 set(MATPLOTLIBCPP17_LIB_NAME matplotlibcpp17)
@@ -69,9 +66,6 @@ set(TARGET_BIN_SRC "${SRC_ROOT}/main.cpp")
 file(GLOB TARGET_LIB_SRC "${SRC_ROOT}/lib/*.cpp")
 set(TARGET_INCLUDE_DIRS "${SRC_ROOT}/include")
 file(GLOB TARGET_TEST_SRC "${TESTS_ROOT}/*.cpp")
-
-set(MATPLOTLIBCPP_LIB_SRC "${3RD_PARTY_ROOT}/matplotlibcpp/matplotlibcpp.h")
-set(MATPLOTLIBCPP_INCLUDE_DIRS "${3RD_PARTY_ROOT}/matplotlibcpp")
 
 file(GLOB TCLAP_LIB_SRC "${3RD_PARTY_ROOT}/tclap/*.h")
 set(TCLAP_INCLUDE_DIRS "${3RD_PARTY_ROOT}")
@@ -113,22 +107,6 @@ target_link_libraries(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
 	${LOCAL_PYTHON_LIBS}
 	${PYBIND11_LIB_NAME}
 )
-# ###############################################
-# target matplotlibcpp.h
-# ###############################################
-add_library(${MATPLOTLIBCPP_LIB_NAME} INTERFACE)
-
-target_sources(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
-	${MATPLOTLIBCPP_LIB_SRC}
-)
-
-target_include_directories(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
-	${LOCAL_PYTHON_INCLUDE_DIRS}
-)
-
-target_link_libraries(${MATPLOTLIBCPP_LIB_NAME} INTERFACE
-	${LOCAL_PYTHON_LIBS}
-)
 
 # ###############################################
 # target tclap
@@ -148,13 +126,11 @@ add_library(${TARGET_LIB_NAME} STATIC
 
 target_include_directories(${TARGET_LIB_NAME} PUBLIC
 	${TARGET_INCLUDE_DIRS}
-	# ${MATPLOTLIBCPP_INCLUDE_DIRS}
 	${PYBIND11_INCLUDE_DIRS}
 	${MATPLOTLIBCPP17_INCLUDE_DIRS}
 )
 
 target_link_libraries(${TARGET_LIB_NAME} PUBLIC
-	# ${MATPLOTLIBCPP_LIB_NAME}
 	${MATPLOTLIBCPP17_LIB_NAME}
 )
 
