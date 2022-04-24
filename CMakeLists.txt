@@ -108,6 +108,14 @@ target_link_libraries(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
 	${PYBIND11_LIB_NAME}
 )
 
+# define this to disable warnings on my local machine
+# It promises that I have installed matplotlib with at least version 3.4.x
+if(NOT(BUILD_ENV_REMOTE))
+	target_compile_definitions(${MATPLOTLIBCPP17_LIB_NAME} INTERFACE
+		MATPLOTLIB_MINOR_VER_GTE_4
+	)
+endif()
+
 # ###############################################
 # target tclap
 # ###############################################
