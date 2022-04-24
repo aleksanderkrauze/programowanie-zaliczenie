@@ -191,10 +191,10 @@ TEST(Person, move_exceptions) {
 
   // Throw OutOfCityBoundsException when starting position is outside given
   // city_size. Do that check before checking if velocity vector is 0.
-  p = {{5, 5}, {1, -1}, 1};
-  ASSERT_THROW(p.move(1, 1), OutOfCityBoundsException);
-  p = {{5, 5}, {0, 0}, 1};
-  ASSERT_THROW(p.move(1, 1), OutOfCityBoundsException);
+  Person p2{{5, 5}, {1, -1}, 1};
+  ASSERT_THROW(p2.move(1, 1), OutOfCityBoundsException);
+  Person p3{{5, 5}, {0, 0}, 1};
+  ASSERT_THROW(p3.move(1, 1), OutOfCityBoundsException);
 }
 
 TEST(Person, move_zero_velocity) {

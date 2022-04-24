@@ -9,3 +9,6 @@ plots/
 
 # core dumps
 core*
+
+# input/output files
+*.txt

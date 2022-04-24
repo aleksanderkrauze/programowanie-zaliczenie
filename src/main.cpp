@@ -1,6 +1,8 @@
 #include <exception>
+#include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "tclap/CmdLine.h"
 
@@ -31,26 +33,35 @@ int main(int argc, char* argv[]) {
     TCLAP::ValueArg<double> dt_arg = {"",      "dt", "Value of dt", false, 0.0,
                                       "float", cmd};
     TCLAP::ValueArg<double> recovery_time_arg = {
-      "",
+      "r",
       "recoveryTime",
       "Time for a person to recover from a infection",
       false,
       0.0,
       "float",
       cmd};
-    TCLAP::SwitchArg save_configuration_arg = {
-      "", "saveConfiguration",
+    TCLAP::ValueArg<std::string> input_file_arg = {
+      "i",
+      "input",
+      "File from which initial configuration is loaded when --type is file. "
+      "Defaults to input_configuration.txt",
+      false,
+      "input_configuration.txt",
+      "FILE",
+      cmd};
+    TCLAP::SwitchArg save_initial_state_switch = {
+      "", "saveInitialState",
       "When turned on the initial city state will be "
-      "saved to a file `output_configuration.txt`",
+      "saved to a file `initial_state.txt`",
       cmd};
-    TCLAP::SwitchArg save_frames_arg = {
-      "", "saveFrames",
+    TCLAP::SwitchArg save_final_state_switch = {
+      "", "saveFinalState",
+      "When turned on the final city state will be "
+      "saved to a file `final_state.txt`",
+      cmd};
+    TCLAP::SwitchArg save_frames_switch = {
+      "", "save",
       "When turned on simulation frames will be saved in the plots/ directory",
-      cmd};
-    TCLAP::SwitchArg save_animation_arg = {
-      "", "saveAnimation",
-      "When turned on frames combined into a .gif will be saved in the plots/ "
-      "directory",
       cmd};
 
     cmd.parse(argc, argv);
@@ -78,6 +89,14 @@ int main(int argc, char* argv[]) {
         std::cerr << s.str() << std::endl;
       }
     };
+    const auto warn_unused_short = [](const auto& arg) {
+      if (arg.isSet()) {
+        std::ostringstream s;
+        s << "Warning: argument --" << arg.getName() << " will be ignored.";
+
+        std::cerr << s.str() << std::endl;
+      }
+    };
 
     switch (type_arg.getValue()) {
     case Config::SimulationType::TEST:
@@ -93,6 +112,7 @@ int main(int argc, char* argv[]) {
       warn_unused(time_arg, config.time);
       warn_unused(dt_arg, config.dt);
       warn_unused(recovery_time_arg, config.recovery_time);
+      warn_unused_short(input_file_arg);
       break;
     case Config::SimulationType::RANDOM:
       config.simulation_type = Config::SimulationType::RANDOM;
@@ -103,19 +123,24 @@ int main(int argc, char* argv[]) {
       config.recovery_time = get_or_throw(recovery_time_arg);
 
       warn_unused(city_size_arg, config.city_size);
+      warn_unused_short(input_file_arg);
       break;
     case Config::SimulationType::FILE:
       config.simulation_type = Config::SimulationType::FILE;
       config.city_size = get_or_throw(city_size_arg);
-      config.n_people = get_or_throw(n_people_arg);
+      // Set it to something
+      config.n_people = 0;
       config.time = get_or_throw(time_arg);
       config.dt = get_or_throw(dt_arg);
       config.recovery_time = get_or_throw(recovery_time_arg);
+      config.input_file = input_file_arg.getValue();
+
+      warn_unused_short(n_people_arg);
       break;
     }
-    config.save_configuration = save_configuration_arg.getValue();
-    config.save_frames = save_frames_arg.getValue();
-    config.save_animation = save_animation_arg.getValue();
+    config.save_initial_state = save_initial_state_switch.getValue();
+    config.save_final_state = save_final_state_switch.getValue();
+    config.save_frames = save_frames_switch.getValue();
   } catch (const TCLAP::ArgException& e) {
     std::cerr << "Parsing error: " << e.error() << " for argument " << e.argId()
               << std::endl;
@@ -135,20 +160,42 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  std::cout << "simulation type: " << config.simulation_type << std::endl
-            << "city size: " << config.city_size << std::endl
-            << "number of people: " << config.n_people << std::endl
-            << "time: " << config.time << std::endl
-            << "dt: " << config.dt << std::endl
-            << "recovery time: " << config.recovery_time << std::endl
-            << "save configuration: " << config.save_configuration << std::endl
-            << "save frames: " << config.save_frames << std::endl
-            << "save animation: " << config.save_animation << std::endl
-            << std::endl;
-
   try {
     auto city = City::from_config(config);
+
+    const auto save_state = [&city](const auto filename) {
+      std::cout << "Saving City's state to " << filename << std::endl;
+
+      std::ofstream file;
+      file.exceptions(std::fstream::failbit | std::fstream::badbit);
+      try {
+        file.open(filename);
+        city.write_state(file);
+      }
+      // XXX: This exception is not beeing caught even it *should* be.
+      // For now I will leave it here and in future I will try to fix this.
+      // See: https://stackoverflow.com/questions/40246459
+      catch (const std::fstream::failure&) {
+        file.close();
+
+        std::ostringstream s;
+        s << "Couldn't write to file " << filename;
+        throw IOException(s.str());
+      } catch (const std::exception&) {
+        file.close();
+        throw;
+      }
+    };
+
+    if (config.save_initial_state) {
+      save_state("initial_state.txt");
+    }
+
     city.run_simulation(config);
+
+    if (config.save_final_state) {
+      save_state("final_state.txt");
+    }
   } catch (const SimulationBaseException& e) {
     std::cerr << "Error: " << e.what() << std::endl;
 

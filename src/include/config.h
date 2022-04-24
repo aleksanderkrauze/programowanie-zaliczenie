@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <istream>
 #include <ostream>
+#include <string>
 
 struct Config {
   enum class SimulationType { TEST, RANDOM, FILE };
@@ -14,10 +15,12 @@ struct Config {
   double time;
   double dt;
   double recovery_time;
+  // This is used only if simulation_type is FILE
+  std::string input_file;
 
-  bool save_configuration;
+  bool save_initial_state;
+  bool save_final_state;
   bool save_frames;
-  bool save_animation;
 };
 
 std::ostream& operator<<(std::ostream&, const Config::SimulationType);

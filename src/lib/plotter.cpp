@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 
-// #include "matplotlibcpp.h"
 #include "matplotlibcpp17/patches.h"
 #include "matplotlibcpp17/pyplot.h"
 
@@ -13,16 +12,13 @@
 #include "person.h"
 #include "plotter.h"
 
-// namespace plt = matplotlibcpp;
-
 namespace plotter {
 
 static std::optional<py::scoped_interpreter> py_interpreter_guard =
   std::nullopt;
 
 void plot(const std::vector<Person>& people,
-          const std::uint32_t iteration_number, const double plot_size,
-          const Config& config) {
+          const std::uint32_t iteration_number, const double plot_size) {
   // This is a dirty hack, but it seems to work.
   // Potentaily move it outside this function.
   char env[] = "MPLBACKEND=agg";
@@ -59,14 +55,5 @@ void plot(const std::vector<Person>& people,
   plt.savefig(Args(ostr.str()));
   plt.cla();
 }
-
-void makeAnimation() {
-  std::cout << "Plotter: making animation" << std::endl;
-  std::string command = "cd plots; convert frame_*.png animation.gif";
-  system(command.c_str());
-  std::cout << "Done." << std::endl;
-}
-
-void clean() { system("cd plots; rm -f animation.gif; rm -f frame*.png"); }
 
 } // namespace plotter

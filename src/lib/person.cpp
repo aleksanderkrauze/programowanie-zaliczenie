@@ -51,6 +51,9 @@ Person::Person(const double x, const double y, const double vx, const double vy,
                const double radius)
     : Person{{x, y}, {vx, vy}, radius, Person::InfectionStatus::GREEN} {}
 
+Person::Person(const _PersonData& data)
+    : Person{data.x, data.y, data.vx, data.vy, data.radius, data.status} {}
+
 Vector2d Person::position() const noexcept { return this->m_position; }
 
 void Person::position(const Vector2d position) noexcept {
@@ -299,6 +302,34 @@ std::istream& operator>>(std::istream& is, Person::InfectionStatus& status) {
   } else {
     throw EnumClassException("InfectionStatus", buff);
   }
+
+  return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Person& p) {
+  const auto [x, y] = p.position().tuple();
+  const auto [vx, vy] = p.velocity().tuple();
+  const auto radius = p.radius();
+  const auto status = p.infection_status();
+
+  os << x << " " << y << " "
+     << " " << vx << " " << vy << " " << radius << " " << status;
+
+  return os;
+}
+
+std::istream& operator>>(std::istream& is, _PersonData& data) {
+  double x, y, vx, vy, radius;
+  Person::InfectionStatus status;
+
+  is >> x >> y >> vx >> vy >> radius >> status;
+
+  data.x = x;
+  data.y = y;
+  data.vx = vx;
+  data.vy = vy;
+  data.radius = radius;
+  data.status = status;
 
   return is;
 }

@@ -1,5 +1,5 @@
 # TODOs:
-	- Add option to save both initial and final state of a simulation
-	- Set proper member variables constant in all classes
+	- Why const std::fstream::failure& isn't caught?! Fix it.
+
 	- Add option for RequiredPositive... to report where it was thrown.
- 	- add constexpr where applicable
+ 	- Add constexpr where applicable.

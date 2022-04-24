@@ -8,6 +8,12 @@
 
 #include "vector2d.h"
 
+// Since Person doesn't have an empty constuctor we can't use
+// std::istream& operator>> to construct a Person. To fix this this struct is
+// defined. Person has a constructor that takes this structure and for this
+// structure there is defined proper operator>>.
+struct _PersonData;
+
 class Person {
 public:
   enum class InfectionStatus { GREEN, RED, BLUE };
@@ -17,9 +23,12 @@ public:
   Person(const double, const double, const double, const double, const double,
          const InfectionStatus);
   Person(const double, const double, const double, const double, const double);
+  Person(const _PersonData&);
 
+  Person(const Person&) = delete;
+  Person& operator=(const Person&) = delete;
   Person(Person&&) = default;
-  Person& operator=(Person&&) = default;
+  Person& operator=(Person&&) = delete;
   ~Person() = default;
 
   Vector2d position() const noexcept;
@@ -40,15 +49,20 @@ public:
 
 private:
   Vector2d m_position, m_velocity;
-  double m_radius, m_time_of_infection;
+  const double m_radius;
+  double m_time_of_infection;
   Person::InfectionStatus m_infection_status;
   std::optional<Person::InfectionStatus> m_next_infection_status;
+};
 
-  Person(const Person&) = default;
-  Person& operator=(const Person&) = default;
+struct _PersonData {
+  double x, y, vx, vy, radius;
+  Person::InfectionStatus status;
 };
 
 std::ostream& operator<<(std::ostream&, const Person::InfectionStatus);
 std::istream& operator>>(std::istream&, Person::InfectionStatus&);
+std::ostream& operator<<(std::ostream&, const Person&);
+std::istream& operator>>(std::istream&, _PersonData&);
 
 #endif // PERSON_H

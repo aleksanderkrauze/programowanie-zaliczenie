@@ -1,7 +1,9 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <fstream>
 #include <iostream>
+#include <ostream>
 #include <random>
 #include <sstream>
 #include <utility>
@@ -65,11 +67,17 @@ void City::run_simulation(const Config& config) {
   const auto total_frames =
     static_cast<int>(std::ceil(this->m_time / this->m_dt));
 
-  plotter::plot(this->m_people, 0, this->m_city_size, config);
+  const auto plot = [this, &config](const auto frame_no) {
+    if (config.save_frames) {
+      plotter::plot(this->m_people, frame_no, this->m_city_size);
+    }
+  };
+
+  plot(0);
 
   for (auto frame = 1; frame <= total_frames; ++frame) {
     this->run_frame();
-    plotter::plot(this->m_people, frame, this->m_city_size, config);
+    plot(frame);
 
     const auto p = static_cast<int>(100 * static_cast<double>(frame) /
                                     static_cast<double>(total_frames));
@@ -82,6 +90,12 @@ void City::run_frame() {
   this->infection();
   this->update_recovering();
   this->m_current_time += this->m_dt;
+}
+
+void City::write_state(std::ostream& os) const {
+  for (const auto& p : this->m_people) {
+    os << p << "\n";
+  }
 }
 
 /**
@@ -112,60 +126,11 @@ City City::from_config(const Config& config) {
   City city{config.city_size, config.time, config.dt, config.recovery_time};
 
   if (config.simulation_type == Config::SimulationType::TEST) {
-    Person p1{{0.1, 0.2}, {0.1, 0.2}, 0.02, Person::InfectionStatus::GREEN};
-    Person p2{{0.1, 0.1}, {0.5, 0.3}, 0.05, Person::InfectionStatus::GREEN};
-    Person p3{{0.2, 0.1}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
-
-    city.add_person(std::move(p1));
-    city.add_person(std::move(p2));
-    city.add_person(std::move(p3));
+    city.add_test_people();
   } else if (config.simulation_type == Config::SimulationType::RANDOM) {
-    const unsigned seed =
-      std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine generator{seed};
-    std::uniform_real_distribution<double> position_distribution{
-      0, config.city_size};
-    std::uniform_real_distribution<double> velocity_distribution{-0.5, 0.5};
-    std::uniform_real_distribution<double> radius_distribution{0.01, 0.05};
-
-    const auto get_position = [&generator, &position_distribution]() {
-      const auto x = position_distribution(generator);
-      const auto y = position_distribution(generator);
-
-      return Vector2d{x, y};
-    };
-
-    const auto get_velocity = [&generator, &velocity_distribution]() {
-      const auto x = velocity_distribution(generator);
-      const auto y = velocity_distribution(generator);
-
-      return Vector2d{x, y};
-    };
-
-    const auto get_radius = [&generator, &radius_distribution]() {
-      return radius_distribution(generator);
-    };
-
-    const auto get_person = [&get_position, &get_velocity,
-                             &get_radius](const auto status) {
-      const auto position = get_position();
-      const auto velocity = get_velocity();
-      const auto radius = get_radius();
-
-      return Person{position, velocity, radius, status};
-    };
-
-    const int n_red = config.n_people * 0.1;
-    const int n_green = config.n_people - n_red;
-
-    for (auto i = 0; i < n_green; ++i) {
-      city.add_person(get_person(Person::InfectionStatus::GREEN));
-    }
-    for (auto i = 0; i < n_red; ++i) {
-      city.add_person(get_person(Person::InfectionStatus::RED));
-    }
+    city.add_random_people(config);
   } else if (config.simulation_type == Config::SimulationType::FILE) {
-    //
+    city.add_from_file_people(config);
   } else {
     throw std::runtime_error("Unknown simulation type");
   }
@@ -217,5 +182,95 @@ void City::infection() noexcept {
 void City::move() noexcept {
   for (auto& p : this->m_people) {
     p.move(this->m_dt, this->m_city_size);
+  }
+}
+
+void City::add_test_people() noexcept {
+  Person p1{{0.1, 0.2}, {0.1, 0.2}, 0.02, Person::InfectionStatus::GREEN};
+  Person p2{{0.1, 0.1}, {0.5, 0.3}, 0.05, Person::InfectionStatus::GREEN};
+  Person p3{{0.2, 0.1}, {0.3, 0.6}, 0.03, Person::InfectionStatus::RED};
+
+  this->add_person(std::move(p1));
+  this->add_person(std::move(p2));
+  this->add_person(std::move(p3));
+}
+
+void City::add_random_people(const Config& config) noexcept {
+  const unsigned seed =
+    std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine generator{seed};
+  std::uniform_real_distribution<double> position_distribution{
+    0, config.city_size};
+  std::uniform_real_distribution<double> velocity_distribution{-0.5, 0.5};
+  std::uniform_real_distribution<double> radius_distribution{0.01, 0.05};
+
+  const auto get_position = [&generator, &position_distribution]() {
+    const auto x = position_distribution(generator);
+    const auto y = position_distribution(generator);
+
+    return Vector2d{x, y};
+  };
+
+  const auto get_velocity = [&generator, &velocity_distribution]() {
+    const auto x = velocity_distribution(generator);
+    const auto y = velocity_distribution(generator);
+
+    return Vector2d{x, y};
+  };
+
+  const auto get_radius = [&generator, &radius_distribution]() {
+    return radius_distribution(generator);
+  };
+
+  const auto get_person = [&get_position, &get_velocity,
+                           &get_radius](const auto status) {
+    const auto position = get_position();
+    const auto velocity = get_velocity();
+    const auto radius = get_radius();
+
+    return Person{position, velocity, radius, status};
+  };
+
+  const int n_red = config.n_people * 0.1;
+  const int n_green = config.n_people - n_red;
+
+  for (auto i = 0; i < n_green; ++i) {
+    this->add_person(get_person(Person::InfectionStatus::GREEN));
+  }
+  for (auto i = 0; i < n_red; ++i) {
+    this->add_person(get_person(Person::InfectionStatus::RED));
+  }
+}
+
+void City::add_from_file_people(const Config& config) {
+  const auto& filename = config.input_file;
+  std::cout << "Loading configuration from file " << filename << std::endl;
+
+  std::ifstream file;
+  file.exceptions(std::fstream::failbit | std::fstream::badbit);
+  try {
+    file.open(filename);
+
+    _PersonData data;
+    while (file >> data) {
+      this->add_person(Person{data});
+    }
+  }
+  // XXX: The same problem as in main.cpp when opening ofstream.
+  catch (const std::fstream::failure&) {
+    file.close();
+
+    // XXX: This is a **very** dirty hack, but it seams to work
+    if (!file.eof()) {
+      std::ostringstream s;
+      s << "Couldn't read City's configuration from file " << filename;
+      throw IOException(s.str());
+    } else {
+      // We got to the end of file, that means that *probably* that was the
+      // cause for this exception. In which case we igore it.
+    }
+  } catch (const std::exception&) {
+    file.close();
+    throw;
   }
 }
