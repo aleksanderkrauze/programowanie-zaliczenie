@@ -15,7 +15,8 @@ struct Config {
   double dt;
   double recovery_time;
 
-  bool save_configuration;
+  bool save_initial_state;
+  bool save_final_state;
   bool save_frames;
   bool save_animation;
 };

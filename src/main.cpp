@@ -38,16 +38,21 @@ int main(int argc, char* argv[]) {
       0.0,
       "float",
       cmd};
-    TCLAP::SwitchArg save_configuration_arg = {
-      "", "saveConfiguration",
+    TCLAP::SwitchArg save_initial_state_switch = {
+      "", "saveInitialState",
       "When turned on the initial city state will be "
-      "saved to a file `output_configuration.txt`",
+      "saved to a file `initial_state.txt`",
       cmd};
-    TCLAP::SwitchArg save_frames_arg = {
+    TCLAP::SwitchArg save_final_state_switch = {
+      "", "saveFinalState",
+      "When turned on the final city state will be "
+      "saved to a file `final_state.txt`",
+      cmd};
+    TCLAP::SwitchArg save_frames_switch = {
       "", "saveFrames",
       "When turned on simulation frames will be saved in the plots/ directory",
       cmd};
-    TCLAP::SwitchArg save_animation_arg = {
+    TCLAP::SwitchArg save_animation_switch = {
       "", "saveAnimation",
       "When turned on frames combined into a .gif will be saved in the plots/ "
       "directory",
@@ -113,9 +118,10 @@ int main(int argc, char* argv[]) {
       config.recovery_time = get_or_throw(recovery_time_arg);
       break;
     }
-    config.save_configuration = save_configuration_arg.getValue();
-    config.save_frames = save_frames_arg.getValue();
-    config.save_animation = save_animation_arg.getValue();
+    config.save_initial_state = save_initial_state_switch.getValue();
+    config.save_final_state = save_final_state_switch.getValue();
+    config.save_frames = save_frames_switch.getValue();
+    config.save_animation = save_animation_switch.getValue();
   } catch (const TCLAP::ArgException& e) {
     std::cerr << "Parsing error: " << e.error() << " for argument " << e.argId()
               << std::endl;
@@ -141,7 +147,8 @@ int main(int argc, char* argv[]) {
             << "time: " << config.time << std::endl
             << "dt: " << config.dt << std::endl
             << "recovery time: " << config.recovery_time << std::endl
-            << "save configuration: " << config.save_configuration << std::endl
+            << "save initial state: " << config.save_initial_state << std::endl
+            << "save final state: " << config.save_final_state << std::endl
             << "save frames: " << config.save_frames << std::endl
             << "save animation: " << config.save_animation << std::endl
             << std::endl;
