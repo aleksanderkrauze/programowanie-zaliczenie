@@ -171,12 +171,11 @@ int main(int argc, char* argv[]) {
       try {
         file.open(filename);
         city.write_state(file);
-      }
-      // XXX: This exception is not beeing caught even it *should* be.
-      // For now I will leave it here and in future I will try to fix this.
-      // See: https://stackoverflow.com/questions/40246459
-      catch (const std::fstream::failure&) {
         file.close();
+      } catch (const std::fstream::failure&) {
+        if (file.is_open()) {
+          file.close();
+        }
 
         std::ostringstream s;
         s << "Couldn't write to file " << filename;

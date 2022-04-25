@@ -253,13 +253,19 @@ void City::add_from_file_people(const Config& config) {
     file.open(filename);
 
     _PersonData data;
-    while (file >> data) {
+    std::string line;
+    while (getline(file, line)) {
+      std::istringstream is{line};
+      is >> data;
+
       this->add_person(Person{data});
     }
-  }
-  // XXX: The same problem as in main.cpp when opening ofstream.
-  catch (const std::fstream::failure&) {
+
     file.close();
+  } catch (const std::fstream::failure&) {
+    if (file.is_open()) {
+      file.close();
+    }
 
     // XXX: This is a **very** dirty hack, but it seams to work
     if (!file.eof()) {

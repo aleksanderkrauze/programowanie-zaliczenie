@@ -51,7 +51,7 @@ public:
   ArgumentsParsingException(const std::string&) noexcept;
 };
 
-class IOException : SimulationBaseException {
+class IOException : public SimulationBaseException {
 public:
   IOException(const char*) noexcept;
   IOException(const std::string&) noexcept;

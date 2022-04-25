@@ -1,5 +1,8 @@
 # TODOs:
-	- Why const std::fstream::failure& isn't caught?! Fix it.
-
-	- Add option for RequiredPositive... to report where it was thrown.
+	- Update EnumClassException so it tells when string is empty
+	- Mark classes as final
+	- Make operator<<,>>s friends of proper classes
  	- Add constexpr where applicable.
+
+	- Add more meningfull error messages when parsing incorect data
+	- Add option for RequiredPositive... to report where it was thrown.
