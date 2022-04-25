@@ -1,5 +1,4 @@
 # TODOs:
-	- Mark classes as final
 	- Make operator<<,>>s friends of proper classes
  	- Add constexpr where applicable.
 

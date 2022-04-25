@@ -8,7 +8,7 @@
 #include "person.h"
 #include "vector2d.h"
 
-class City {
+class City final {
 public:
   City(const double, const double, const double, const double);
 
