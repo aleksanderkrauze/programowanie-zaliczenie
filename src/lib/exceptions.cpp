@@ -64,8 +64,16 @@ EnumClassException::EnumClassException(const char* enum_name,
 }
 
 EnumClassException::EnumClassException(const char* enum_name,
-                                       const std::string& value) noexcept
-    : EnumClassException{enum_name, value.c_str()} {}
+                                       const std::string& value) noexcept {
+  std::ostringstream os;
+  if (value.length()) {
+    os << "Empty enum value";
+  } else {
+    os << "Unknown " << enum_name << " value: " << value;
+  }
+
+  this->m_msg = os.str();
+}
 
 ArgumentsParsingException::ArgumentsParsingException(const char* msg) noexcept
     : SimulationBaseException{msg} {}
