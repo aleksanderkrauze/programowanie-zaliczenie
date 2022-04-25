@@ -167,10 +167,11 @@ void City::infection() noexcept {
       for (size_t j = 0; j < i; ++j) {
         check_and_register_infection(current_person, this->m_people[j]);
       }
-    }
-    // all people after current_person
-    for (size_t j = i + 1; j < size; ++j) {
-      check_and_register_infection(current_person, this->m_people[j]);
+
+      // all people after current_person
+      for (size_t j = i + 1; j < size; ++j) {
+        check_and_register_infection(current_person, this->m_people[j]);
+      }
     }
   }
 
