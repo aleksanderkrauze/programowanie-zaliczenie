@@ -1,5 +1,4 @@
 # TODOs:
-	- Update EnumClassException so it tells when string is empty
 	- Mark classes as final
 	- Make operator<<,>>s friends of proper classes
  	- Add constexpr where applicable.
