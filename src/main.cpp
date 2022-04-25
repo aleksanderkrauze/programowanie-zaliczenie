@@ -203,6 +203,10 @@ int main(int argc, char* argv[]) {
     std::cerr << "Caught unexpected error: " << e.what() << std::endl;
 
     return 1;
+  } catch(...) {
+    std::cerr << "Caught unknown exception" << std::endl;
+    
+    return 1;
   }
 
   return 0;
