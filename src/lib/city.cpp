@@ -260,24 +260,15 @@ void City::add_from_file_people(const Config& config) {
 
       this->add_person(Person{data});
     }
-
-    file.close();
   } catch (const std::fstream::failure&) {
-    if (file.is_open()) {
-      file.close();
-    }
-
     // XXX: This is a **very** dirty hack, but it seams to work
-    if (!file.eof()) {
+    if (file.eof() && file.fail()) {
+      // We got to the end of file, that means that *probably* that was the
+      // cause for this exception. In which case we igore it.
+    } else {
       std::ostringstream s;
       s << "Couldn't read City's configuration from file " << filename;
       throw IOException(s.str());
-    } else {
-      // We got to the end of file, that means that *probably* that was the
-      // cause for this exception. In which case we igore it.
     }
-  } catch (const std::exception&) {
-    file.close();
-    throw;
   }
 }

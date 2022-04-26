@@ -171,18 +171,10 @@ int main(int argc, char* argv[]) {
       try {
         file.open(filename);
         city.write_state(file);
-        file.close();
       } catch (const std::fstream::failure&) {
-        if (file.is_open()) {
-          file.close();
-        }
-
         std::ostringstream s;
         s << "Couldn't write to file " << filename;
         throw IOException(s.str());
-      } catch (const std::exception&) {
-        file.close();
-        throw;
       }
     };
 
@@ -203,9 +195,9 @@ int main(int argc, char* argv[]) {
     std::cerr << "Caught unexpected error: " << e.what() << std::endl;
 
     return 1;
-  } catch(...) {
+  } catch (...) {
     std::cerr << "Caught unknown exception" << std::endl;
-    
+
     return 1;
   }
 
