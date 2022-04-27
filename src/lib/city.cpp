@@ -245,7 +245,7 @@ void City::add_random_people(const Config& config) noexcept {
 
 void City::add_from_file_people(const Config& config) {
   const auto& filename = config.input_file;
-  std::cout << "Loading configuration from file " << filename << std::endl;
+  std::cout << "Loading configuration from file " << filename << "\n";
 
   std::ifstream file;
   file.exceptions(std::fstream::failbit | std::fstream::badbit);

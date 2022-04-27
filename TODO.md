@@ -1,5 +1,4 @@
 # TODOs:
-	- Remove all std::endls
  	- Add constexpr where applicable
 	- Add option to specify where to save initial and final state (use std::option<std::string>)
 

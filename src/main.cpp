@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
         s << "Warning: argument --" << arg.getName()
           << " will be ignored. Using value `" << value << "` instead";
 
-        std::cerr << s.str() << std::endl;
+        std::cerr << s.str() << "\n";
       }
     };
     const auto warn_unused_short = [](const auto& arg) {
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
         std::ostringstream s;
         s << "Warning: argument --" << arg.getName() << " will be ignored.";
 
-        std::cerr << s.str() << std::endl;
+        std::cerr << s.str() << "\n";
       }
     };
 
@@ -143,19 +143,19 @@ int main(int argc, char* argv[]) {
     config.save_frames = save_frames_switch.getValue();
   } catch (const TCLAP::ArgException& e) {
     std::cerr << "Parsing error: " << e.error() << " for argument " << e.argId()
-              << std::endl;
+              << "\n";
 
     return 1;
   } catch (const EnumClassException& e) {
-    std::cerr << "Parsing error: " << e.what() << std::endl;
+    std::cerr << "Parsing error: " << e.what() << "\n";
 
     return 1;
   } catch (const ArgumentsParsingException& e) {
-    std::cerr << "Parsing error: " << e.what() << std::endl;
+    std::cerr << "Parsing error: " << e.what() << "\n";
 
     return 1;
   } catch (const std::exception& e) {
-    std::cerr << "Caught unexpected error: " << e.what() << std::endl;
+    std::cerr << "Caught unexpected error: " << e.what() << "\n";
 
     return 1;
   }
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
     auto city = City::from_config(config);
 
     const auto save_state = [&city](const auto filename) {
-      std::cout << "Saving City's state to " << filename << std::endl;
+      std::cout << "Saving City's state to " << filename << "\n";
 
       std::ofstream file;
       file.exceptions(std::fstream::failbit | std::fstream::badbit);
@@ -188,15 +188,16 @@ int main(int argc, char* argv[]) {
       save_state("final_state.txt");
     }
   } catch (const SimulationBaseException& e) {
-    std::cerr << "Error: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << "\n";
 
     return 1;
   } catch (const std::exception& e) {
-    std::cerr << "Caught unexpected error: " << e.what() << std::endl;
+    std::cerr << "Caught unexpected error: " << e.what() << "\n";
 
     return 1;
   } catch (...) {
-    std::cerr << "Caught unknown exception" << std::endl;
+    std::cerr << "Caught unknown exception"
+              << "\n";
 
     return 1;
   }
