@@ -22,6 +22,12 @@ zostanie przekazana do programu.
 
 W celu zobaczenia wszystkich informacji o dostępnych opcjach wywołaj `simulation --help`.
 
+## Znane bugi
+Biblioteka matplotlib nie usuwa automatycznie stworzonych figur. Ponieważ nakładka matplotlibcpp jest dość
+prymitywna nie posiada ona funkcji, która by pozwalała na ręczne zamknięcie figury. Oznacza to, że program
+posiada stały i nie do uniknięcia **wyciek pamięci**. Na serwerze `pracownia.okwf.fuw.edu.pl` oznacza to,
+że **program zostanie zabity** po wygenerowaniu ~600 klatek.
+
 ## Dependences
 Poza oczywistą biblioteką `libpython`, której wymaga ten projekt jest jeszcze kilka innych.
 Znajdują się one razem z kodem źródłowym tego programu pod kontrolą repozytorium git w katalogu `3rd_party/`.

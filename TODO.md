@@ -1,5 +1,5 @@
 # TODOs:
-	- Solve problem of program slowing down and getting killed after ~600 frames
+	- make simple script that invokes `convert` and combines frames into an `.gif`
 
 	- Maybe use TCLAP::UnlabeledValueArg simulate command
  	- Add constexpr where applicable
