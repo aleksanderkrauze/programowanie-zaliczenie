@@ -2,15 +2,12 @@
 #define CITY_H
 
 #include <cstdint>
-#include <filesystem>
 #include <ostream>
 #include <vector>
 
 #include "config.h"
 #include "person.h"
 #include "vector2d.h"
-
-namespace fs = std::filesystem;
 
 class City final {
 public:
@@ -43,7 +40,7 @@ private:
 
   void add_test_people() noexcept;
   void add_random_people(const std::uint32_t) noexcept;
-  void add_from_file_people(const fs::path&);
+  void add_from_file_people(const std::string&);
 };
 
 #endif // CITY_H

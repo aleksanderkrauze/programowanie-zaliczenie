@@ -1,7 +1,6 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -261,7 +260,7 @@ void City::add_random_people(const std::uint32_t n_people) noexcept {
   }
 }
 
-void City::add_from_file_people(const fs::path& filename) {
+void City::add_from_file_people(const std::string& filename) {
   std::cout << "Loading configuration from file " << filename << "\n";
 
   std::ifstream file;

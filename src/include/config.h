@@ -2,14 +2,11 @@
 #define CONFIG_H
 
 #include <cstdint>
-#include <filesystem>
 #include <istream>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <variant>
-
-namespace fs = std::filesystem;
 
 enum class SimulationType { TEST, RANDOM, FILE };
 
@@ -26,7 +23,7 @@ struct ConfigFile {
   double time;
   double dt;
   double recovery_time;
-  fs::path input_file;
+  std::string input_file;
 };
 
 struct Config {
