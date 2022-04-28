@@ -18,7 +18,10 @@ W trybie "test" program przeprowadza symulację dla 3 testowych osób. W trybie 
 mieście o rozmiarze 1.0. A w trybie "file" wczytuje początkowe informacje o osobach z podanego pliku.
 
 Poszczególne klatki symulacji będą zapisywane w jako `plots/frame_xxxx.png` jeżeli flaga --save
-zostanie przekazana do programu.
+zostanie przekazana do programu. W celu połączenia klatek w animację można wywołać skrypt `make_animation.sh`
+(na maszynach na których jest zainstalowany program convert). Łączy on wszystkie klatki znajdujące się
+w katalogu `plots/` w plik `plots/animation.gif`. Moża mu także przekazać jako argument nazwę pliku
+z animacją (np. `make_animation.sh a.gif` połączy klatki w plik `a.gif`).
 
 W celu zobaczenia wszystkich informacji o dostępnych opcjach wywołaj `simulation --help`.
 
