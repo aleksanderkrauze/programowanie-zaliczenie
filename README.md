@@ -22,13 +22,15 @@ zostanie przekazana do programu.
 
 W celu zobaczenia wszystkich informacji o dostępnych opcjach wywołaj `simulation --help`.
 
-## Struktura projektu
-Projekt składa się z kilku plików i klas. Poniżej prezentuję najważniejsze klasy i w nich najważniejsze metody:
+## Dependences
+Poza oczywistą biblioteką `libpython`, której wymaga ten projekt jest jeszcze kilka innych.
+Znajdują się one razem z kodem źródłowym tego programu pod kontrolą repozytorium git w katalogu `3rd_party/`.
+Są one budowane a następnie statycznie linkowane do programu simulation.
 
-	- City: Klasa opisująca miasto. Jej dwie najważniejsze funkcje to `run_simulation` oraz statyczna funkcja `from_config`.
-	- Person: Klasa opisująca osobę. Zawiera informacje o jej położeniu, prędkości, promieniu zarażenia i stanie choroby. Jej najważniejsza funkcja to `move`.
-	- Vector2d: Klasa reprezentująca dwuwymiarowy wektor. Jej ważnymi funkcjami jest `distance` i `reflect`.
-	- Line2d: Klasa reprezentująca linię prostą opisaną równaniem Ax + By + C = 0. Jej ważnymi funkcjami są `point_position` i `intersection`.
-	- SimulationBaseException: Bazowa klasa, po której wszystkie moje klasy wyjątków dziedziczą.
+### matplotlibcpp
+Biblioteka [matplotlibcpp](https://github.com/lava/matplotlib-cpp) jest używana jako binding do biblioteki
+matplotlib. Jest udostępniona na licencji MIT. Jej dokładna wersja nie jest mi znana.
 
-W funkcji main parsuję argumenty cli, tworzę obiekt City a następnie uruchamiam jego symulację.
+### TCLAP
+Biblioteka [tclap](http://tclap.sourceforge.net/) jest użyta do parsowania argumentów linii poleceń.
+Jest udostępniona na licencji MIT. Wersja z której korzystam to `tclap-1.4.0-rc1`.
