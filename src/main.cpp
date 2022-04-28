@@ -45,7 +45,7 @@ int main(const int argc, const char* argv[]) {
   try {
     auto city = City::from_config(config);
 
-    const auto save_state = [&city](const auto& filename) {
+    const auto save_state = [&city](const auto& filename) -> void {
       std::cout << "Saving City's state to " << filename << "\n";
 
       std::ofstream file;
@@ -154,7 +154,7 @@ Config get_config(const int argc, const char* argv[]) {
     throw ArgumentsParsingException(s.str());
   };
 
-  const auto warn_unused = [](const auto& arg) {
+  const auto warn_unused = [](const auto& arg) -> void {
     if (arg.isSet()) {
       std::ostringstream s;
       s << "Warning: argument --" << arg.getName() << " will be ignored.";

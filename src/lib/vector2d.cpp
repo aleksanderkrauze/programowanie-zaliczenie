@@ -32,7 +32,7 @@ void Vector2d::tuple(const std::tuple<double, double> coordinates) noexcept {
 }
 
 double Vector2d::length() const noexcept {
-  const auto square = [](auto x) { return x * x; };
+  const auto square = [](auto x) -> double { return x * x; };
   return std::sqrt(square(this->m_x) + square(this->m_y));
 }
 

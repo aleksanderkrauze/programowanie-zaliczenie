@@ -1,5 +1,4 @@
 # TODOs:
-	- use trailing return type for lambdas
 	- Add informaiton to README about used libraries and their licenses
 
 	- Maybe use TCLAP::UnlabeledValueArg simulate command

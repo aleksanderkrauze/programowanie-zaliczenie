@@ -68,7 +68,7 @@ void City::run_simulation(const Config& config) {
   const auto total_frames =
     static_cast<int>(std::ceil(this->m_time / this->m_dt));
 
-  const auto plot = [this, &config](const auto frame_no) {
+  const auto plot = [this, &config](const auto frame_no) -> void {
     if (config.save_frames) {
       plotter::plot(this->m_people, frame_no, this->m_city_size);
     }
@@ -170,7 +170,7 @@ void City::update_recovering() noexcept {
 void City::infection() noexcept {
   const size_t size = this->m_people.size();
   const auto check_and_register_infection = [this](const auto& infected_person,
-                                                   auto& person) {
+                                                   auto& person) -> void {
     if (person.infection_status() == Person::InfectionStatus::GREEN &&
         Person::is_in_infection_range(infected_person, person)) {
       person.register_next_infection_status(Person::InfectionStatus::RED);
@@ -222,21 +222,21 @@ void City::add_random_people(const std::uint32_t n_people) noexcept {
   std::uniform_real_distribution<double> velocity_distribution{-0.5, 0.5};
   std::uniform_real_distribution<double> radius_distribution{0.01, 0.05};
 
-  const auto get_position = [&generator, &position_distribution]() {
+  const auto get_position = [&generator, &position_distribution]() -> Vector2d {
     const auto x = position_distribution(generator);
     const auto y = position_distribution(generator);
 
     return Vector2d{x, y};
   };
 
-  const auto get_velocity = [&generator, &velocity_distribution]() {
+  const auto get_velocity = [&generator, &velocity_distribution]() -> Vector2d {
     const auto x = velocity_distribution(generator);
     const auto y = velocity_distribution(generator);
 
     return Vector2d{x, y};
   };
 
-  const auto get_radius = [&generator, &radius_distribution]() {
+  const auto get_radius = [&generator, &radius_distribution]() -> double {
     return radius_distribution(generator);
   };
 
