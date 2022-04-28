@@ -1,6 +1,8 @@
 # TODOs:
- 	- Add constexpr where applicable
-	- Add option to specify where to save initial and final state (use std::option<std::string>)
+	- use trailing return type for lambdas
+	- Add informaiton to README about used libraries and their licenses
 
+	- Maybe use TCLAP::UnlabeledValueArg simulate command
+ 	- Add constexpr where applicable
 	- Add more meningfull error messages when parsing incorect data
 	- Add option for RequiredPositive... to report where it was thrown
