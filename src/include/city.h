@@ -1,6 +1,7 @@
 #ifndef CITY_H
 #define CITY_H
 
+#include <cstdint>
 #include <ostream>
 #include <vector>
 
@@ -8,7 +9,7 @@
 #include "person.h"
 #include "vector2d.h"
 
-class City {
+class City final {
 public:
   City(const double, const double, const double, const double);
 
@@ -38,8 +39,8 @@ private:
   void move() noexcept;
 
   void add_test_people() noexcept;
-  void add_random_people(const Config&) noexcept;
-  void add_from_file_people(const Config&);
+  void add_random_people(const std::uint32_t) noexcept;
+  void add_from_file_people(const std::string&);
 };
 
 #endif // CITY_H

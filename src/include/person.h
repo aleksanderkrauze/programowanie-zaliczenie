@@ -14,7 +14,7 @@
 // structure there is defined proper operator>>.
 struct _PersonData;
 
-class Person {
+class Person final {
 public:
   enum class InfectionStatus { GREEN, RED, BLUE };
 

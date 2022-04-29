@@ -7,7 +7,7 @@
 
 #include "vector2d.h"
 
-class Line2d {
+class Line2d final {
 public:
   enum class PointPosition { LEFT, MIDDLE, RIGHT };
 
