@@ -82,8 +82,11 @@ void City::run_simulation(const Config& config) {
 
     const auto p = static_cast<int>(100 * static_cast<double>(frame) /
                                     static_cast<double>(total_frames));
-    std::cout << "Created frame no. " << frame << " [" << p << "%]\n";
+    std::cout << "\033[2K\r"
+              << "Created frame no. " << frame << " [" << p << "%]";
+    std::cout.flush();
   }
+  std::cout << "\n";
 }
 
 void City::run_frame() {
