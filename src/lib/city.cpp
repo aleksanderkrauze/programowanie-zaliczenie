@@ -92,7 +92,7 @@ void City::run_simulation(const Config& config) {
 void City::run_frame() {
   this->move();
   this->infection();
-  this->update_recovering();
+  this->recover();
   this->m_current_time += this->m_dt;
 }
 
@@ -159,7 +159,7 @@ City City::from_config(const Config& config) {
   }
 }
 
-void City::update_recovering() noexcept {
+void City::recover() noexcept {
   for (auto& person : this->m_people) {
     if (person.infection_status() == Person::InfectionStatus::RED) {
       if (person.time_of_infection() + this->m_recovery_time <=
