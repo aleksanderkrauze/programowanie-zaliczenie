@@ -76,15 +76,12 @@ std::ostream& operator<<(std::ostream& os,
                          const Line2d::PointPosition position) {
   switch (position) {
   case Line2d::PointPosition::LEFT:
-    os << "LEFT";
-    break;
+    return os << "LEFT";
   case Line2d::PointPosition::MIDDLE:
-    os << "MIDDLE";
-    break;
+    return os << "MIDDLE";
   case Line2d::PointPosition::RIGHT:
-    os << "RIGHT";
-    break;
+    return os << "RIGHT";
+  default:
+    throw std::runtime_error("Unknown Line2d::PointPosition value");
   }
-
-  return os;
 }
