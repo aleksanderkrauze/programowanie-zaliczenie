@@ -119,7 +119,5 @@ Vector2d& Vector2d::operator*=(const double scalar) noexcept {
 
 std::ostream& operator<<(std::ostream& os, const Vector2d& v) noexcept {
   const auto [x, y] = v.tuple();
-  os << "(" << x << ", " << y << ")";
-
-  return os;
+  return os << "(" << x << ", " << y << ")";
 }

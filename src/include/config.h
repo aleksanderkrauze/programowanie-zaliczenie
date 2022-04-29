@@ -10,19 +10,18 @@
 
 enum class SimulationType { TEST, RANDOM, FILE };
 
-struct ConfigTest {};
-struct ConfigRandom {
+struct _ConfigBasePeople {
   std::uint32_t n_people;
-  double time;
-  double dt;
-  double recovery_time;
 };
-struct ConfigFile {
+struct _ConfigBaseTime {
+  double time, dt, recovery_time;
+};
+
+// Actual config struct used by user
+struct ConfigTest {};
+struct ConfigRandom : public _ConfigBasePeople, public _ConfigBaseTime {};
+struct ConfigFile : public _ConfigBasePeople, public _ConfigBaseTime {
   double city_size;
-  std::uint32_t n_people;
-  double time;
-  double dt;
-  double recovery_time;
   std::string input_file;
 };
 
@@ -32,7 +31,7 @@ struct Config {
   bool save_final_state;
   bool save_frames;
 
-  // methods
+  // functions
   SimulationType simulation_type() const;
 };
 

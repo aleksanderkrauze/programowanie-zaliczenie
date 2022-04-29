@@ -34,7 +34,7 @@ private:
   double m_current_time;
   std::vector<Person> m_people;
 
-  void update_recovering() noexcept;
+  void recover() noexcept;
   void infection() noexcept;
   void move() noexcept;
 

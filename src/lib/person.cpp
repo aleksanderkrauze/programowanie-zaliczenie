@@ -275,20 +275,14 @@ std::ostream& operator<<(std::ostream& os,
                          const Person::InfectionStatus status) {
   switch (status) {
   case Person::InfectionStatus::GREEN:
-    os << "green";
-    break;
+    return os << "green";
   case Person::InfectionStatus::RED:
-    os << "red";
-    break;
+    return os << "red";
   case Person::InfectionStatus::BLUE:
-    os << "blue";
-    break;
+    return os << "blue";
   default:
     throw std::runtime_error("Unexpected infection status");
-    break;
   }
-
-  return os;
 }
 
 std::istream& operator>>(std::istream& is, Person::InfectionStatus& status) {
@@ -314,24 +308,11 @@ std::ostream& operator<<(std::ostream& os, const Person& p) {
   const auto radius = p.radius();
   const auto status = p.infection_status();
 
-  os << x << " " << y << " "
-     << " " << vx << " " << vy << " " << radius << " " << status;
-
-  return os;
+  return os << x << " " << y << " "
+            << " " << vx << " " << vy << " " << radius << " " << status;
 }
 
 std::istream& operator>>(std::istream& is, _PersonData& data) {
-  double x, y, vx, vy, radius;
-  Person::InfectionStatus status;
-
-  is >> x >> y >> vx >> vy >> radius >> status;
-
-  data.x = x;
-  data.y = y;
-  data.vx = vx;
-  data.vy = vy;
-  data.radius = radius;
-  data.status = status;
-
-  return is;
+  return is >> data.x >> data.y >> data.vx >> data.vy >> data.radius >>
+         data.status;
 }
