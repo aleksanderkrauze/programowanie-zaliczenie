@@ -13,7 +13,7 @@ Jeżeli CMake wykryje zainstalowaną bibliotekę GoogleTest, to dodatkowa zostan
 Ich plik wykonywalny będzie umieszczony jako `/target/<debug|release>/tests`.
 
 ## Używanie
-Program `simulation` może zostać uruchomiony w 3 trybach: test, random, file. Kontroluje to flaga --type.
+Program `simulation` może zostać uruchomiony w 3 trybach: test, random i file. Kontroluje to flaga --type.
 W trybie "test" program przeprowadza symulację dla 3 testowych osób. W trybie "random" losuje n osób w
 mieście o rozmiarze 1.0. A w trybie "file" wczytuje początkowe informacje o osobach z podanego pliku.
 
